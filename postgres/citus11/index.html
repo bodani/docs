@@ -1,0 +1,1564 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Welcome to Shaun's rabbit hole. This site serves as a personal knowledge base for me to record my thoughts and ideas. It is also a place for me to share my knowledge and experience with the world. I hope you find something useful here. ">
+      
+      
+        <meta name="author" content="Eamon">
+      
+      
+        <link rel="canonical" href="https://bodani.github.io/docs/postgres/citus11/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+    
+    
+      
+        <title>citus11 管理手册 - Tea</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Tea" class="md-header__button md-logo" aria-label="Tea" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Tea
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              citus11 管理手册
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1M8 13h8v-2H8v2m9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1 0 1.71-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 5-5 5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5M7 15a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mysql/install.md" class="md-tabs__link">
+          
+  
+    
+  
+  MYSQL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../install01/" class="md-tabs__link">
+          
+  
+    
+  
+  POSTGRES
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../yugabytedb/install.md" class="md-tabs__link">
+          
+  
+    
+  
+  YugabyteDB
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../thinking_in_db_fd/" class="md-tabs__link">
+          
+  
+    
+  
+  数据库思考
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Tea" class="md-nav__button md-logo" aria-label="Tea" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Tea
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    MYSQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            MYSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/install.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/PrivilegeManagement/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    权限管理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/MGR/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    组复制1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/myshellMGR/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    组复制2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    POSTGRES
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            POSTGRES
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    安装维护
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            安装维护
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../replication01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    流复制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    高可用
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            高可用
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ha_fd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    设计分析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    索引
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            索引
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    索引类型及使用场景
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index-invalid/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    索引失效
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    YugabyteDB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            YugabyteDB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../yugabytedb/install.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../yugabytedb/deploy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    部署
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    数据库思考
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            数据库思考
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thinking_in_db_fd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结构设计
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thinking_in_db_performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    性能优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thinking_in_db_tune/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模块调优
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      版本信息
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      安装步骤
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      节点信息
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="_1">环境介绍</h1>
+<h2 id="_2">版本信息</h2>
+<ul>
+<li>
+<p>centos7</p>
+</li>
+<li>
+<p>postgres 14.4</p>
+</li>
+<li>
+<p>citus 110-2</p>
+</li>
+</ul>
+<h2 id="_3">安装步骤</h2>
+<ul>
+<li>
+<p>安装</p>
+<p><code>略</code></p>
+</li>
+<li>
+<p>配置</p>
+</li>
+</ul>
+<pre><code>sudo pg_conftool 14 main set wal_level logical
+sudo pg_conftool 14 main set listen_addresses '*'
+sudo pg_conftool 14 main set shared_preload_libraries citus
+</code></pre>
+<pre><code>sudo vi /etc/postgresql/14/main/pg_hba.conf
+</code></pre>
+<ul>
+<li>创建数据库免密码登录</li>
+</ul>
+<p><code>-- Edit .pgpass in the postgres user’s home directory, 
+  hostname:port:database:username:password</code></p>
+<h2 id="_4">节点信息</h2>
+<table>
+<thead>
+<tr>
+<th>nodenanme</th>
+<th>IP</th>
+<th>role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>master01</td>
+<td>10.10.20.11</td>
+<td>coordinator</td>
+</tr>
+<tr>
+<td>worker01</td>
+<td>10.10.2.12</td>
+<td>worker</td>
+</tr>
+<tr>
+<td>worker02</td>
+<td>10.10.2.14</td>
+<td>worker</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="_5">搭建集群</h1>
+<p>创建database&amp;extension</p>
+<p>在每个worker节点上执行</p>
+<pre><code>CREATE DATABASE newbie;
+\c newbie
+CREATE EXTENSION citus;
+</code></pre>
+<p>在master接节点上执行</p>
+<pre><code>CREATE DATABASE newbie;
+\c newbie
+CREATE EXTENSION citus;
+SELECT citus_set_coordinator_host('10.10.2.11', 5432);
+#添加worker节点
+SELECT * from citus_add_node('10.10.2.12', 5432);
+SELECT * from citus_add_node('10.10.2.14', 5432);
+-- ... for all of them
+</code></pre>
+<p>查看集群节点</p>
+<pre><code>SELECT * FROM citus_get_active_worker_nodes();
+ node_name  | node_port 
+------------+-----------
+ 10.10.2.12 |      5432
+ 10.10.2.14 |      5432
+(2 rows)
+</code></pre>
+<p>查看节点分表</p>
+<pre><code>select * from pg_dist_node;
+ nodeid | groupid |  nodename  | nodeport | noderack | hasmetadata | isactive | noderole | nodecluster | metadatasynced | shouldhaveshards 
+--------+---------+------------+----------+----------+-------------+----------+----------+-------------+----------------+------------------
+      1 |       0 | 10.10.2.11 |     5432 | default  | t           | t        | primary  | default     | t              | f
+      3 |       2 | 10.10.2.12 |     5432 | default  | t           | t        | primary  | default     | t              | t
+      4 |       3 | 10.10.2.14 |     5432 | default  | t           | t        | primary  | default     | t              | t
+
+</code></pre>
+<h1 id="_6">表管理</h1>
+<h2 id="_7">表类型</h2>
+<ul>
+<li>本地表</li>
+<li>参考表</li>
+<li>分布表</li>
+</ul>
+<h3 id="_8">本地表</h3>
+<p>与传统表使用方式一致，数据只存放在master节点</p>
+<h3 id="_9">参考表</h3>
+<p>每个节点(master , worker)包含一份表的所有数据，对表的DML采用2pc。适用于存放业务元数据，便于与分布表联合查询使用</p>
+<h3 id="_10">分布表</h3>
+<p>根据分布键（通常为表的指定列），将数据分布到每个worker节点中。每个worker节点包含表的部分数据内容</p>
+<h3 id="_11">查看表信息</h3>
+<pre><code>-- 包括参考表和分布表
+select * from citus_tables ;
+
+-- 包括所有类型的表及分布信息
+select * from citus_shards ;
+
+--- 查看库分布表size
+SELECT logicalrelid AS name,
+       pg_size_pretty(citus_table_size(logicalrelid)) AS size
+  FROM pg_dist_partition where name = '$tablename';
+
+--- 查看分布表分布在每个node上的size 
+select table_name, nodename as node_name,round(sum(shard_size)*100.0/citus_table_size(table_name),2) percent, pg_size_pretty(sum(shard_size)) as table_size_node,pg_size_pretty(citus_table_size(table_name)) AS table_size from citus_shards where citus_table_type = 'distributed' group by nodename , table_name;
+
+          table_name           | node_name  | percent | table_size_node | table_size
+-------------------------------+------------+---------+-----------------+------------
+mydistable | 10.10.2.12 |   32.60 | 1424 kB         | 4368 kB
+mydistable | 10.10.2.14 |   60.81 | 2656 kB         | 4368 kB
+(2 rows)
+
+</code></pre>
+<h2 id="_12">表管理</h2>
+<h3 id="_13">参考表创建</h3>
+<pre><code>SELECT create_reference_table('tablename');
+</code></pre>
+<h3 id="_14">分布表创建</h3>
+<p>```istributed relations cannot have UNIQUE, EXCLUDE, or PRIMARY KEY constraints that do not include the partition column (with an equality operator if EXCLUDE)
+SELECT create_distributed_table('tablename', 'column');</p>
+<pre><code>
+####   注意事项 
+
+`distributed relations cannot have UNIQUE, EXCLUDE, or PRIMARY KEY constraints that do not include the partition column (with an equality operator if EXCLUDE)`
+
+#### 亲和性
+
+</code></pre>
+<p>SELECT create_distributed_table('github_events', 'repo_id',
+                                colocate_with =&gt; 'github_repo');</p>
+<pre><code>
+#### 更新表亲和性
+
+</code></pre>
+<p>SELECT update_distributed_table_colocation('A', colocate_with =&gt; 'B');</p>
+<pre><code>
+#### 分片数量
+
+</code></pre>
+<p>show citus.shard_count;
+set citus.shard_count = 64;</p>
+<pre><code>
+#### 查看默认分布策略
+
+````
+SELECT * FROM pg_dist_rebalance_strategy;
+````
+
+#### 设置分布策略
+
+</code></pre>
+<p>SELECT citus_set_default_rebalance_strategy('by_disk_size');</p>
+<pre><code>
+#### 进度查看
+
+</code></pre>
+<p>SELECT * FROM get_rebalance_progress();</p>
+<pre><code>
+#### 删除本地数据
+
+</code></pre>
+<p>-- 在将普通表转化化为分布表或参考表后，清空本地数据，待测试
+SELECT truncate_local_data_after_distributing_table('tablename')</p>
+<pre><code>
+### 恢复表为本地表
+
+</code></pre>
+<p>select undistribute_table('table_name')
+select undistribute_table('table_name',cascade_via_foreign_keys=&gt;true); # 危险操作，注意所有表关联关系</p>
+<pre><code>
+
+
+## 函数管理
+
+### 自定义函数
+
+</code></pre>
+<p>CREATE OR REPLACE FUNCTION
+  delete_campaign(company_id int, campaign_id int)
+RETURNS void LANGUAGE plpgsql AS $fn$
+BEGIN
+  DELETE FROM campaigns
+   WHERE id = $2 AND campaigns.company_id = $1;
+  DELETE FROM ads
+   WHERE ads.campaign_id = $2 AND ads.company_id = $1;
+END;
+$fn$;</p>
+<pre><code>
+### 自定义函数下推
+
+</code></pre>
+<p>SELECT create_distributed_function(
+  'delete_campaign(int, int)', 'company_id',
+  colocate_with := 'campaigns'
+);</p>
+<pre><code>
+### 查看执行计划，查看全部的task
+
+</code></pre>
+<p>SET citus.explain_all_tasks = 1;</p>
+<pre><code>
+# 高级特性
+
+## 重新分布
+
+加入删除节点时，不停服数据迁移
+
+</code></pre>
+<p>rebalance_table_shards()  #所有
+rebalance_table_shards('tabename') #一个表</p>
+<pre><code>
+## 租户隔离
+
+大租户单独分配，独享worker资源
+
+创建分配
+
+</code></pre>
+<p>-- 根据租户ID隔离的分片
+-- 返回新的shard id。
+SELECT isolate_tenant_to_new_shard('table_name', tenant_id);
+SELECT isolate_tenant_to_new_shard('table_name', tenant_id，'CASCADE');
+│ isolate_tenant_to_new_shard │
+├─────────────────────────────┤
+│ 102240 │</p>
+<pre><code>
+迁移分片
+
+</code></pre>
+<p>SELECT nodename, nodeport
+  FROM citus_shards
+ WHERE shardid = 102240;</p>
+<p>--  列出可能持有该分片的可用工作节点
+SELECT * FROM master_get_active_worker_nodes();</p>
+<p>-- 将分片移动到你选择的WORK节点上
+--（它也会移动任何用CASCADE选项创建的分片）。
+SELECT citus_move_shard_placement(
+  102240,
+  'source_host', source_port,
+  'dest_host', dest_port);</p>
+<pre><code>
+## 时序数据分表管理
+
+</code></pre>
+<p>-- 自动创建分区表
+SELECT create_time_partitions(
+  table_name         := 'github_events',
+  partition_interval := '1 month',
+  end_at             := now() + '12 months'
+);</p>
+<pre><code>
+</code></pre>
+<p>-- 查看分区表
+SELECT partition
+  FROM time_partitions
+ WHERE parent_table = 'github_events'::regclass;</p>
+<pre><code>
+
+
+## 归档数据列存
+
+</code></pre>
+<p>--转化为列存
+CALL alter_old_partitions_set_access_method(
+  'github_columnar_events',
+  '2015-01-01 06:00:00' /<em> older_than </em>/,
+  'columnar'
+);</p>
+<pre><code>
+</code></pre>
+<p>-- 查看表的存储方式
+SELECT partition, access_method
+  FROM time_partitions
+ WHERE parent_table = 'github_columnar_events'::regclass;</p>
+<pre><code>
+# 读写分离
+
+</code></pre>
+<p>-- 加入数据库从节点
+select * from citus_add_secondary_node('new-node', 12345, 'primary-node', 12345);</p>
+<pre><code>
+
+
+</code></pre>
+<p>-- 开启读写分离
+citus.use_secondary_nodes
+    never: (default) All reads happen on primary nodes.
+    always: Reads run against secondary nodes instead, and insert/update statements are disabled.</p>
+<pre><code>
+# 节点管理
+
+## 节点查看
+
+</code></pre>
+<p>select * from pg_dist_node;
+ nodeid | groupid |  nodename  | nodeport | noderack | hasmetadata | isactive | noderole | nodecluster | metadatasynced | shouldhaveshards 
+--------+---------+------------+----------+----------+-------------+----------+----------+-------------+----------------+------------------
+      1 |       0 | 10.10.2.11 |     5432 | default  | t           | t        | primary  | default     | t              | f
+      3 |       2 | 10.10.2.12 |     5432 | default  | t           | t        | primary  | default     | t              | t
+      4 |       3 | 10.10.2.14 |     5432 | default  | t           | t        | primary  | default     | t              | t</p>
+<pre><code>
+## 删除节点
+
+</code></pre>
+<p>-- 删除一个节点
+SELECT * from citus_drain_node('10.0.0.1', 5432);</p>
+<pre><code>
+</code></pre>
+<p>-- 删除多个节点</p>
+<h1 id="_15">在每个节点上执行</h1>
+<p>SELECT * FROM citus_set_node_property(node_hostname, node_port, 'shouldhaveshards', false);</p>
+<h1 id="_16"></h1>
+<p>SELECT * FROM rebalance_table_shards(drain_only := true);</p>
+<pre><code>
+## 更新节点 
+
+</code></pre>
+<p>select * from citus_update_node(123, 'new-address', 5432);</p>
+<pre><code>
+## 加入备用节点
+
+</code></pre>
+<p>select * from citus_add_inactive_node('new-node', 12345);</p>
+<pre><code>
+## 激活备用节点
+
+</code></pre>
+<p>select * from citus_activate_node('new-node', 12345);</p>
+<pre><code>
+# 集群健康管理
+
+</code></pre>
+<p>SELECT * FROM citus_check_cluster_node_health();</p>
+<pre><code>
+# 高可用管理
+
+</code></pre>
+<p>select * from citus_add_secondary_node('new-node', 12345, 'primary-node', 12345);</p>
+<pre><code>
+</code></pre>
+<p>select * from citus_update_node(123, 'new-address', 5432);
+```</p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024  |   Eamon
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.code.annotate", "content.code.copy", "content.code.select", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1694 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Welcome to Shaun's rabbit hole. This site serves as a personal knowledge base for me to record my thoughts and ideas. It is also a place for me to share my knowledge and experience with the world. I hope you find something useful here. ">
+      
+      
+        <meta name="author" content="Eamon">
+      
+      
+        <link rel="canonical" href="https://bodani.github.io/docs/postgres/pgautofailover/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+    
+    
+      
+        <title>数据库高可用pgautofailover - Tea</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pg_auto_failover" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Tea" class="md-header__button md-logo" aria-label="Tea" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Tea
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              数据库高可用pgautofailover
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1M8 13h8v-2H8v2m9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1 0 1.71-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 5-5 5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5M7 15a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mysql/install.md" class="md-tabs__link">
+          
+  
+    
+  
+  MYSQL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../install01/" class="md-tabs__link">
+          
+  
+    
+  
+  POSTGRES
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../yugabytedb/install.md" class="md-tabs__link">
+          
+  
+    
+  
+  YugabyteDB
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../thinking_in_db_fd/" class="md-tabs__link">
+          
+  
+    
+  
+  数据库思考
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Tea" class="md-nav__button md-logo" aria-label="Tea" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Tea
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    MYSQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            MYSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/install.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/PrivilegeManagement/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    权限管理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/MGR/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    组复制1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/myshellMGR/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    组复制2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    POSTGRES
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            POSTGRES
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    安装维护
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            安装维护
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../replication01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    流复制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    高可用
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            高可用
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ha_fd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    设计分析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    索引
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            索引
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    索引类型及使用场景
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index-invalid/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    索引失效
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    YugabyteDB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            YugabyteDB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../yugabytedb/install.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../yugabytedb/deploy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    部署
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    数据库思考
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            数据库思考
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thinking_in_db_fd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结构设计
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thinking_in_db_performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    性能优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thinking_in_db_tune/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模块调优
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      一个简单的架构
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      集群搭建
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="集群搭建">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      环境说明
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="环境说明">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      软件版本
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      网络环境
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      从零开始建设
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      现有数据库接管
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      集群管理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="集群管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      状态查看
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#switch" class="md-nav__link">
+    <span class="md-ellipsis">
+      手动switch
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failover" class="md-nav__link">
+    <span class="md-ellipsis">
+      自动failover
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="自动failover">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      节点失败
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      网络问题
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      维护模式
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      增减节点
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    <span class="md-ellipsis">
+      切换策略机制
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    <span class="md-ellipsis">
+      多集群管理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="多集群管理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    <span class="md-ellipsis">
+      多集群管理说明
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    <span class="md-ellipsis">
+      具体实现案例
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="具体实现案例">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#formation" class="md-nav__link">
+    <span class="md-ellipsis">
+      利用formation 管理多套集群
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#group-citus" class="md-nav__link">
+    <span class="md-ellipsis">
+      利用group 管理citus中的多集群
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    <span class="md-ellipsis">
+      监控节点高可用
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    <span class="md-ellipsis">
+      客户端高可用
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    <span class="md-ellipsis">
+      常用命令
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    <span class="md-ellipsis">
+      安全及权限
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="pg_auto_failover">pg_auto_failover 实践</h1>
+<h2 id="_1">一个简单的架构</h2>
+<p>citus同源postgres高可用方案</p>
+<p>角色:</p>
+<ul>
+<li>主节点 (master)</li>
+<li>复制节点 (slave)</li>
+<li>监控节点 (monitor)</li>
+</ul>
+<h2 id="_2">集群搭建</h2>
+<h3 id="_3">环境说明</h3>
+<h4 id="_4">软件版本</h4>
+<ul>
+<li>postgresql 14.4</li>
+<li>pg_auto_failover 1.6.4</li>
+<li>centos 7</li>
+</ul>
+<h4 id="_5">网络环境</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">IP</th>
+<th style="text-align: center;">软件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;">10.10.2.11</td>
+<td style="text-align: center;">monitor</td>
+</tr>
+<tr>
+<td style="text-align: center;">10.10.2.12</td>
+<td style="text-align: center;">master</td>
+</tr>
+<tr>
+<td style="text-align: center;">10.10.2.13</td>
+<td style="text-align: center;">replication</td>
+</tr>
+</tbody>
+</table>
+<h3 id="_6">从零开始建设</h3>
+<p>​   没有任何历史包袱，包括数据库自身的搭建</p>
+<p>​   <strong>手动安装</strong></p>
+<p>​     在所有的节点上执行</p>
+<pre><code>-- 数据库安装
+sudo yum install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+sudo yum install -y postgresql14-server
+</code></pre>
+<pre><code># install pg_auto_failover
+curl https://install.citusdata.com/community/rpm.sh | sudo bash
+yum install pg_auto_failover_14.x86_64 -y
+
+# confirm installation
+/usr/pgsql-14/bin/pg_autoctl --version
+</code></pre>
+<p>​     创建monitor节点</p>
+<pre><code>--创建监控节点
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl create monitor \
+   --hostname node0 \
+   --auth trust \
+   --ssl-self-signed \
+   --pgdata /var/lib/pgsql/14/data/ \
+   --pgctl /usr/pgsql-14/bin/pg_ctl &quot;
+
+--启动监控节点服务
+/usr/pgsql-14/bin/pg_autoctl -q show systemd --pgdata &quot;/var/lib/pgsql/14/data&quot; | tee /etc/systemd/system/pgautofailover.service
+
+systemctl start pgautofailover
+
+-- 查看node连接monitor 信息
+/usr/pgsql-14/bin/pg_autoctl show uri --formation monitor --pgdata /var/lib/pgsql/14/data/
+
+postgres://autoctl_node@node0:5432/pg_auto_failover?sslmode=require
+
+</code></pre>
+<p>​       创建数据库主节点</p>
+<pre><code>-- 创建数据库节点
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl create postgres \
+    --hostname node1 \
+    --name node1 \
+    --pgctl /usr/pgsql-14/bin/pg_ctl \
+    --pgdata /var/lib/pgsql/14/data/ \
+    --auth trust \
+    --ssl-self-signed \
+    --monitor 'postgres://autoctl_node@node0:5432/pg_auto_failover?sslmode=require' \
+    &quot;
+
+</code></pre>
+<pre><code>创建节点说明，在create postgres后，将在本地生成配置信息。具体可查看
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl show file   --pgdata /var/lib/pgsql/14/data/&quot;
+</code></pre>
+<pre><code>-- systemd 管理服务
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl -q show systemd --pgdata /var/lib/pgsql/14/data &quot;  &gt; /etc/systemd/system/pgautofailover.service
+
+-- 启动服务
+systemctl start pgautofailover
+</code></pre>
+<p>​       创建数据库从节点</p>
+<pre><code>-- 在另一个节点创建从库
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl create postgres \
+    --hostname node2 \
+    --name node2 \
+    --pgctl /usr/pgsql-14/bin/pg_ctl \
+    --pgdata /var/lib/pgsql/14/data/ \
+    --auth trust \
+    --ssl-self-signed \
+    --monitor 'postgres://autoctl_node@node0:5432/pg_auto_failover?sslmode=require' \
+    &quot;
+</code></pre>
+<pre><code>-- systemd 管理服务
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl -q show systemd --pgdata /var/lib/pgsql/14/data &quot;  &gt; /etc/systemd/system/pgautofailover.service
+
+-- 启动服务
+system start pgautofailover
+</code></pre>
+<pre><code>-- 在monitor节点查看状态
+/usr/pgsql-14/bin/pg_autoctl   show state --pgdata /var/lib/pgsql/14/data/
+
+  Name |  Node |  Host:Port |       TLI: LSN |   Connection |      Reported State |      Assigned State
+-------+-------+------------+----------------+--------------+---------------------+--------------------
+node1 |     1 | node1:5432 |   1: 0/500BD90 |   read-write |             primary |             primary
+ node2 |   111 | node2:5432 |   1: 0/500BD90 |    read-only |           secondary |           secondary
+
+</code></pre>
+<pre><code>-- 在监控点删除postgres
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl drop node  --destroy --force --name node2 &quot;
+</code></pre>
+<h3 id="_7">现有数据库接管</h3>
+<p>​   不影响现有数据库业务，使其具有高可用能力</p>
+<p>​    与从零开始创建集群不同的是，在create postgres阶段，根据    --pgdata 目录所指定的 pg_controldata 来判断数据库数   据目录现有情况。包括是否需要初始化数据库，及现有数据库状态 </p>
+<h2 id="_8">集群管理</h2>
+<h3 id="_9">状态查看</h3>
+<pre><code>/usr/pgsql-14/bin/pg_autoctl   show state --pgdata /var/lib/pgsql/14/data/
+</code></pre>
+<h3 id="switch">手动switch</h3>
+<pre><code>/usr/pgsql-14/bin/pg_autoctl  perform switchover --formation default --group 0  --pgdata /var/lib/pgsql/14/data/
+</code></pre>
+<h3 id="failover">自动failover</h3>
+<h4 id="_10">节点失败</h4>
+<pre><code>- 主节点失败
+  When the primary node is unhealthy, and only when the secondary node is itself in good health, then the primary node is asked to transition to the DRAINING state, and the attached secondary is asked to transition to the state PREPARE_PROMOTION. In this state, the secondary is asked to catch-up with the WAL traffic from the primary, and then report success.
+
+The monitor then continues orchestrating the promotion of the standby: it stops the primary (implementing STONITH in order to prevent any data loss), and promotes the secondary into being a primary now.
+
+Depending on the exact situation that triggered the primary unhealthy, it’s possible that the secondary fails to catch-up with WAL from it, in that case after the PREPARE_PROMOTION_CATCHUP_TIMEOUT the standby reports success anyway, and the failover sequence continues from the monitor.
+
+When the keeper reports an acceptable WAL difference in the two nodes again, then the replication is upgraded back to being synchronous. While a secondary node is not in the SECONDARY state, secondary promotion is disabled.
+主机恢复后重新加入集群中，并且状态为secondary
+</code></pre>
+<pre><code>- 备节点失败
+When the secondary node is unhealthy, the monitor assigns to it the state CATCHINGUP, and assigns the state WAIT_PRIMARY to the primary node. When implementing the transition from PRIMARY to WAIT_PRIMARY, the keeper disables synchronous replication.
+</code></pre>
+<pre><code>- 监控节点失败
+Then the primary and secondary node just work as if you didn’t have setup pg_auto_failover in the first place, as the keeper fails to report local state from the nodes. Also, health checks are not performed. It means that no automated failover may happen, even if needed.
+</code></pre>
+<p>尽量避免监控节点与主节点同时失败的情况，如避免同机架，同机房，同一个网络分区。</p>
+<h4 id="_11">网络问题</h4>
+<h3 id="_12">维护模式</h3>
+<pre><code>$ pg_autoctl enable maintenance
+$ pg_autoctl disable maintenance
+</code></pre>
+<h3 id="_13">增减节点</h3>
+<p>​   添加数据库节点</p>
+<p>​        与前面加入从节点一致</p>
+<p>​     删除数据库节点</p>
+<pre><code>-- 在监控点删除postgres
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl drop node  --destroy --force --name node3 --formation formation_name_003&quot;
+</code></pre>
+<h3 id="_14">切换策略机制</h3>
+<pre><code> pgautofailover.health_check_max_retries | 2
+ pgautofailover.health_check_period      | 20000
+ pgautofailover.health_check_retry_delay | 2000
+ pgautofailover.health_check_timeout     | 5000
+</code></pre>
+<h2 id="_15">多集群管理</h2>
+<h3 id="_16">多集群管理说明</h3>
+<p>​   多集群这里的含义是一个monitor管理多套集群</p>
+<p>​   主要用到的两个概念</p>
+<ul>
+<li>
+<p>formation</p>
+</li>
+<li>
+<p>group</p>
+</li>
+</ul>
+<p><strong>A formation is a logical set of PostgreSQL services that are managed together.</strong></p>
+<p><strong>It is possible to operate many formations with a single monitor instance. Each formation has a group of Postgres nodes and the FSM orchestration implemented by the monitor applies separately to each group.</strong></p>
+<p>通过说明可以知道，利用formation可以实现一个monitor管理多套集群。</p>
+<p><strong>A group consists of a PostgreSQL primary server and a secondary server setup with Hot Standby synchronous replication.</strong></p>
+<p><strong>The notion of a formation that contains multiple groups in pg_auto_failover is useful when setting up and managing a whole Citus formation, where the coordinator nodes belong to group zero of the formation, and each Citus worker node becomes its own group and may have Postgres standby nodes.</strong></p>
+<p>这里提供一个思路，一套citus集群在一个formation之下，citus中的多个主从节点通过group来区分。</p>
+<h3 id="_17">具体实现案例</h3>
+<h4 id="formation">利用formation 管理多套集群</h4>
+<pre><code>-- 创建formation , 默认使用default
+/usr/pgsql-14/bin/pg_autoctl create formation \
+ --pgdata /var/lib/pgsql/14/data/ \
+ --monitor 'postgres://autoctl_node@node0:5432/pg_auto_failover1?sslmode=require' \
+ --formation formation_name_003 \
+ --kind pgsql \
+ --dbname pg_auto_failover
+</code></pre>
+<pre><code>--查看 formation 信息
+select * from pgautofailover.formation ;
+    formationid     | kind  |      dbname       | opt_secondary | number_sync_standbys 
+--------------------+-------+-------------------+---------------+----------------------
+ default            | pgsql | postgres          | t             |                    0
+ formation_name_003 | pgsql | postgres          | t             |                    0
+(2 rows)
+</code></pre>
+<pre><code>-- 在创建数据库节点时指定formation
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl create postgres \
+--hostname node3 \
+--formation formation_name_003 \
+--name node3 \
+--pgctl /usr/pgsql-14/bin/pg_ctl \
+--pgdata /var/lib/pgsql/14/data/ \
+--auth trust \
+--ssl-self-signed \
+--monitor 'postgres://autoctl_node@node0:5432/pg_auto_failover?sslmode=require' \ 
+&quot;
+
+注意事项: 
+--hostname 本机host，
+--formation 上面创建的formation ,
+--name节点名称 ,
+--monitor monitor节点连接信息
+</code></pre>
+<pre><code>-- 查看数据库节点本地配置文件位置
+su - postgres -c &quot;/usr/pgsql-14/bin/pg_autoctl show file   --pgdata /var/lib/pgsql/14/data/&quot;
+</code></pre>
+<pre><code>-- 在monitor节点查看 数据库node节点注册情况
+select formationid,nodeid ,groupid,nodename from pgautofailover.node;
+    formationid     | nodeid | groupid | nodename 
+--------------------+--------+---------+----------
+ formation_name_003 |    120 |       0 | node3
+ default            |      1 |       0 | node_1
+ default            |    111 |       0 | node2
+(3 rows)
+
+</code></pre>
+<h4 id="group-citus">利用group 管理citus中的多集群</h4>
+<p>在创建pg节点时并没有参考用来指定group, 文档中有如下关于group的描述。</p>
+<p><strong>in a pgsql formation, there can be only one group, with groupId 0</strong></p>
+<p><strong>At the moment citus formation kinds are not managed in the Open Source version of pg_auto_failover.</strong></p>
+<p>很遗憾，现开源版本并不支持 citus类型的formation。 类型为pgsql的formation中只支持为零的group。</p>
+<p>用pgautofailover来管理citus 集群还是使用多个formaton 吧</p>
+<h2 id="_18">监控节点高可用</h2>
+<pre><code>-- 数据库的主从流复制 mon1主节点,mon2复制节点 
+-- 在创建formation 及 postgres 节点时， 将-- monitor 参数指定为
+postgres://mon1:5432,mon2:5432,mon3:5432/pg_auto_failover?target_session_attrs=read-write&amp;sslmode=prefer
+</code></pre>
+<h2 id="_19">客户端高可用</h2>
+<pre><code>$ psql -d &quot;postgresql://host1,host2/dbname?target_session_attrs=read-write&quot;
+$ psql -d &quot;postgresql://host1:port2,host2:port2/dbname?target_session_attrs=read-write&quot;
+$ psql -d &quot;host=host1,host2 port=port1,port2 target_session_attrs=read-write&quot;
+</code></pre>
+<h2 id="_20">常用命令</h2>
+<p>https://pg-auto-failover.readthedocs.io/en/master/ref/manual.html</p>
+<h2 id="_21">安全及权限</h2>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024  |   Eamon
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.code.annotate", "content.code.copy", "content.code.select", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+    
+  </body>
+</html>

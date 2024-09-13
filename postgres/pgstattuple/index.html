@@ -1,0 +1,1647 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Welcome to Shaun's rabbit hole. This site serves as a personal knowledge base for me to record my thoughts and ideas. It is also a place for me to share my knowledge and experience with the world. I hope you find something useful here. ">
+      
+      
+        <meta name="author" content="Eamon">
+      
+      
+        <link rel="canonical" href="https://bodani.github.io/docs/postgres/pgstattuple/">
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.3">
+    
+    
+      
+        <title>表空间膨胀 - Tea</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.50c56a3b.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Tea" class="md-header__button md-logo" aria-label="Tea" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Tea
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              表空间膨胀
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1M8 13h8v-2H8v2m9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1 0 1.71-1.39 3.1-3.1 3.1h-4V17h4a5 5 0 0 0 5-5 5 5 0 0 0-5-5Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="black" data-md-color-accent="indigo"  aria-label="Switch to system preference"  type="radio" name="__palette" id="__palette_2">
+    
+      <label class="md-header__button md-icon" title="Switch to system preference" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5M7 15a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../mysql/install.md" class="md-tabs__link">
+          
+  
+    
+  
+  MYSQL
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../install01/" class="md-tabs__link">
+          
+  
+    
+  
+  POSTGRES
+
+        </a>
+      </li>
+    
+  
+
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../yugabytedb/install.md" class="md-tabs__link">
+          
+  
+    
+  
+  YugabyteDB
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../thinking_in_db_fd/" class="md-tabs__link">
+          
+  
+    
+  
+  数据库思考
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Tea" class="md-nav__button md-logo" aria-label="Tea" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Tea
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    MYSQL
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            MYSQL
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/install.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/PrivilegeManagement/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    权限管理
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/MGR/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    组复制1
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../mysql/myshellMGR/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    组复制2
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    POSTGRES
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            POSTGRES
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_1" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_1" id="__nav_2_1_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    安装维护
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_1">
+            <span class="md-nav__icon md-icon"></span>
+            安装维护
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../install01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../config/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    配置
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../replication01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    流复制
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_2" id="__nav_2_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    高可用
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_2">
+            <span class="md-nav__icon md-icon"></span>
+            高可用
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ha_fd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    设计分析
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_2_3" id="__nav_2_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    索引
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            索引
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index01/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    索引类型及使用场景
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index-invalid/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    索引失效
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    YugabyteDB
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            YugabyteDB
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../yugabytedb/install.md" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    安装
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../yugabytedb/deploy/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    部署
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      
+      
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    数据库思考
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            数据库思考
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thinking_in_db_fd/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    结构设计
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thinking_in_db_performance/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    性能优化
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../thinking_in_db_tune/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    模块调优
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      背景介绍
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="背景介绍">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      处理完毕后需要重新生成统计信息
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      监控表空间膨胀
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      简单使用
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="简单使用">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      查看每一页的空间利用
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      表空间数据膨胀的监控与处理
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      主要原因分析及监控措施
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="主要原因分析及监控措施">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      长事务
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      废弃的复制槽
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      两阶段提交
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>表空间膨胀</h1>
+
+<h4 id="_1">背景介绍</h4>
+<p>由于mvcc机制，数据被删除后只是被标记为删除，实际空间没有被释放，这是表空间膨胀的根本原因。</p>
+<p>目前用于解决表空间膨胀方式有如下方式</p>
+<p>1 删除dead tuple </p>
+<ul>
+<li>vacuum  ,tuple被清理。数据库可以自动执行autovacuum</li>
+<li>vacuum full ,tuple被清理并且空间连续紧凑。弊端，在执行过程中会锁表。应用不可用</li>
+<li>为了避免锁表的影响，提供的<a href="https://github.com/cybertec-postgresql/pg_squeeze">pg_squeeze</a>拓展,使用逻辑复制。<a href="https://www.timbotetsu.com/blog/postgresql-bloatbusters/">pg_repack拓展</a>，使用了触发器，影响业务的性能。</li>
+</ul>
+<p>2 fillfactor</p>
+<p>3 vacuum_defer_cleanup_age &gt; 0, 是以事务为单位。配合pg_resetwal 可以做到flashback</p>
+<pre><code>代价1，主库膨胀，因为垃圾版本要延迟若干个事务后才能被回收。
+代价2，重复扫描垃圾版本，重复耗费垃圾回收进程的CPU资源。（n_dead_tup会一直处于超过垃圾回收阈值的状态，从而autovacuum 不断唤醒worker进行回收动作）。
+当主库的 autovacuum_naptime=很小的值，同时autovacuum_vacuum_scale_factor=很小的值时，尤为明显。
+代价3，如果期间发生大量垃圾，垃圾版本可能会在事务到达并解禁后，爆炸性的被回收，产生大量的WAL日志，从而造成WAL的写IO尖刺。
+</code></pre>
+<p>4 reindex 从新建立索引，不要忽略表膨胀中索引的影响，通常来说索引所占的空间和维护成本要高于数据表，在pg version 12版本中预计reindex时不需要锁表。</p>
+<h6 id="_2">处理完毕后需要重新生成统计信息</h6>
+<pre><code> ANALYZE;
+</code></pre>
+<p>在执行以上操作时建议设置</p>
+<pre><code>set maintenance_work_mem = '10GB';
+</code></pre>
+<h4 id="_3">监控表空间膨胀</h4>
+<p>pgstattuple提供了pgstatetuple()和pgstatindex()两个统计表和索引的方法，较PostgreSQL系统表pg_class的表统计信息，pgstatetuple()还统计了表中的dead tuples。</p>
+<p>https://www.postgresql.org/docs/current/pgstattuple.html</p>
+<p>创建拓展</p>
+<pre><code>create extension pgstattuple ;
+</code></pre>
+<pre><code>表
+test=&gt; SELECT * FROM pgstattuple('tablename');
+-[ RECORD 1 ]------+-------
+table_len          | 458752
+tuple_count        | 1470
+tuple_len          | 438896
+tuple_percent      | 95.67
+dead_tuple_count   | 11
+dead_tuple_len     | 3157
+dead_tuple_percent | 0.69
+free_space         | 8932
+free_percent       | 1.95
+
+字段说明
+
+table_len   bigint  Physical relation length in bytes 等价于 pg_relation_size()
+tuple_count bigint  Number of live tuples 
+tuple_len   bigint  Total length of live tuples in bytes
+tuple_percent   float8  Percentage of live tuples
+dead_tuple_count    bigint  Number of dead tuples
+dead_tuple_len  bigint  Total length of dead tuples in bytes
+dead_tuple_percent  float8  Percentage of dead tuples
+free_space  bigint  Total free space in bytes
+free_percent    float8  Percentage of free space
+三部分 live(存活tuple) dead(被标记删除tuple) free(剩余空间 应该是dead tuple ,vacuum 后被释放的, filltor 设置)
+
+所用表
+select tablename, (x).* from pg_tables ,LATERAL (select * from pgstattuple(tablename)) as X where schemaname = 'public' order by tuple_percent asc;
+
+索引
+
+test=&gt; SELECT * FROM pgstatindex('index_name');
+-[ RECORD 1 ]------+------
+version            | 2
+tree_level         | 0
+index_size         | 16384
+root_block_no      | 1
+internal_pages     | 0
+leaf_pages         | 1
+empty_pages        | 0
+deleted_pages      | 0
+avg_leaf_density   | 54.27 (fillfator 默认90 ，该值接近90比较正常)
+leaf_fragmentation | 0
+
+字段说明
+version integer B-tree version number
+tree_level  integer Tree level of the root page
+index_size  bigint  Total index size in bytes
+root_block_no   bigint  Location of root page (zero if none)
+internal_pages  bigint  Number of “internal” (upper-level) pages
+leaf_pages  bigint  Number of leaf pages
+empty_pages bigint  Number of empty pages
+deleted_pages   bigint  Number of deleted pages
+avg_leaf_density    float8  Average density of leaf pages
+leaf_fragmentation  float8  Leaf page fragmentation
+
+</code></pre>
+<h4 id="_4">简单使用</h4>
+<pre><code>--- 生成测试数据
+
+test=# create  table tb3(id integer,name character varying);
+CREATE TABLE
+test=# \d+ tb3 
+                                  数据表 &quot;public.tb3&quot;
+ 栏位 |       类型        | Collation | Nullable | Default |   存储   | 统计目标 | 描述 
+------+-------------------+-----------+----------+---------+----------+----------+------
+ id   | integer           |           |          |         | plain    |          | 
+ name | character varying |           |          |         | extended |          | 
+
+test=#  alter table tb3 add primary key(id);
+ALTER TABLE
+test=# \d+ tb3 
+                                  数据表 &quot;public.tb3&quot;
+ 栏位 |       类型        | Collation | Nullable | Default |   存储   | 统计目标 | 描述 
+------+-------------------+-----------+----------+---------+----------+----------+------
+ id   | integer           |           | not null |         | plain    |          | 
+ name | character varying |           |          |         | extended |          | 
+索引：
+    &quot;tb3_pkey&quot; PRIMARY KEY, btree (id)
+
+test=# insert into tb3 select generate_series(1,1000000),md5(random()::text);
+INSERT 0 1000000
+
+--- 创建拓展
+
+test=# create extension pgstattuple ;
+CREATE EXTENSION
+test=# select * from pgstattuple('tb3');
+-[ RECORD 1 ]------+---------
+table_len          | 68272128
+tuple_count        | 1000000
+tuple_len          | 61000000
+tuple_percent      | 89.35
+dead_tuple_count   | 0
+dead_tuple_len     | 0
+dead_tuple_percent | 0
+free_space         | 38776
+free_percent       | 0.06
+
+test=# select * from pgstatindex('tb3_pkey');
+-[ RECORD 1 ]------+---------
+version            | 2
+tree_level         | 2
+index_size         | 22487040
+root_block_no      | 412
+internal_pages     | 11
+leaf_pages         | 2733
+empty_pages        | 0
+deleted_pages      | 0
+avg_leaf_density   | 90.06
+leaf_fragmentation | 0
+
+test=# delete from tb3 where id%5=0;
+DELETE 200000
+test=# select * from pgstatindex('tb3_pkey');
+-[ RECORD 1 ]------+---------
+version            | 2
+tree_level         | 2
+index_size         | 22487040
+root_block_no      | 412
+internal_pages     | 11
+leaf_pages         | 2733
+empty_pages        | 0
+deleted_pages      | 0
+avg_leaf_density   | 90.06
+leaf_fragmentation | 0
+
+test=# select * from pgstattuple('tb3');
+-[ RECORD 1 ]------+---------
+table_len          | 68272128
+tuple_count        | 800000
+tuple_len          | 48800000
+tuple_percent      | 71.48
+dead_tuple_count   | 200000
+dead_tuple_len     | 12200000
+dead_tuple_percent | 17.87
+free_space         | 38776
+free_percent       | 0.06
+
+test=#  vacuum tb3;
+VACUUM
+test=# select * from pgstattuple('tb3');
+-[ RECORD 1 ]------+---------
+table_len          | 68272128
+tuple_count        | 800000
+tuple_len          | 48800000
+tuple_percent      | 71.48
+dead_tuple_count   | 0
+dead_tuple_len     | 0
+dead_tuple_percent | 0
+free_space         | 12838776
+free_percent       | 18.81
+
+test=# select * from pgstatindex('tb3_pkey');
+-[ RECORD 1 ]------+---------
+version            | 2
+tree_level         | 2
+index_size         | 22487040
+root_block_no      | 412
+internal_pages     | 11
+leaf_pages         | 2733
+empty_pages        | 0
+deleted_pages      | 0
+avg_leaf_density   | 72.11
+leaf_fragmentation | 0
+
+test=# select * from pgstattuple('tb3');
+-[ RECORD 1 ]------+---------
+table_len          | 68272128
+tuple_count        | 800000
+tuple_len          | 48800000
+tuple_percent      | 71.48
+dead_tuple_count   | 0
+dead_tuple_len     | 0
+dead_tuple_percent | 0
+free_space         | 12838776
+free_percent       | 18.81
+
+test=# vacuum full tb3;
+VACUUM
+test=# select * from pgstattuple('tb3');
+-[ RECORD 1 ]------+---------
+table_len          | 54616064
+tuple_count        | 800000
+tuple_len          | 48800000
+tuple_percent      | 89.35
+dead_tuple_count   | 0
+dead_tuple_len     | 0
+dead_tuple_percent | 0
+free_space         | 29388
+free_percent       | 0.05
+
+
+</code></pre>
+<h5 id="_5">查看每一页的空间利用</h5>
+<p>创建拓展</p>
+<pre><code>create extension pg_freespacemap;
+
+</code></pre>
+<p>查看没个页的空间利用 </p>
+<pre><code>select * from pg_freespace('tablename');
+</code></pre>
+<p>查看表的空间利用</p>
+<pre><code>select count(*) as &quot;number of pages&quot;, pg_size_pretty(cast(avg(avail) as bigint)) as &quot;freespace size &quot;, round(100* avg(avail)/8192,2) as &quot;freespace ratio&quot; 
+from pg_freespace('tablename');
+</code></pre>
+<p><a href="https://mp.weixin.qq.com/s/g6j3WsBTGQipgEfrkzObRw">实战</a></p>
+<h5 id="_6">表空间数据膨胀的监控与处理</h5>
+<p>在实际的生产环境中，由于数据量非常大，传统方式统计表空间的膨胀率非常耗时耗资源。</p>
+<p>结合统计情况，利用pg_repack可不停服处理。处理前查看是否有vacuum进程正在执行，避免冲突。</p>
+<pre><code>-- CREATE SCHEMA 
+
+CREATE SCHEMA IF NOT EXISTS monitor;
+CREATE EXTENSION IF NOT EXISTS pg_repack WITH SCHEMA monitor;
+
+-- Table bloat estimate
+CREATE OR REPLACE VIEW monitor.pg_table_bloat AS
+    SELECT CURRENT_CATALOG AS datname, nspname, relname , bs * tblpages AS size,
+           CASE WHEN tblpages - est_tblpages_ff &gt; 0 THEN (tblpages - est_tblpages_ff)/tblpages::FLOAT ELSE 0 END AS ratio
+    FROM (
+             SELECT ceil( reltuples / ( (bs-page_hdr)*fillfactor/(tpl_size*100) ) ) + ceil( toasttuples / 4 ) AS est_tblpages_ff,
+                    tblpages, fillfactor, bs, tblid, nspname, relname, is_na
+             FROM (
+                      SELECT
+                          ( 4 + tpl_hdr_size + tpl_data_size + (2 * ma)
+                              - CASE WHEN tpl_hdr_size % ma = 0 THEN ma ELSE tpl_hdr_size % ma END
+                              - CASE WHEN ceil(tpl_data_size)::INT % ma = 0 THEN ma ELSE ceil(tpl_data_size)::INT % ma END
+                              ) AS tpl_size, (heappages + toastpages) AS tblpages, heappages,
+                          toastpages, reltuples, toasttuples, bs, page_hdr, tblid, nspname, relname, fillfactor, is_na
+                      FROM (
+                               SELECT
+                                   tbl.oid AS tblid, ns.nspname , tbl.relname, tbl.reltuples,
+                                   tbl.relpages AS heappages, coalesce(toast.relpages, 0) AS toastpages,
+                                   coalesce(toast.reltuples, 0) AS toasttuples,
+                                   coalesce(substring(array_to_string(tbl.reloptions, ' ') FROM 'fillfactor=([0-9]+)')::smallint, 100) AS fillfactor,
+                                   current_setting('block_size')::numeric AS bs,
+                                   CASE WHEN version()~'mingw32' OR version()~'64-bit|x86_64|ppc64|ia64|amd64' THEN 8 ELSE 4 END AS ma,
+                                   24 AS page_hdr,
+                                   23 + CASE WHEN MAX(coalesce(s.null_frac,0)) &gt; 0 THEN ( 7 + count(s.attname) ) / 8 ELSE 0::int END
+                                       + CASE WHEN bool_or(att.attname = 'oid' and att.attnum &lt; 0) THEN 4 ELSE 0 END AS tpl_hdr_size,
+                                   sum( (1-coalesce(s.null_frac, 0)) * coalesce(s.avg_width, 0) ) AS tpl_data_size,
+                                   bool_or(att.atttypid = 'pg_catalog.name'::regtype)
+                                       OR sum(CASE WHEN att.attnum &gt; 0 THEN 1 ELSE 0 END) &lt;&gt; count(s.attname) AS is_na
+                               FROM pg_attribute AS att
+                                        JOIN pg_class AS tbl ON att.attrelid = tbl.oid
+                                        JOIN pg_namespace AS ns ON ns.oid = tbl.relnamespace
+                                        LEFT JOIN pg_stats AS s ON s.schemaname=ns.nspname AND s.tablename = tbl.relname AND s.inherited=false AND s.attname=att.attname
+                                        LEFT JOIN pg_class AS toast ON tbl.reltoastrelid = toast.oid
+                               WHERE NOT att.attisdropped AND tbl.relkind = 'r' AND nspname NOT IN ('pg_catalog','information_schema')
+                               GROUP BY 1,2,3,4,5,6,7,8,9,10
+                           ) AS s
+                  ) AS s2
+         ) AS s3
+    WHERE NOT is_na;
+
+-- Index bloat estimate
+CREATE OR REPLACE VIEW monitor.pg_index_bloat AS
+    SELECT CURRENT_CATALOG AS datname, nspname, idxname AS relname, relpages::BIGINT * bs AS size,
+           COALESCE((relpages - ( reltuples * (6 + ma - (CASE WHEN index_tuple_hdr % ma = 0 THEN ma ELSE index_tuple_hdr % ma END)
+                                                   + nulldatawidth + ma - (CASE WHEN nulldatawidth % ma = 0 THEN ma ELSE nulldatawidth % ma END))
+                                      / (bs - pagehdr)::FLOAT  + 1 )), 0) / relpages::FLOAT AS ratio
+    FROM (
+             SELECT nspname,
+                    idxname,
+                    reltuples,
+                    relpages,
+                    current_setting('block_size')::INTEGER                                                               AS bs,
+                    (CASE WHEN version() ~ 'mingw32' OR version() ~ '64-bit|x86_64|ppc64|ia64|amd64' THEN 8 ELSE 4 END)  AS ma,
+                    24                                                                                                   AS pagehdr,
+                    (CASE WHEN max(COALESCE(pg_stats.null_frac, 0)) = 0 THEN 2 ELSE 6 END)                               AS index_tuple_hdr,
+                    sum((1.0 - COALESCE(pg_stats.null_frac, 0.0)) *
+                        COALESCE(pg_stats.avg_width, 1024))::INTEGER                                                     AS nulldatawidth
+             FROM pg_attribute
+                      JOIN (
+                 SELECT pg_namespace.nspname,
+                        ic.relname                                                   AS idxname,
+                        ic.reltuples,
+                        ic.relpages,
+                        pg_index.indrelid,
+                        pg_index.indexrelid,
+                        tc.relname                                                   AS tablename,
+                        regexp_split_to_table(pg_index.indkey::TEXT, ' ') :: INTEGER AS attnum,
+                        pg_index.indexrelid                                          AS index_oid
+                 FROM pg_index
+                          JOIN pg_class ic ON pg_index.indexrelid = ic.oid
+                          JOIN pg_class tc ON pg_index.indrelid = tc.oid
+                          JOIN pg_namespace ON pg_namespace.oid = ic.relnamespace
+                          JOIN pg_am ON ic.relam = pg_am.oid
+                 WHERE pg_am.amname = 'btree' AND ic.relpages &gt; 0 AND nspname NOT IN ('pg_catalog', 'information_schema')
+             ) ind_atts ON pg_attribute.attrelid = ind_atts.indexrelid AND pg_attribute.attnum = ind_atts.attnum
+                      JOIN pg_stats ON pg_stats.schemaname = ind_atts.nspname
+                 AND ((pg_stats.tablename = ind_atts.tablename AND pg_stats.attname = pg_get_indexdef(pg_attribute.attrelid, pg_attribute.attnum, TRUE))
+                     OR (pg_stats.tablename = ind_atts.idxname AND pg_stats.attname = pg_attribute.attname))
+             WHERE pg_attribute.attnum &gt; 0
+             GROUP BY 1, 2, 3, 4, 5, 6
+         ) est
+    LIMIT 512;
+
+-- index bloat overview
+CREATE OR REPLACE VIEW monitor.pg_table_bloat_human AS
+    SELECT nspname || '.' || relname AS name,
+           pg_size_pretty(size)      AS size,
+           pg_size_pretty((size * ratio)::BIGINT) AS wasted,
+           round(100 * ratio::NUMERIC, 2)  as ratio
+    FROM monitor.pg_table_bloat ORDER BY wasted DESC NULLS LAST;
+
+CREATE OR REPLACE VIEW monitor.pg_index_bloat_human AS
+    SELECT nspname || '.' || relname              AS name,
+           pg_size_pretty(size)                   AS size,
+           pg_size_pretty((size * ratio)::BIGINT) AS wasted,
+           round(100 * ratio::NUMERIC, 2)         as ratio
+    FROM monitor.pg_index_bloat;
+</code></pre>
+<h5 id="_7">主要原因分析及监控措施</h5>
+<h6 id="_8">长事务</h6>
+<pre><code>-- 跨事务
+SELECT pid, datname, usename, state, backend_xmin
+FROM pg_stat_activity
+WHERE backend_xmin IS NOT NULL
+ORDER BY age(backend_xmin) DESC;
+</code></pre>
+<pre><code>-- 跨时间
+select * from pg_stat_activity 
+where state&lt;&gt;'idle' and pg_backend_pid()!=pid and (backend_xid is not null or backend_xmin is not null) and 
+extract(epoch from(now()-xact_start))&gt;6 
+order by xact_start;
+</code></pre>
+<h6 id="_9">废弃的复制槽</h6>
+<pre><code>SELECT slot_name, slot_type, database, xmin
+FROM pg_replication_slots
+ORDER BY age(xmin) DESC;
+</code></pre>
+<h6 id="_10">两阶段提交</h6>
+<pre><code>SELECT gid, prepared, owner, database, transaction AS xmin
+FROM pg_prepared_xacts
+ORDER BY age(transaction) DESC;
+</code></pre>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12Z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2024  |   Eamon
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["announce.dismiss", "content.code.annotate", "content.code.copy", "content.code.select", "content.tooltips", "navigation.footer", "navigation.indexes", "navigation.instant.prefetch", "navigation.instant.progress", "navigation.path", "navigation.sections", "navigation.tabs", "navigation.tabs.sticky", "navigation.top", "navigation.tracking", "search.highlight", "search.share", "search.suggest", "toc.follow"], "search": "../../assets/javascripts/workers/search.f886a092.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7c377c4.min.js"></script>
+      
+    
+  </body>
+</html>
