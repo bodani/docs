@@ -1,0 +1,111 @@
+site_name: Tea # 项目名称
+site_url: https://bodani.github.io/docs/ # 我在nginx中使用的是8000端口，如果你使用的是80端口，可以直接写成https://localhost/。
+site_author: Eamon # 作者
+site_description: >- # 项目描述
+  Welcome to Shaun's rabbit hole. This site serves as a personal knowledge base for me to record my thoughts and ideas. It is also a place for me to share my knowledge and experience with the world. I hope you find something useful here. 
+
+# 代码仓库信息
+# repo_name: docs # 仓库名称
+# repo_url: https://github.com/bodani/docs.git # 仓库地址
+
+# 版权信息
+copyright: Copyright &copy; 2024  |   Eamon
+
+theme:
+  name: "material"
+  powered_by: false
+  palette:
+    - media: "(prefers-color-scheme)" # 主题颜色
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/link
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)" # 浅色
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)" # 深色
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off
+        name: Switch to system preference
+  font: # 字体，大概率不需要换
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - announce.dismiss # 可以叉掉公告的功能
+    # - content.action.edit # 编辑按钮，似乎没啥用
+    # - content.action.view # 查看按钮，似乎没啥用
+    - content.code.annotate # 代码注释，具体不清楚
+    - content.code.copy # 复制代码按钮
+    - content.code.select # 选择代码按钮
+    # - content.tabs.link # 链接标签
+    - content.tooltips # 不太清楚呢这个
+    # - header.autohide # 自动隐藏header
+    # - navigation.expand # 默认展开导航栏
+    - navigation.footer  # 底部导航栏
+    - navigation.indexes # 索引按钮可以直接触发文件，而不是只能点击其下属选项浏览，这个功能可以给对应的section提供很好的预览和导航功能
+    # - navigation.instant # 瞬间加载 最好注释掉，多语言切换这个会导致跳回首页
+    - navigation.instant.prefetch # 预加载
+    - navigation.instant.progress # 进度条
+    - navigation.path # 导航路径， 目前好像没啥用
+    # - navigation.prune # 只构建可见的页面
+    - navigation.sections # 导航栏的section
+    - navigation.tabs # 顶级索引被作为tab
+    - navigation.tabs.sticky # tab始终可见
+    - navigation.top # 开启顶部导航栏
+    - navigation.tracking # 导航栏跟踪
+    - search.highlight # 搜索高亮
+    - search.share # 搜索分享
+    - search.suggest # 搜索建议
+    - toc.follow # 目录跟踪-页面右侧的小目录
+
+  languages: # 多语言配置 - 需要小心一点
+    - locale: en
+      default: true # 默认语言
+      name: English
+      build: true # 是否构建
+  # site_name: Infinity
+    - locale: zh
+      name: 简体中文
+      build: true
+
+nav: 
+
+- MYSQL: 
+    # - "mysql.md"
+  - 安装: "./mysql/install.md"
+  - 配置: "./mysql/config.md"
+  - 权限管理: "./mysql/PrivilegeManagement.md"
+  - 组复制1: "./mysql/MGR.md"
+  - 组复制2: "./mysql/myshellMGR.md"
+
+- POSTGRES: 
+  - 安装维护:
+    - 安装: "./postgres/install01.md"
+    - 配置: "./postgres/config.md"
+    - 流复制: "./postgres/replication01.md"
+  
+  - 高可用:
+    - 设计分析: "./postgres/ha_fd.md"
+
+  - 索引:
+    - 索引类型及使用场景: "postgres/index01.md"
+    - 索引失效: "postgres/index-invalid.md"
+
+- YugabyteDB:
+  - 安装: ./yugabytedb/install.md
+  - 部署: ./yugabytedb/deploy.md
+
+- 数据库思考:
+  - 结构设计: "./postgres/thinking_in_db_fd.md"
+  - 性能优化 : "./postgres/thinking_in_db_performance.md"
+  - 模块调优: "./postgres/thinking_in_db_tune.md"
+
