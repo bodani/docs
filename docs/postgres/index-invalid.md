@@ -1,10 +1,3 @@
----
-title: "引起索引失效"
-date: 2018-12-20T16:34:22+08:00
-categories: ["postgres"]
-toc : true
-draft: false
----
 ## 简介
 
 索引的作用，加速检索，排序，分组。

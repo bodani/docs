@@ -64,3 +64,8 @@ alerts_message='[
 
 
 curl -XPOST -d"$alerts_message" http://127.0.0.1:9093/api/v1/alerts
+
+
+
+
+curl -H "Authorization: Bearer B235f8A2565346e4A7fC253D810983b0TCWCUDaxirfvuMLHdwlzQLqeIYbgZvpzsrQsgFSITYDQrzegKYIIdKnNdrNQFeFdCmIdXgwWbqLtlDVUdroeslcBfUvIvgJG" "drycc-controller-api.drycc.svc.cluster.local/v2/apps/ehp/metrics"

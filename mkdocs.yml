@@ -84,8 +84,8 @@ nav:
   - 安装: "./mysql/install.md"
   - 配置: "./mysql/config.md"
   - 权限管理: "./mysql/PrivilegeManagement.md"
-  - 组复制1: "./mysql/MGR.md"
-  - 组复制2: "./mysql/myshellMGR.md"
+  - 组复制: "./mysql/MGR.md"
+  - 组复制-mysqlsh: "./mysql/myshellMGR.md"
 
 - POSTGRES: 
   - 安装维护:
@@ -96,9 +96,12 @@ nav:
   - 高可用:
     - 设计分析: "./postgres/ha_fd.md"
 
-  - 索引:
+  - 索引篇:
     - 索引类型及使用场景: "postgres/index01.md"
     - 索引失效: "postgres/index-invalid.md"
+    - 假设索引: "postgres/hypopg-index.md"
+  - 备份管理篇
+  - 分区表
 
 - YugabyteDB:
   - 安装: ./yugabytedb/install.md

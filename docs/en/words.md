@@ -55,3 +55,26 @@
 > 在一个决定论的宇宙中，每一个事件都是由之前的事件所引起的。
 
 seamlessly
+
+collaborate
+
+centralized
+
+deterministic
+
+compatibility
+
+
+explicit
+
+rapid
+
+vice versa
+
+potentially
+
+prevented
+
+hypothetical
+
+drawbacks

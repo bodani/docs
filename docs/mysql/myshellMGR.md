@@ -15,11 +15,12 @@ show grants for administrator@'%';
 创建集群，第一个节点
 mysqlsh -uadministrator -ppassword -h 10.10.2.11 
 
+shell.options['dba.restartWaitTimeout']=300;
 var cluster=dba.createCluster('YOURMGR',{disableClone:false});
-加入节点
-dba.getCluster().addInstance('cluster_admin:cluster_password@10.10.2.12:3306',{recoveryMethod:'clone'})
- 
-dba.getCluster().addInstance('cluster_admin:cluster_password@10.10.2.12:3306',{recoveryMethod:'clone'})
+加入节点 1 
+dba.getCluster().addInstance('administrator:cluster_password@10.10.2.12:3306',{recoveryMethod:'clone'})
+加入节点 2
+dba.getCluster().addInstance('administrator:cluster_password@10.10.2.12:3306',{recoveryMethod:'clone'})
 ```
 
 查看状态
@@ -38,8 +39,9 @@ mysqlrouter --bootstrap mysql_user@host:port  -d /etc/mysql/conf/router --name m
 cd /etc/mysql/conf/router && sh start.sh
 ```
 
+```
 https://github.com/rluisr/mysqlrouter_exporter
-
+```
 注意事项apparmor aa-teardown
 
 ```
@@ -95,5 +97,67 @@ API
 https://dev.mysql.com/doc/dev/mysqlsh-api-python/8.0/
 ```
 
+
+## 脑裂场景
+
+当集群中有部分节点出现UNREACHABLE状态，此时集群无法做出决策，，会出现以下局面，此时只剩下一个活跃节点，此节点只能提供查询，无法写入，执行写入操作会hang住。
+```
+js> cluster.status()
+{
+    "clusterName": "mycluster",
+    "defaultReplicaSet": {
+        "name": "default",
+        "primary": "192.168.33.21:3306",
+        "status": "NO_QUORUM",
+        "statusText": "Cluster has no quorum as visible from '192.168.33.21:3306' and cannot process write transactions. 2 members are not active",
+        "topology": {
+            "192.168.33.21:3306": {
+                "address": "192.168.33.21:3306",
+                "mode": "R/W",
+                "readReplicas": {},
+                "role": "HA",
+                "status": "ONLINE"
+            },
+            "192.168.33.22:3306": {
+                "address": "192.168.33.22:3306",
+                "mode": "R/O",
+                "readReplicas": {},
+                "role": "HA",
+                "status": "UNREACHABLE"
+            },
+            "192.168.33.23:3306": {
+                "address": "192.168.33.23:3306",
+                "mode": "R/O",
+                "readReplicas": {},
+                "role": "HA",
+                "status": "(MISSING)"
+            }
+        }
+    }
+}
+```
+修复这种状态，需要执行forceQuorumUsingPartitionOf指定当前活跃节点(如果是多个则选择primary node)，此时活跃节点可以提供读写操作，然后将其他节点加入此集群。
+
+```
+js> cluster.forceQuorumUsingPartitionOf('root@192.168.33.21:3306')
+```
+
+节点有哪状态
+
+- ONLINE - 节点状态正常。
+- OFFLINE - 实例在运行，但没有加入任何Cluster。
+- RECOVERING - 实例已加入Cluster，正在同步数据。
+- ERROR - 同步数据发生异常。
+- UNREACHABLE - 与其他节点通讯中断，可能是网络问题，可能是节点crash。
+- MISSING 节点已加入集群，但未启动group replication
+
+集群有哪些状态
+
+- OK – 所有节点处于online状态，有冗余节点。
+- OK_PARTIAL – 有节点不可用，但仍有冗余节点。
+- OK_NO_TOLERANCE – 有足够的online节点，但没有冗余，例如：两个节点的Cluster，其中一个挂了，集群就不可用了。
+- NO_QUORUM – 有节点处于online状态，但达不到法定节点数，此状态下Cluster无法写入，只能读取。
+- UNKNOWN – 不是online或recovering状态，尝试连接其他实例查看状态。
+- UNAVAILABLE – 组内节点全是offline状态，但实例在运行，可能实例刚重启还没加入Cluster。
 
 
