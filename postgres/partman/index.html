@@ -12,7 +12,7 @@
         <meta name="author" content="Eamon">
       
       
-        <link rel="canonical" href="https://bodani.github.io/docs/postgres/pg_lock/">
+        <link rel="canonical" href="https://bodani.github.io/docs/postgres/partman/">
       
       
       
@@ -22,7 +22,7 @@
     
     
       
-        <title>锁机制 - Tea</title>
+        <title>Partman - Tea</title>
       
     
     
@@ -110,7 +110,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              锁机制
+              Partman
             
           </span>
         </div>
@@ -1155,7 +1155,7 @@
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
     <span class="md-ellipsis">
-      事务的隔离级别
+      分区表
     </span>
   </a>
   
@@ -1176,64 +1176,15 @@
                   
 
 
-  <h1>锁机制</h1>
+  <h1>Partman</h1>
 
-<p>https://blog.csdn.net/pg_hgdb/article/details/79403651</p>
-<p>https://habr.com/en/company/postgrespro/blog/500714/</p>
-<p>表锁 https://www.modb.pro/db/26462</p>
-<pre><code>查看被堵塞的任务
-select * from pg_locks where not granted;
- locktype | database | relation | page | tuple | virtualxid | transactionid | classid | objid | objsubid | virtualtransaction | pid | mode | granted | fastpath 
-----------+----------+----------+------+-------+------------+---------------+---------+-------+----------+--------------------+-----+------+---------+----------
-(0 行记录)
-
-查看等待锁信息，是被谁堵塞了
-select pg_blocking_pids(pid);
- pg_blocking_pids 
-------------------
- {}
-
-终止进程
-
-select pg_cancel_backend(pid);  # select 
-
-select pg_terminate_backend(pid); # update insert delete 
-</code></pre>
-<h5 id="_1">事务的隔离级别</h5>
-<p>Postgres 数据库共有三种数据隔离级别。</p>
-<ul>
-<li>Read Commit 读看提交  默认级别 在读开始的时候建立数据快照</li>
-<li>Repeat Read 可重复读。在事务开始的时候建立数据快照</li>
-<li>SSI Serializable 序列化 理解为只有一个用户使用的情况</li>
-</ul>
-<p>使用举例</p>
-<pre><code>postgres=# \h lock
-Command:     LOCK
-Description: lock a table
-Syntax:
-LOCK [ TABLE ] [ ONLY ] name [ * ] [, ...] [ IN lockmode MODE ] [ NOWAIT ]
-
-where lockmode is one of:
-
-    ACCESS SHARE | ROW SHARE | ROW EXCLUSIVE | SHARE UPDATE EXCLUSIVE
-    | SHARE | SHARE ROW EXCLUSIVE | EXCLUSIVE | ACCESS EXCLUSIVE
-</code></pre>
-<p>锁定一张表</p>
-<pre><code>postgres=# begin ;
-BEGIN
-postgres=# lock TABLE wt IN access exclusive mode ;
-LOCK TABLE
-
-</code></pre>
+<h2 id="_1">分区表</h2>
 
 
 
 
 
 
-
-  
-  
 
 
 
