@@ -1,3 +1,5 @@
+# mysql-shell 管理组复制
+
 ## 安装
 ```
 sudo apt-get install mysql-shell
@@ -161,3 +163,155 @@ js> cluster.forceQuorumUsingPartitionOf('root@192.168.33.21:3306')
 - UNAVAILABLE – 组内节点全是offline状态，但实例在运行，可能实例刚重启还没加入Cluster。
 
 
+组复制信息持久化 存储位置 `mysqld-auto.cnf` 
+<details>
+  <summary>查看代码</summary>
+``` json
+mysql_static_variables": {
+        "group_replication_ssl_mode": {
+            "Value": "REQUIRED",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162400774
+            }
+        },
+        "group_replication_group_name": {
+            "Value": "f5af33a9-68cb-11ef-8fbc-2a9c829ebee5",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162386269
+            }
+        },
+        "group_replication_group_seeds": {
+            "Value": "helmbroker-my01-1:3306,helmbroker-my01-2:3306",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712217411206
+            }
+        },
+        "group_replication_ip_allowlist": {
+            "Value": "AUTOMATIC",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162406505
+            }
+        },
+        "group_replication_local_address": {
+            "Value": "helmbroker-my01-0:3306",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162402566
+            }
+        },
+        "group_replication_member_weight": {
+            "Value": "50",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162410144
+            }
+        },
+        "group_replication_start_on_boot": {
+            "Value": "ON",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162417423
+            }
+        },
+        "group_replication_autorejoin_tries": {
+            "Value": "3",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162415523
+            }
+        },
+        "group_replication_recovery_use_ssl": {
+            "Value": "ON",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162396737
+            }
+        },
+        "group_replication_view_change_uuid": {
+            "Value": "f5af3c16-68cb-11ef-8fbc-2a9c829ebee5",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162389707
+            }
+        },
+        "group_replication_exit_state_action": {
+            "Value": "READ_ONLY",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162408402
+            }
+        },
+        "group_replication_communication_stack": {
+            "Value": "MYSQL",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162419318
+            }
+        },
+        "group_replication_paxos_single_leader": {
+            "Value": "OFF",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162422954
+            }
+        },
+        "group_replication_single_primary_mode": {
+            "Value": "ON",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162394640
+            }
+        },
+        "group_replication_member_expel_timeout": {
+            "Value": "5",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162413567
+            }
+        },
+        "group_replication_transaction_size_limit": {
+            "Value": "150000000",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162421121
+            }
+        },
+        "group_replication_recovery_ssl_verify_server_cert": {
+            "Value": "OFF",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162398833
+            }
+        },
+        "group_replication_enforce_update_everywhere_checks": {
+            "Value": "OFF",
+            "Metadata": {
+                "Host": "",
+                "User": "root",
+                "Timestamp": 1726712162392318
+            }
+        }
+    }
+```
+</details>

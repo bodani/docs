@@ -1,11 +1,4 @@
----
-title: "数据库备份和恢复"
-date: 2018-10-30T10:18:57+08:00
-categories: ["postgres"]
-toc : true
-draft: false
----
-## 备份恢复命令
+#### 备份恢复命令
 
 ```
 备份：pg_dump -U postgres -v -F c -Z 4 -f ***.backup dbname  9压缩率最狠
@@ -18,6 +11,49 @@ draft: false
 
 只备份表结构 pg_dump -U postgres -s -t tablename dbname > 33.sql
 只备份数据 pg_dump -U postgres -a -t tablename dbname > 33.sql
+```
+
+```
+全库备份: pg_dumpall
+
+只备份用户(角色)信息: pg_dumpall -g > roles.sql
+```
+
+#### 备份压缩并存储到minio
+```
+  #!/bin/bash
+
+  # PostgreSQL 设置
+  # POSTGRES_USER="postgres"
+  # POSTGRES_HOST="127.0.0.1"
+
+  # MinIO 设置
+  # MINIO_BUCKET="pgbackup"
+  # MINIO_HOST="http://localhost:9000"
+  # MINIO_ACCESS_KEY="admin123"
+  # MINIO_SECRET_KEY="admin123"
+
+  # 设置 MinIO 客户端别名
+  mc alias set myminio $MINIO_HOST $MINIO_ACCESS_KEY $MINIO_SECRET_KEY
+
+  # 创建以当前日期和时间命名的备份目录
+  BACKUP_DIR="$(date +%Y%m%d%H%M)"
+  MINIO_PATH="myminio/$MINIO_BUCKET/$BACKUP_DIR"
+
+  # 备份全局对象
+  echo "Backing up global objects to $MINIO_PATH/roles_globals.sql.gz"
+  pg_dumpall -g -U "$POSTGRES_USER" -h "$POSTGRES_HOST" | pigz | mc pipe "$MINIO_PATH/roles_globals.sql.gz"
+
+  # 获取所有非模板数据库的列表
+  DATABASES=$(psql -U "$POSTGRES_USER" -h "$POSTGRES_HOST" -t -c "SELECT datname FROM pg_database WHERE datistemplate = false;")
+
+  # 为每个数据库执行备份
+  for DB in $DATABASES; do
+    echo "Backing up $DB to $MINIO_PATH/$DB.sql.gz"
+    pg_dump -U "$POSTGRES_USER" -h "$POSTGRES_HOST" "$DB" | pigz | mc pipe "$MINIO_PATH/$DB.sql.gz"
+  done
+
+  echo "Backup process completed!"
 ```
 
 ## copy 拷贝数据
@@ -84,63 +120,5 @@ END$$;
 ---
 
 
-## 删除数据 DELETE|UPDATE LIMIT
 
-对数据进行归档完毕后，对数据进行清理。
-
-postgres 暂不支持 delete limit 用法 。根据条件删除大量数据时。
-
-使用with模拟必须有PK或者非空UK
-
-```
-with t1 as (select id from t where create_time < '2020-01-01 00:00:00' limit 10) 
-                  delete from t where id in (select * from t1);
-```
-
-
-## 表之间依赖顺序
-
-```
-with recursive fk_tree as (
-  -- All tables not referencing anything else
-  select t.oid as reloid, 
-         t.relname as table_name, 
-         s.nspname as schema_name,
-         null::text as referenced_table_name,
-         null::text as referenced_schema_name,
-         1 as level
-  from pg_class t
-    join pg_namespace s on s.oid = t.relnamespace
-  where relkind = 'r'
-    and not exists (select *
-                    from pg_constraint
-                    where contype = 'f'
-                      and conrelid = t.oid)
-    and s.nspname = 'public' -- limit to one schema 
-
-  union all 
-
-  select ref.oid, 
-         ref.relname, 
-         rs.nspname,
-         p.table_name,
-         p.schema_name,
-         p.level + 1
-  from pg_class ref
-    join pg_namespace rs on rs.oid = ref.relnamespace
-    join pg_constraint c on c.contype = 'f' and c.conrelid = ref.oid
-    join fk_tree p on p.reloid = c.confrelid
-  where ref.oid != p.reloid  -- do not enter to tables referencing theirselves.
-), all_tables as (
-  -- this picks the highest level for each table
-  select schema_name, table_name,
-         level, 
-         row_number() over (partition by schema_name, table_name order by level desc) as last_table_row
-  from fk_tree
-)
-select schema_name, table_name, level
-from all_tables at
-where last_table_row = 1
-order by level;
-```
 

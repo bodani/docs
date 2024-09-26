@@ -84,8 +84,12 @@ nav:
   - 安装: "./mysql/install.md"
   - 配置: "./mysql/config.md"
   - 权限管理: "./mysql/PrivilegeManagement.md"
-  - 组复制: "./mysql/MGR.md"
-  - 组复制-mysqlsh: "./mysql/myshellMGR.md"
+  - 高可用:
+    - 组复制: "./mysql/MGR.md"
+    - mysqlsh: "./mysql/myshellMGR.md"
+
+  - 压测:
+    - mysqlslap: "./mysql/mysqlslap.md"
 
 - POSTGRES: 
   - 安装维护:
@@ -100,8 +104,14 @@ nav:
     - 索引类型及使用场景: "postgres/index01.md"
     - 索引失效: "postgres/index-invalid.md"
     - 假设索引: "postgres/hypopg-index.md"
-  - 备份管理篇
-  - 分区表
+  - 备份管理篇:
+    - 逻辑备份: "postgres/logical-backup.md"
+    - 物理备份: "postgres/physical-backup.md"
+  - 数据管理:
+    - 删除: "postgres/delete.md"
+
+- 中间件:
+  - etcd: middleware/etcd.md
 
 - YugabyteDB:
   - 安装: ./yugabytedb/install.md
