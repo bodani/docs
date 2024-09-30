@@ -1,37 +1,39 @@
----
-title: "表空间膨胀"
-date: 2019-05-22T17:26:45+08:00
-draft: false
----
 
-#### 背景介绍
+# 表空间膨胀
+
+
+## 表空间膨胀介绍
 
 由于mvcc机制，数据被删除后只是被标记为删除，实际空间没有被释放，这是表空间膨胀的根本原因。
 
-目前用于解决表空间膨胀方式有如下方式
+## 相关知识点
 
-1 删除dead tuple 
+####  垃圾回收 
 
-- vacuum  ,tuple被清理。数据库可以自动执行autovacuum
-- vacuum full ,tuple被清理并且空间连续紧凑。弊端，在执行过程中会锁表。应用不可用
-- 为了避免锁表的影响，提供的[pg_squeeze](https://github.com/cybertec-postgresql/pg_squeeze)拓展,使用逻辑复制。[pg_repack拓展](https://www.timbotetsu.com/blog/postgresql-bloatbusters/)，使用了触发器，影响业务的性能。
+- vacuum  : tuple被清理。数据库可以自动执行autovacuum
+- vacuum full : tuple被清理并且空间连续紧凑。弊端，在执行过程中会锁表。应用不可用
 
-2 fillfactor
+#### fillfactor 填充因子
 
-3 vacuum_defer_cleanup_age > 0, 是以事务为单位。配合pg_resetwal 可以做到flashback
-```
-代价1，主库膨胀，因为垃圾版本要延迟若干个事务后才能被回收。
+#### vacuum_defer_cleanup_age
+
+ 是以事务为单位。配合pg_resetwal 可以做到flashback
+
+代价1， 主库膨胀，因为垃圾版本要延迟若干个事务后才能被回收。
+
 代价2，重复扫描垃圾版本，重复耗费垃圾回收进程的CPU资源。（n_dead_tup会一直处于超过垃圾回收阈值的状态，从而autovacuum 不断唤醒worker进行回收动作）。
 当主库的 autovacuum_naptime=很小的值，同时autovacuum_vacuum_scale_factor=很小的值时，尤为明显。
+
 代价3，如果期间发生大量垃圾，垃圾版本可能会在事务到达并解禁后，爆炸性的被回收，产生大量的WAL日志，从而造成WAL的写IO尖刺。
-```
-4 reindex 从新建立索引，不要忽略表膨胀中索引的影响，通常来说索引所占的空间和维护成本要高于数据表，在pg version 12版本中预计reindex时不需要锁表。
 
-###### 处理完毕后需要重新生成统计信息
+#### reindex 
+从新建立索引，不要忽略表膨胀中索引的影响，通常来说索引所占的空间和维护成本要高于数据表。
 
-```
- ANALYZE;
-```
+#### ANALYZE
+
+处理完毕后需要重新生成统计信息
+
+#### maintenance_work_mem
 
 在执行以上操作时建议设置
 
@@ -39,9 +41,11 @@ draft: false
 set maintenance_work_mem = '10GB';
 ```
 
-#### 监控表空间膨胀
+## 监控表空间膨胀
 
-pgstattuple提供了pgstatetuple()和pgstatindex()两个统计表和索引的方法，较PostgreSQL系统表pg_class的表统计信息，pgstatetuple()还统计了表中的dead tuples。
+#### pgstattuple
+
+pgstattuple 提供了pgstatetuple()和pgstatindex()两个统计表和索引的方法，较PostgreSQL系统表pg_class的表统计信息，pgstatetuple()还统计了表中的dead tuples。
 
 https://www.postgresql.org/docs/current/pgstattuple.html
 
@@ -63,25 +67,37 @@ dead_tuple_len     | 3157
 dead_tuple_percent | 0.69
 free_space         | 8932
 free_percent       | 1.95
-
+```
 字段说明
 
 table_len	bigint	Physical relation length in bytes 等价于 pg_relation_size()
+
 tuple_count	bigint	Number of live tuples 
+
 tuple_len	bigint	Total length of live tuples in bytes
+
 tuple_percent	float8	Percentage of live tuples
+
 dead_tuple_count	bigint	Number of dead tuples
+
 dead_tuple_len	bigint	Total length of dead tuples in bytes
+
 dead_tuple_percent	float8	Percentage of dead tuples
+
 free_space	bigint	Total free space in bytes
+
 free_percent	float8	Percentage of free space
+
 三部分 live(存活tuple) dead(被标记删除tuple) free(剩余空间 应该是dead tuple ,vacuum 后被释放的, filltor 设置)
 
-所用表
-select tablename, (x).* from pg_tables ,LATERAL (select * from pgstattuple(tablename)) as X where schemaname = 'public' order by tuple_percent asc;
-
+所有表
+```
+select tablename, (x).* from pg_tables ,
+LATERAL (select * from pgstattuple(tablename)) as X 
+where schemaname = 'public' order by tuple_percent asc;
+```
 索引
-
+```
 test=> SELECT * FROM pgstatindex('index_name');
 -[ RECORD 1 ]------+------
 version            | 2
@@ -94,21 +110,30 @@ empty_pages        | 0
 deleted_pages      | 0
 avg_leaf_density   | 54.27 (fillfator 默认90 ，该值接近90比较正常)
 leaf_fragmentation | 0
-
+```
 字段说明
+
 version	integer	B-tree version number
+
 tree_level	integer	Tree level of the root page
+
 index_size	bigint	Total index size in bytes
+
 root_block_no	bigint	Location of root page (zero if none)
+
 internal_pages	bigint	Number of “internal” (upper-level) pages
+
 leaf_pages	bigint	Number of leaf pages
+
 empty_pages	bigint	Number of empty pages
+
 deleted_pages	bigint	Number of deleted pages
+
 avg_leaf_density	float8	Average density of leaf pages
+
 leaf_fragmentation	float8	Leaf page fragmentation
 
-```
-#### 简单使用
+###### 简单使用
 
 ```
 --- 生成测试数据
@@ -249,7 +274,9 @@ free_percent       | 0.05
 ``` 
 
 
-##### 查看每一页的空间利用
+#### pg_freespacemap
+
+查看每一页的空间利用
 
 创建拓展
 
@@ -258,7 +285,7 @@ create extension pg_freespacemap;
 
 ```
 
-查看没个页的空间利用 
+查看每个页的空间利用 
 
 ```
 select * from pg_freespace('tablename');
@@ -273,11 +300,11 @@ from pg_freespace('tablename');
 
 [实战](https://mp.weixin.qq.com/s/g6j3WsBTGQipgEfrkzObRw)
 
-##### 表空间数据膨胀的监控与处理
+#### 表空间数据膨胀监控
 
 在实际的生产环境中，由于数据量非常大，传统方式统计表空间的膨胀率非常耗时耗资源。
 
-结合统计情况，利用pg_repack可不停服处理。处理前查看是否有vacuum进程正在执行，避免冲突。
+结合统计情况，进行评估
 
 ```
 -- CREATE SCHEMA 
@@ -384,7 +411,7 @@ CREATE OR REPLACE VIEW monitor.pg_index_bloat_human AS
     FROM monitor.pg_index_bloat;
 ```
 
-##### 主要原因分析及监控措施
+#### 主要原因分析及监控措施
 
 ###### 长事务
 
@@ -415,4 +442,112 @@ ORDER BY age(xmin) DESC;
 SELECT gid, prepared, owner, database, transaction AS xmin
 FROM pg_prepared_xacts
 ORDER BY age(transaction) DESC;
+```
+
+
+## 空间整理
+
+为了避免锁表的影响
+
+- [pg_squeeze](https://github.com/cybertec-postgresql/pg_squeeze),使用逻辑复制。
+- [pg_repack](https://www.timbotetsu.com/blog/postgresql-bloatbusters/)，使用了触发器，影响业务的性能。
+- [pgcompacttable](https://github.com/dataegret/pgcompacttable)，利用数据库自身特性 MVCC
+
+#### 实战
+
+```
+create table pgtest(id int primary key, col1 text);
+insert into pgtest select n, md5(random()::text) || n from generate_series(1, 5000000) as n;
+delete from pgtest where id%2 = 1; 
+vacuum pgtest;
+select pg_size_pretty(pg_total_relation_size('pgtest'));
+ pg_size_pretty 
+----------------
+ 472 MB
+```
+
+###### pg_repack
+
+安装 
+```
+apt-get install postgresql-xx-repack
+```
+安装拓展
+```
+create extension pg_repack ; 
+```
+测试运行
+```
+pg_repack -h localhost -d postgres -U postgres -t pgtest -e -N
+```
+正式运行
+```
+pg_repack -h localhost -d postgres -U postgres -t pgtest -e 
+```
+查看结果
+```
+select pg_size_pretty(pg_total_relation_size('pgtest'));
+ pg_size_pretty 
+----------------
+ 236 MB
+
+```
+
+###### pgcompacttable
+
+安装
+```
+apt-get install libdbi-perl libdbd-pg-perl
+
+git clone https://github.com/dataegret/pgcompacttable.git
+```
+
+运行
+```
+bin/pgcompacttable ./pgcompacttable  -U postgres -d postgres -t pgtest -v 
+```
+
+###### pg_squeeze
+
+安装
+```
+apt-get install postgresql-xx-squeeze;
+```
+配置
+```
+wal_level = logical
+max_replication_slots = 1 # ... or add 1 to the current value.
+shared_preload_libraries = 'pg_squeeze' # ... or add the library to the existing ones.
+```
+创建拓展
+```
+ CREATE EXTENSION pg_squeeze;
+```
+
+手动执行
+```
+SELECT squeeze.squeeze_table('public', 'pgtest');
+```
+
+在每周三和周五的22:30，自动清理public schema下的表pgtest
+```
+INSERT INTO squeeze.tables (
+    tabschema,
+    tabname,
+    schedule,
+    free_space_extra,
+    vacuum_max_age,
+    max_retry
+)
+VALUES (
+    'public',
+    'pgtest',
+    ('{30}', '{22}', NULL, NULL, '{3, 5}'),
+    30,
+    '2 hours',
+    2
+);
+
+SELECT squeeze.start_worker();  -- 开启
+SELECT squeeze.stop_worker();   -- 关闭
 ```

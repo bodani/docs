@@ -7,3 +7,6 @@
  
  https://filebrowser.org/
 
+
+ pv -p -a -L1k 和 cat 类似。 但是可限速，应用场景。数据导入
+

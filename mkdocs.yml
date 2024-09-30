@@ -109,6 +109,7 @@ nav:
     - 物理备份: "postgres/physical-backup.md"
   - 数据管理:
     - 删除: "postgres/delete.md"
+    - 表空间: "postgres/pgstattuple.md"
 
 - 中间件:
   - etcd: middleware/etcd.md
