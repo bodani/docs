@@ -15,6 +15,10 @@
         <link rel="canonical" href="https://bodani.github.io/docs/postgres/pgstattuple/">
       
       
+        <link rel="prev" href="../delete/">
+      
+      
+        <link rel="next" href="../../middleware/etcd/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -22,7 +26,7 @@
     
     
       
-        <title>表空间膨胀 - Tea</title>
+        <title>表空间 - Tea</title>
       
     
     
@@ -110,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              表空间膨胀
+              表空间
             
           </span>
         </div>
@@ -234,16 +238,20 @@
         
   
   
+    
+  
   
     
     
       
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
+      <li class="md-tabs__item md-tabs__item--active">
         <a href="../install01/" class="md-tabs__link">
           
   
@@ -654,8 +662,10 @@
       
   
   
+    
   
   
+  
     
     
       
@@ -676,12 +686,12 @@
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
         
           
           <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
@@ -695,7 +705,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             POSTGRES
@@ -1113,10 +1123,14 @@
                 
   
   
+    
   
   
+  
     
     
+      
+        
       
         
       
@@ -1127,12 +1141,12 @@
       
       
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2_5" checked>
         
           
           <label class="md-nav__link" for="__nav_2_5" id="__nav_2_5_label" tabindex="">
@@ -1146,7 +1160,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_2_5_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2_5">
             <span class="md-nav__icon md-icon"></span>
             数据管理
@@ -1169,6 +1183,301 @@
   
 
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    表空间
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    表空间
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      表空间膨胀介绍
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      相关知识点
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="相关知识点">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      垃圾回收
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fillfactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      fillfactor 填充因子
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vacuum_defer_cleanup_age" class="md-nav__link">
+    <span class="md-ellipsis">
+      vacuum_defer_cleanup_age
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reindex" class="md-nav__link">
+    <span class="md-ellipsis">
+      reindex
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analyze" class="md-nav__link">
+    <span class="md-ellipsis">
+      ANALYZE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintenance_work_mem" class="md-nav__link">
+    <span class="md-ellipsis">
+      maintenance_work_mem
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    <span class="md-ellipsis">
+      监控表空间膨胀
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="监控表空间膨胀">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pgstattuple" class="md-nav__link">
+    <span class="md-ellipsis">
+      pgstattuple
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="pgstattuple">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    <span class="md-ellipsis">
+      简单使用
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pg_freespacemap" class="md-nav__link">
+    <span class="md-ellipsis">
+      pg_freespacemap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      表空间数据膨胀监控
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    <span class="md-ellipsis">
+      主要原因分析及监控措施
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="主要原因分析及监控措施">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    <span class="md-ellipsis">
+      长事务
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    <span class="md-ellipsis">
+      废弃的复制槽
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    <span class="md-ellipsis">
+      两阶段提交
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      空间整理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="空间整理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      实战
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pg_repack" class="md-nav__link">
+    <span class="md-ellipsis">
+      pg_repack
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pgcompacttable" class="md-nav__link">
+    <span class="md-ellipsis">
+      pgcompacttable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pg_squeeze" class="md-nav__link">
+    <span class="md-ellipsis">
+      pg_squeeze
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1491,6 +1800,8 @@
   
   
   
+    
+  
   
     <label class="md-nav__title" for="__toc">
       <span class="md-nav__icon md-icon"></span>
@@ -1499,19 +1810,73 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#_1" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     <span class="md-ellipsis">
-      背景介绍
+      表空间膨胀介绍
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="背景介绍">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      相关知识点
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="相关知识点">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
+  <a href="#_4" class="md-nav__link">
     <span class="md-ellipsis">
-      处理完毕后需要重新生成统计信息
+      垃圾回收
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fillfactor" class="md-nav__link">
+    <span class="md-ellipsis">
+      fillfactor 填充因子
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vacuum_defer_cleanup_age" class="md-nav__link">
+    <span class="md-ellipsis">
+      vacuum_defer_cleanup_age
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reindex" class="md-nav__link">
+    <span class="md-ellipsis">
+      reindex
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#analyze" class="md-nav__link">
+    <span class="md-ellipsis">
+      ANALYZE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#maintenance_work_mem" class="md-nav__link">
+    <span class="md-ellipsis">
+      maintenance_work_mem
     </span>
   </a>
   
@@ -1523,37 +1888,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_5" class="md-nav__link">
     <span class="md-ellipsis">
       监控表空间膨胀
     </span>
   </a>
   
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_4" class="md-nav__link">
+    <nav class="md-nav" aria-label="监控表空间膨胀">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pgstattuple" class="md-nav__link">
+    <span class="md-ellipsis">
+      pgstattuple
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="pgstattuple">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
     <span class="md-ellipsis">
       简单使用
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="简单使用">
-      <ul class="md-nav__list">
+</li>
         
-          <li class="md-nav__item">
-  <a href="#_5" class="md-nav__link">
-    <span class="md-ellipsis">
-      查看每一页的空间利用
-    </span>
-  </a>
+      </ul>
+    </nav>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#_6" class="md-nav__link">
+  <a href="#pg_freespacemap" class="md-nav__link">
     <span class="md-ellipsis">
-      表空间数据膨胀的监控与处理
+      pg_freespacemap
     </span>
   </a>
   
@@ -1561,6 +1932,15 @@
         
           <li class="md-nav__item">
   <a href="#_7" class="md-nav__link">
+    <span class="md-ellipsis">
+      表空间数据膨胀监控
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
     <span class="md-ellipsis">
       主要原因分析及监控措施
     </span>
@@ -1570,7 +1950,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#_8" class="md-nav__link">
+  <a href="#_9" class="md-nav__link">
     <span class="md-ellipsis">
       长事务
     </span>
@@ -1579,7 +1959,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_9" class="md-nav__link">
+  <a href="#_10" class="md-nav__link">
     <span class="md-ellipsis">
       废弃的复制槽
     </span>
@@ -1588,9 +1968,66 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#_10" class="md-nav__link">
+  <a href="#_11" class="md-nav__link">
     <span class="md-ellipsis">
       两阶段提交
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    <span class="md-ellipsis">
+      空间整理
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="空间整理">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    <span class="md-ellipsis">
+      实战
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="实战">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pg_repack" class="md-nav__link">
+    <span class="md-ellipsis">
+      pg_repack
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pgcompacttable" class="md-nav__link">
+    <span class="md-ellipsis">
+      pgcompacttable
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pg_squeeze" class="md-nav__link">
+    <span class="md-ellipsis">
+      pg_squeeze
     </span>
   </a>
   
@@ -1621,33 +2058,33 @@
                   
 
 
-  <h1>表空间膨胀</h1>
-
-<h4 id="_1">背景介绍</h4>
+<h1 id="_1">表空间膨胀</h1>
+<h2 id="_2">表空间膨胀介绍</h2>
 <p>由于mvcc机制，数据被删除后只是被标记为删除，实际空间没有被释放，这是表空间膨胀的根本原因。</p>
-<p>目前用于解决表空间膨胀方式有如下方式</p>
-<p>1 删除dead tuple </p>
+<h2 id="_3">相关知识点</h2>
+<h4 id="_4">垃圾回收</h4>
 <ul>
-<li>vacuum  ,tuple被清理。数据库可以自动执行autovacuum</li>
-<li>vacuum full ,tuple被清理并且空间连续紧凑。弊端，在执行过程中会锁表。应用不可用</li>
-<li>为了避免锁表的影响，提供的<a href="https://github.com/cybertec-postgresql/pg_squeeze">pg_squeeze</a>拓展,使用逻辑复制。<a href="https://www.timbotetsu.com/blog/postgresql-bloatbusters/">pg_repack拓展</a>，使用了触发器，影响业务的性能。</li>
+<li>vacuum  : tuple被清理。数据库可以自动执行autovacuum</li>
+<li>vacuum full : tuple被清理并且空间连续紧凑。弊端，在执行过程中会锁表。应用不可用</li>
 </ul>
-<p>2 fillfactor</p>
-<p>3 vacuum_defer_cleanup_age &gt; 0, 是以事务为单位。配合pg_resetwal 可以做到flashback</p>
-<pre><code>代价1，主库膨胀，因为垃圾版本要延迟若干个事务后才能被回收。
-代价2，重复扫描垃圾版本，重复耗费垃圾回收进程的CPU资源。（n_dead_tup会一直处于超过垃圾回收阈值的状态，从而autovacuum 不断唤醒worker进行回收动作）。
-当主库的 autovacuum_naptime=很小的值，同时autovacuum_vacuum_scale_factor=很小的值时，尤为明显。
-代价3，如果期间发生大量垃圾，垃圾版本可能会在事务到达并解禁后，爆炸性的被回收，产生大量的WAL日志，从而造成WAL的写IO尖刺。
-</code></pre>
-<p>4 reindex 从新建立索引，不要忽略表膨胀中索引的影响，通常来说索引所占的空间和维护成本要高于数据表，在pg version 12版本中预计reindex时不需要锁表。</p>
-<h6 id="_2">处理完毕后需要重新生成统计信息</h6>
-<pre><code> ANALYZE;
-</code></pre>
+<h4 id="fillfactor">fillfactor 填充因子</h4>
+<h4 id="vacuum_defer_cleanup_age">vacuum_defer_cleanup_age</h4>
+<p>是以事务为单位。配合pg_resetwal 可以做到flashback</p>
+<p>代价1， 主库膨胀，因为垃圾版本要延迟若干个事务后才能被回收。</p>
+<p>代价2，重复扫描垃圾版本，重复耗费垃圾回收进程的CPU资源。（n_dead_tup会一直处于超过垃圾回收阈值的状态，从而autovacuum 不断唤醒worker进行回收动作）。
+当主库的 autovacuum_naptime=很小的值，同时autovacuum_vacuum_scale_factor=很小的值时，尤为明显。</p>
+<p>代价3，如果期间发生大量垃圾，垃圾版本可能会在事务到达并解禁后，爆炸性的被回收，产生大量的WAL日志，从而造成WAL的写IO尖刺。</p>
+<h4 id="reindex">reindex</h4>
+<p>从新建立索引，不要忽略表膨胀中索引的影响，通常来说索引所占的空间和维护成本要高于数据表。</p>
+<h4 id="analyze">ANALYZE</h4>
+<p>处理完毕后需要重新生成统计信息</p>
+<h4 id="maintenance_work_mem">maintenance_work_mem</h4>
 <p>在执行以上操作时建议设置</p>
 <pre><code>set maintenance_work_mem = '10GB';
 </code></pre>
-<h4 id="_3">监控表空间膨胀</h4>
-<p>pgstattuple提供了pgstatetuple()和pgstatindex()两个统计表和索引的方法，较PostgreSQL系统表pg_class的表统计信息，pgstatetuple()还统计了表中的dead tuples。</p>
+<h2 id="_5">监控表空间膨胀</h2>
+<h4 id="pgstattuple">pgstattuple</h4>
+<p>pgstattuple 提供了pgstatetuple()和pgstatindex()两个统计表和索引的方法，较PostgreSQL系统表pg_class的表统计信息，pgstatetuple()还统计了表中的dead tuples。</p>
 <p>https://www.postgresql.org/docs/current/pgstattuple.html</p>
 <p>创建拓展</p>
 <pre><code>create extension pgstattuple ;
@@ -1664,26 +2101,25 @@ dead_tuple_len     | 3157
 dead_tuple_percent | 0.69
 free_space         | 8932
 free_percent       | 1.95
-
-字段说明
-
-table_len   bigint  Physical relation length in bytes 等价于 pg_relation_size()
-tuple_count bigint  Number of live tuples 
-tuple_len   bigint  Total length of live tuples in bytes
-tuple_percent   float8  Percentage of live tuples
-dead_tuple_count    bigint  Number of dead tuples
-dead_tuple_len  bigint  Total length of dead tuples in bytes
-dead_tuple_percent  float8  Percentage of dead tuples
-free_space  bigint  Total free space in bytes
-free_percent    float8  Percentage of free space
-三部分 live(存活tuple) dead(被标记删除tuple) free(剩余空间 应该是dead tuple ,vacuum 后被释放的, filltor 设置)
-
-所用表
-select tablename, (x).* from pg_tables ,LATERAL (select * from pgstattuple(tablename)) as X where schemaname = 'public' order by tuple_percent asc;
-
-索引
-
-test=&gt; SELECT * FROM pgstatindex('index_name');
+</code></pre>
+<p>字段说明</p>
+<p>table_len   bigint  Physical relation length in bytes 等价于 pg_relation_size()</p>
+<p>tuple_count bigint  Number of live tuples </p>
+<p>tuple_len   bigint  Total length of live tuples in bytes</p>
+<p>tuple_percent   float8  Percentage of live tuples</p>
+<p>dead_tuple_count    bigint  Number of dead tuples</p>
+<p>dead_tuple_len  bigint  Total length of dead tuples in bytes</p>
+<p>dead_tuple_percent  float8  Percentage of dead tuples</p>
+<p>free_space  bigint  Total free space in bytes</p>
+<p>free_percent    float8  Percentage of free space</p>
+<p>三部分 live(存活tuple) dead(被标记删除tuple) free(剩余空间 应该是dead tuple ,vacuum 后被释放的, filltor 设置)</p>
+<p>所有表</p>
+<pre><code>select tablename, (x).* from pg_tables ,
+LATERAL (select * from pgstattuple(tablename)) as X 
+where schemaname = 'public' order by tuple_percent asc;
+</code></pre>
+<p>索引</p>
+<pre><code>test=&gt; SELECT * FROM pgstatindex('index_name');
 -[ RECORD 1 ]------+------
 version            | 2
 tree_level         | 0
@@ -1695,21 +2131,19 @@ empty_pages        | 0
 deleted_pages      | 0
 avg_leaf_density   | 54.27 (fillfator 默认90 ，该值接近90比较正常)
 leaf_fragmentation | 0
-
-字段说明
-version integer B-tree version number
-tree_level  integer Tree level of the root page
-index_size  bigint  Total index size in bytes
-root_block_no   bigint  Location of root page (zero if none)
-internal_pages  bigint  Number of “internal” (upper-level) pages
-leaf_pages  bigint  Number of leaf pages
-empty_pages bigint  Number of empty pages
-deleted_pages   bigint  Number of deleted pages
-avg_leaf_density    float8  Average density of leaf pages
-leaf_fragmentation  float8  Leaf page fragmentation
-
 </code></pre>
-<h4 id="_4">简单使用</h4>
+<p>字段说明</p>
+<p>version integer B-tree version number</p>
+<p>tree_level  integer Tree level of the root page</p>
+<p>index_size  bigint  Total index size in bytes</p>
+<p>root_block_no   bigint  Location of root page (zero if none)</p>
+<p>internal_pages  bigint  Number of “internal” (upper-level) pages</p>
+<p>leaf_pages  bigint  Number of leaf pages</p>
+<p>empty_pages bigint  Number of empty pages</p>
+<p>deleted_pages   bigint  Number of deleted pages</p>
+<p>avg_leaf_density    float8  Average density of leaf pages</p>
+<p>leaf_fragmentation  float8  Leaf page fragmentation</p>
+<h6 id="_6">简单使用</h6>
 <pre><code>--- 生成测试数据
 
 test=# create  table tb3(id integer,name character varying);
@@ -1846,12 +2280,13 @@ free_percent       | 0.05
 
 
 </code></pre>
-<h5 id="_5">查看每一页的空间利用</h5>
+<h4 id="pg_freespacemap">pg_freespacemap</h4>
+<p>查看每一页的空间利用</p>
 <p>创建拓展</p>
 <pre><code>create extension pg_freespacemap;
 
 </code></pre>
-<p>查看没个页的空间利用 </p>
+<p>查看每个页的空间利用 </p>
 <pre><code>select * from pg_freespace('tablename');
 </code></pre>
 <p>查看表的空间利用</p>
@@ -1859,9 +2294,9 @@ free_percent       | 0.05
 from pg_freespace('tablename');
 </code></pre>
 <p><a href="https://mp.weixin.qq.com/s/g6j3WsBTGQipgEfrkzObRw">实战</a></p>
-<h5 id="_6">表空间数据膨胀的监控与处理</h5>
+<h4 id="_7">表空间数据膨胀监控</h4>
 <p>在实际的生产环境中，由于数据量非常大，传统方式统计表空间的膨胀率非常耗时耗资源。</p>
-<p>结合统计情况，利用pg_repack可不停服处理。处理前查看是否有vacuum进程正在执行，避免冲突。</p>
+<p>结合统计情况，进行评估</p>
 <pre><code>-- CREATE SCHEMA 
 
 CREATE SCHEMA IF NOT EXISTS monitor;
@@ -1965,8 +2400,8 @@ CREATE OR REPLACE VIEW monitor.pg_index_bloat_human AS
            round(100 * ratio::NUMERIC, 2)         as ratio
     FROM monitor.pg_index_bloat;
 </code></pre>
-<h5 id="_7">主要原因分析及监控措施</h5>
-<h6 id="_8">长事务</h6>
+<h4 id="_8">主要原因分析及监控措施</h4>
+<h6 id="_9">长事务</h6>
 <pre><code>-- 跨事务
 SELECT pid, datname, usename, state, backend_xmin
 FROM pg_stat_activity
@@ -1979,15 +2414,97 @@ where state&lt;&gt;'idle' and pg_backend_pid()!=pid and (backend_xid is not null
 extract(epoch from(now()-xact_start))&gt;6 
 order by xact_start;
 </code></pre>
-<h6 id="_9">废弃的复制槽</h6>
+<h6 id="_10">废弃的复制槽</h6>
 <pre><code>SELECT slot_name, slot_type, database, xmin
 FROM pg_replication_slots
 ORDER BY age(xmin) DESC;
 </code></pre>
-<h6 id="_10">两阶段提交</h6>
+<h6 id="_11">两阶段提交</h6>
 <pre><code>SELECT gid, prepared, owner, database, transaction AS xmin
 FROM pg_prepared_xacts
 ORDER BY age(transaction) DESC;
+</code></pre>
+<h2 id="_12">空间整理</h2>
+<p>为了避免锁表的影响</p>
+<ul>
+<li><a href="https://github.com/cybertec-postgresql/pg_squeeze">pg_squeeze</a>,使用逻辑复制。</li>
+<li><a href="https://www.timbotetsu.com/blog/postgresql-bloatbusters/">pg_repack</a>，使用了触发器，影响业务的性能。</li>
+<li><a href="https://github.com/dataegret/pgcompacttable">pgcompacttable</a>，利用数据库自身特性 MVCC</li>
+</ul>
+<h4 id="_13">实战</h4>
+<pre><code>create table pgtest(id int primary key, col1 text);
+insert into pgtest select n, md5(random()::text) || n from generate_series(1, 5000000) as n;
+delete from pgtest where id%2 = 1; 
+vacuum pgtest;
+select pg_size_pretty(pg_total_relation_size('pgtest'));
+ pg_size_pretty 
+----------------
+ 472 MB
+</code></pre>
+<h6 id="pg_repack">pg_repack</h6>
+<p>安装 </p>
+<pre><code>apt-get install postgresql-xx-repack
+</code></pre>
+<p>安装拓展</p>
+<pre><code>create extension pg_repack ; 
+</code></pre>
+<p>测试运行</p>
+<pre><code>pg_repack -h localhost -d postgres -U postgres -t pgtest -e -N
+</code></pre>
+<p>正式运行</p>
+<pre><code>pg_repack -h localhost -d postgres -U postgres -t pgtest -e 
+</code></pre>
+<p>查看结果</p>
+<pre><code>select pg_size_pretty(pg_total_relation_size('pgtest'));
+ pg_size_pretty 
+----------------
+ 236 MB
+
+</code></pre>
+<h6 id="pgcompacttable">pgcompacttable</h6>
+<p>安装</p>
+<pre><code>apt-get install libdbi-perl libdbd-pg-perl
+
+git clone https://github.com/dataegret/pgcompacttable.git
+</code></pre>
+<p>运行</p>
+<pre><code>bin/pgcompacttable ./pgcompacttable  -U postgres -d postgres -t pgtest -v 
+</code></pre>
+<h6 id="pg_squeeze">pg_squeeze</h6>
+<p>安装</p>
+<pre><code>apt-get install postgresql-xx-squeeze;
+</code></pre>
+<p>配置</p>
+<pre><code>wal_level = logical
+max_replication_slots = 1 # ... or add 1 to the current value.
+shared_preload_libraries = 'pg_squeeze' # ... or add the library to the existing ones.
+</code></pre>
+<p>创建拓展</p>
+<pre><code> CREATE EXTENSION pg_squeeze;
+</code></pre>
+<p>手动执行</p>
+<pre><code>SELECT squeeze.squeeze_table('public', 'pgtest');
+</code></pre>
+<p>在每周三和周五的22:30，自动清理public schema下的表pgtest</p>
+<pre><code>INSERT INTO squeeze.tables (
+    tabschema,
+    tabname,
+    schedule,
+    free_space_extra,
+    vacuum_max_age,
+    max_retry
+)
+VALUES (
+    'public',
+    'pgtest',
+    ('{30}', '{22}', NULL, NULL, '{3, 5}'),
+    30,
+    '2 hours',
+    2
+);
+
+SELECT squeeze.start_worker();  -- 开启
+SELECT squeeze.stop_worker();   -- 关闭
 </code></pre>
 
 
@@ -1995,9 +2512,6 @@ ORDER BY age(transaction) DESC;
 
 
 
-
-  
-  
 
 
 
@@ -2022,6 +2536,44 @@ ORDER BY age(transaction) DESC;
       
         <footer class="md-footer">
   
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../delete/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 删除">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                删除
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../../middleware/etcd/" class="md-footer__link md-footer__link--next" aria-label="Next: etcd">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                etcd
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
     
   
   <div class="md-footer-meta md-typeset">
