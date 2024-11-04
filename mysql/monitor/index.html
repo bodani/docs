@@ -218,7 +218,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../install.md" class="md-tabs__link">
+        <a href="../install/" class="md-tabs__link">
           
   
     
@@ -287,7 +287,7 @@
     
     
       <li class="md-tabs__item">
-        <a href="../../yugabytedb/install.md" class="md-tabs__link">
+        <a href="../../yugabytedb/install/" class="md-tabs__link">
           
   
     
@@ -418,7 +418,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../install.md" class="md-nav__link">
+      <a href="../install/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -581,6 +581,8 @@
       
         
       
+        
+      
     
     
     
@@ -626,6 +628,27 @@
   
   <span class="md-ellipsis">
     mysqlslap
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bodani.github.io/mysql45" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    mysql45
   </span>
   
 
@@ -1337,7 +1360,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../yugabytedb/install.md" class="md-nav__link">
+      <a href="../../yugabytedb/install/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -1517,6 +1540,23 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mysql_exporter" class="md-nav__link">
+    <span class="md-ellipsis">
+      mysql_exporter
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1531,8 +1571,55 @@
 
 
 <h1 id="_1">监控</h1>
-<p>mysql_exporter</p>
-<pre><code>
+<h2 id="mysql_exporter">mysql_exporter</h2>
+<ul>
+<li>global_status</li>
+</ul>
+<pre><code>SHOW GLOBAL STATUS;
+</code></pre>
+<ul>
+<li>global_variables</li>
+</ul>
+<pre><code>SHOW GLOBAL VARIABLES;
+</code></pre>
+<ul>
+<li>info_schema.processlist</li>
+</ul>
+<p><code>--collect.info_schema.processlist</code></p>
+<pre><code>SELECT
+    user,
+    SUBSTRING_INDEX(host, ':', 1) AS host,
+    COALESCE(command, '') AS command,
+    COALESCE(state, '') AS state,
+    COUNT(*) AS processes,
+    SUM(time) AS seconds
+FROM information_schema.processlist
+    WHERE ID != connection_id()
+    AND TIME &gt;= 0
+GROUP BY user, host, command, state;
+</code></pre>
+<ul>
+<li>perf_schema.replication_group_members</li>
+</ul>
+<p><code>--collect.perf_schema.replication_group_members</code></p>
+<pre><code>SELECT * FROM performance_schema.replication_group_members;
+</code></pre>
+<ul>
+<li>perf_schema.replication_group_member_stats</li>
+</ul>
+<p><code>--collect.perf_schema.replication_group_member_stats</code></p>
+<pre><code>SELECT * FROM performance_schema.replication_group_member_stats\G;
+</code></pre>
+<p>view_id:组成员所在组的视图唯一标识符</p>
+<p>member_id:组成员的server uuid,mysql实例启动后生成的唯一标识</p>
+<p>COUNT_TRANSACTIONS_IN_QUEUE ：等待冲突验证的队列数量，实际上是进行pipeline处理的队列数量（内部表示m_transactions_waiting_certification），单位为事务数量。</p>
+<p>COUNT_TRANSACTIONS_REMOTE_IN_APPLIER_QUEUE：等待应用的队列数量（内部表示m_transactions_waiting_apply），单位为事务数量。</p>
+<pre><code>- informationSchema.processlist
+- performanceSchema.replication_group_members
+- performanceSchema.replication_group_member_stats
+- performanceSchema.replication_applier_status_by_worker
+- auto_increment.columns
+- binlog_size
 </code></pre>
 
 
