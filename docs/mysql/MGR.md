@@ -158,3 +158,7 @@ start group_replication
 /var/lib/mysql# mkdir relaylog
 chown mysql:mysql relaylog/
 ```
+
+group_replication_message_cache_size
+
+group_replication_member_expel_timeout

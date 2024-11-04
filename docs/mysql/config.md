@@ -91,3 +91,28 @@ binlog_expire_logs_auto_purge = ON
 binlog_expire_logs_seconds = 2592000 
 expire_logs_days
 ```
+
+## 需要修改的参数
+
+```
+# 并发查询数
+innodb_thread_concurrency = 0
+
+# redolog size 默认128MB 过小
+```
+
+
+innodb_max_dirty_pages_pct     | 90.000000 |
+innodb_max_dirty_pages_pct_lwm | 10.000000 |
+
+
+## 安全
+参数
+sql_safe_updates
+工具
+flashback
+mysqlbinlog
+
+## 参数
+innodb_dedicated_server
+慢日志

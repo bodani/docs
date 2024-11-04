@@ -1,2 +1,2 @@
-venv/
-install.md
+*.pdf
+.venv

@@ -90,6 +90,7 @@ nav:
 
   - 压测:
     - mysqlslap: "./mysql/mysqlslap.md"
+    - mysql45: "https://bodani.github.io/mysql45"
 
 - POSTGRES: 
   - 安装维护:
