@@ -1,7 +1,7 @@
-source ./xxx.sql
+
 
 #!/bin/bash
-
+## source ./xxx.sql
 # 脚本用于在每5000条INSERT语句后面添加一个COMMIT语句
 # 在第一行插入关闭自动提交，并在最后一条INSERT后面添加COMMIT
 # 使用方法: ./add_commit_to_sql.sh input.sql output.sql

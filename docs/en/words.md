@@ -82,3 +82,20 @@ drawbacks
 throughput
 
 manipulate
+
+investigate
+
+comprises
+
+permits
+
+entire contents
+
+exact method 
+
+solely
+
+alternative
+
+adjacent
+exploit

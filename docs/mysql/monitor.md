@@ -58,3 +58,17 @@ COUNT_TRANSACTIONS_REMOTE_IN_APPLIER_QUEUE：等待应用的队列数量（内�
     - auto_increment.columns
     - binlog_size
 
+
+### PMM
+
+
+CREATE USER 'pmm'@'127.0.0.1' IDENTIFIED BY 'pass' WITH MAX_USER_CONNECTIONS 10;
+GRANT SELECT, PROCESS, REPLICATION CLIENT, RELOAD, BACKUP_ADMIN ON *.* TO 'pmm'@'127.0.0.1';
+
+### 慢查询日志
+查询分析 8.0+ 建议查询分析通过这两个表中获取
+```
+performance_schema.events_statements_history
+performance_schema.events_statements_summary_by_digest
+```
+

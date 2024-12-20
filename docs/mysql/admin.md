@@ -4,12 +4,6 @@
 # 查看Innodb引擎状态，查看上次死锁详情
 SHOW ENGINE INNODB STATUS;
 
-# 修改密码
-```
-ALTER USER 'root'@'localhost d ' IDENTIFIED WITH mysql_native_password BY 'pwd';
-flush privileges;
-```
-
 # 查看当前 MySQL 执行进程列表
 SHOW FULL PROCESSLIST;
 

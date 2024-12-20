@@ -162,3 +162,24 @@ chown mysql:mysql relaylog/
 group_replication_message_cache_size
 
 group_replication_member_expel_timeout
+
+group_replication_consistency
+
+
+### 组复制限制。 主键
+```
+SELECT 
+  COUNT(1) AS count 
+FROM 
+  information_schema.TABLES t1 
+  LEFT OUTER JOIN information_schema.columns t2 ON t1.table_schema = t2.TABLE_SCHEMA 
+  AND t1.table_name = t2.TABLE_NAME 
+  AND t2.COLUMN_KEY = 'PRI' 
+WHERE 
+  t2.table_name IS NULL 
+  AND t1.table_type = 'BASE TABLE' 
+  AND t1.TABLE_SCHEMA NOT IN(
+    'information_schema', 'performance_schema', 
+    'mysql', 'sys'
+  );
+```

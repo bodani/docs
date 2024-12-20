@@ -255,3 +255,6 @@ shutdown
 select * from performance_schema.replication_group_memebers;
 ```
 
+
+
+https://mp.weixin.qq.com/s?__biz=MjM5NzAzMTY4NQ==&mid=2653941614&idx=1&sn=8f1eea4f37e885122e3e216c34e76c2a&chksm=bd3b75048a4cfc124559482a159007ba861396ab5bcdaf3c2591de6a2a71adee5c7d590ac8f6#rd
