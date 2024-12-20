@@ -36,7 +36,7 @@ cluster.rescan()
 </code></pre> <h2 id=_5>指定主节点</h2> <pre><code>cluster.setPrimaryInstance()
 </code></pre> <h2 id=_6>重启集群</h2> <p>当所有集群中的节点都处于关闭状态时</p> <pre><code>dba.rebootClusterFromCompleteOutage();
 </code></pre> <p>API</p> <pre><code>https://dev.mysql.com/doc/dev/mysqlsh-api-python/8.0/
-</code></pre> <h2 id=_7>脑裂场景</h2> <p>当集群中多数节点（半数或以上）失效时。</p> <p>当集群中有部分节点出现UNREACHABLE状态，此时集群无法做出决策，，会出现以下局面，此时只剩下一个活跃节点，此节点只能提供查询，无法写入，执行写入操作会hang住。 <code>"status": "NO_QUORUM",</code></p> <pre><code>js&gt; cluster.status()
+</code></pre> <h2 id=_7>脑裂场景</h2> <p>当集群中多数节点（半数或以上）失效时。</p> <p>当集群中有部分节点出现UNREACHABLE状态，此时集群无法做出决策，，会出现以下局面，此时只剩下一个活跃节点，此节点只能提供查询，无法写入，执行写入操作会hang住。 <code>"status": "NO_QUORUM"</code></p> <pre><code>js&gt; cluster.status()
 {
     &quot;clusterName&quot;: &quot;mycluster&quot;,
     &quot;defaultReplicaSet&quot;: {
