@@ -110,7 +110,7 @@ https://dev.mysql.com/doc/dev/mysqlsh-api-python/8.0/
 当集群中多数节点（半数或以上）失效时。
 
 当集群中有部分节点出现UNREACHABLE状态，此时集群无法做出决策，，会出现以下局面，此时只剩下一个活跃节点，此节点只能提供查询，无法写入，执行写入操作会hang住。
-`"status": "NO_QUORUM",`
+`"status": "NO_QUORUM"`
 
 ```
 js> cluster.status()
