@@ -62,12 +62,20 @@ maxwritten_clean bgwriter 一次写入量超过bgwriter_lru_maxpages停止次数
 buffers_backend       backend 写入量
 buffers_backend_fsync 同步写入次数
 ```
+## 
 
-
+buffer 由 三部分实现落盘， bgwriter 
+```
+buffers_checkpoint：由checkpointer清理的脏块；
+buffers_clean：由bgwriter清理的脏块数量；
+buffers_backend：由backend清理的脏块数量
+```
 ## 理想状态
 
 大部分的脏数据都是bgwriter写回存储的，少量的脏数据是checkpointer写入的，更少的数据是backend写入的。因为backend写入数据成本非常高。
 
 checkpoint 的写入基本都是周期性的写入。
 
+更多细节
 
+https://www.modb.pro/db/47188

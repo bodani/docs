@@ -88,7 +88,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 
 ```
-echo `date` && mysql -uroot -p123456 mx1 < /tmp/insert_te_activate_info.sql && echo `date`;
+echo `date` && mysql -uuser1 -p123456 mx1 < /tmp/insert_te_activate_info.sql && echo `date`;
 ```
 
 ```
@@ -177,3 +177,57 @@ https://lore.kernel.org/all/9d59af25-d648-4777-a5c0-c38c246a9610@ewheeler.net/T/
 
 https://juju.is/blog/using-bcache-for-performance-gains-on-the-launchpad-database-servers
 
+
+## 参数对比
+
+binlog_transaction_dependency_tracking: 配置文件1 = COMMIT_ORDER, 配置文件2 = WRITESET
+slow_query_log: 配置文件1 = ON, 配置文件2 = OFF  
+log_output: 配置文件1 = TABLE, 配置文件2 = FILE
+long_query_time: 配置文件1 = 3.000000, 配置文件2 = 10.000000
+max_connections: 配置文件1 = 20000, 配置文件2 = 1000
+binlog_expire_logs_seconds: 配置文件1 = 0, 配置文件2 = 2592000
+innodb_open_files: 配置文件1 = 65535, 配置文件2 = 4000
+net_buffer_length: 配置文件1 = 8192, 配置文件2 = 16384
+lower_case_table_names: 配置文件1 = 1, 配置文件2 = 0
+
+innodb_log_file_size: 配置文件1 = 1073741824, 配置文件2 = 50331648
+innodb_page_cleaners: 配置文件1 = 4, 配置文件2 = 1
+
+########## READ ONLY  
+
+innodb_temp_data_file_path: 配置文件1 = ibtmp1:12M:autoextend:max:10G, 配置文件2 = ibtmp1:12M:autoextend      
+innodb_data_file_path: 配置文件1 = ibdata1:100M:autoextend, 配置文件2 = ibdata1:12M:autoextend   
+
+
+innodb_read_io_threads: 配置文件1 = 16, 配置文件2 = 4         核数*2                             
+innodb_write_io_threads: 配置文件1 = 16, 配置文件2 = 4                                         
+secure_file_priv: 配置文件1 = /data/mysql/tmp/, 配置文件2 = NULL                               
+innodb_buffer_pool_instances: 配置文件1 = 8, 配置文件2 = 1                                                            
+open_files_limit: 配置文件1 = 2000000, 配置文件2 = 1048576                                     
+performance_schema_max_table_instances: 配置文件1 = 200, 配置文件2 = -1
+
+
+##########  动态修改
+
+local_infile=ON
+innodb_io_capacity=2000
+innodb_io_capacity_max=3000
+max_connect_errors=1000000
+thread_cache_size=200
+
+innodb_buffer_pool_size=
+
+read_buffer_size: 配置文件1 = 262144, 配置文件2 = 131072
+read_rnd_buffer_size: 配置文件1 = 524288, 配置文件2 = 262144
+innodb_buffer_pool_size: 配置文件1 = 22548578304, 配置文件2 = 134217728  内存的 50%-75%
+sort_buffer_size: 配置文件1 = 524288, 配置文件2 = 262144
+
+
+
+###### 问题1 IO
+
+###### 问题 网络延迟
+
+当然，任何好东西都有代价。使用MGR single primary模式比传统的binlog复制模式的性能开销和延时略大，并且有一些功能约束。这些额外开销主要是因为certify过程导致的—除了需要传输事务的binlog之外，certify在主节点上还需要计算和传输write set，slave端需要接收和存储write set（即使单主模式也需要计算，传输和存储write set）；另外还有paxos协议运行导致的额外的网络延时，这部分延时会导致每个事务提交的延时略大。并且为了保持MGR的高性能，要求半数的备机必须与主机同机房，否则paxos协议导致的延时会更大 — 当然，这个要求并不算过分。
+
+https://www.modb.pro/db/390294

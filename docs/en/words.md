@@ -99,3 +99,13 @@ alternative
 
 adjacent
 exploit
+suspect 怀疑
+mitigate 减轻
+significant 重要的
+definitely 肯定
+Inspecting 检查
+portion
+regularly 有规律的
+downsides 
+negative
+cumulative 

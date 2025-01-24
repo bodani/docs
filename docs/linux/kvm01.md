@@ -2,12 +2,12 @@
 
 ## 安装
  
-#### ubuntu14.04 
+#### ubuntu 24.04 
 
 安装kvm
 
 ```
-apt-get install qemu-kvm libvirt0 virtinst bridge-utils virt-viewer 
+apt install qemu-kvm libvirt-daemon-system libvirt-clients bridge-utils virtinst
 ```
 
 配置实体机网络
@@ -50,24 +50,11 @@ network:
 .创建一个虚拟机
 
 ```
-virt-install --connect qemu:///system -n test01 -r 1024 -f /home/kvm/test01.qcow2 -s 20 -c /home/kvm/ubuntu-12.04.1-server-amd64.iso --vnc --noautoconsole --os-type linux --os-variant ubuntuPrecise --accelerate --network=bridge:br0 
+virt-install --virt-type kvm --name vm-001 --ram 8192 --vcpus 4 --cdrom=/data/ubuntu-24.04.1-live-server-amd64.iso --disk path=/data/kvm/vm-001.qcow2,size=100,format=qcow2 --network bridge=br0 --graphics vnc,listen=0.0.0.0 --noautoconsole --os-type=linux --os-variant=ubuntu24.04
 ```
 
 ```
-virt-install \
-  --connect qemu:///system \
-  --name test01 \
-  --ram 8196 \
-  --vcpus 4 \
-  --cpu host \
-  --disk path=/data/t01.qcow2,size=80,format=qcow2 \
-  --cdrom /data/ubuntu-24.04.1-live-server-amd64.iso \
-  --vnc \
-  --noautoconsole \
-  --os-type linux \
-  --os-variant ubuntu24.04 \
-  --graphics vnc,listen=0.0.0.0 \
-  --network bridge=br0
+virt-viewer --connect qemu+ssh://username@IP/system vm-001
 ```
 #### centos7 
 

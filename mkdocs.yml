@@ -96,6 +96,10 @@ nav:
   - 配置: "./mysql/config.md"
   - 权限管理: "./mysql/PrivilegeManagement.md"
   - 用户管理: "./mysql/users.md"
+  - 主从复制:
+    - mysql/replication/index.md
+    - 异步复制: mysql/replication/replication.md
+    - 半同步复制: mysql/replication/semisync.md
   - 高可用:
     - 组复制: "./mysql/MGR.md"
     - mysqlsh: "./mysql/myshellMGR.md"
@@ -140,6 +144,7 @@ nav:
   - 表引擎: 
     - clickhouse/demo.md
   - 压缩: clickhouse/compresstion.md
+  - 恢复: clickhouse/restore.md
 
 - 中间件:
   - etcd: middleware/etcd.md
