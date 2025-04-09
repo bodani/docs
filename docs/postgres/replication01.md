@@ -286,10 +286,10 @@ touch /home/postgres.trigger
 ```
 
 ##### pg_ctl promote
-
-pg_ctl promte -D $PGDATA
+```
+pg_ctl promote -D $PGDATA
 server promoting
-
+```
 ## [pg_rewind](/postgres/pg_rewind/)
 
 ## 从库有查询业务时注意事项

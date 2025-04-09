@@ -162,6 +162,15 @@ group by
 locktype,datname,relation,page,tuple,virtualxid,transactionid::text,classid,objid,objsubid ;
 ```
 
+```
+-- 查看阻塞关系树（PG 10+）
+SELECT pid, 
+       pg_blocking_pids(pid) AS blocked_by,
+       query AS blocked_query
+FROM pg_stat_activity
+WHERE cardinality(pg_blocking_pids(pid)) > 0;
+```
+
 #### 消除锁等待
 
 ```
