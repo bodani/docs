@@ -11,9 +11,42 @@
   }
   
   /* 单独恢复版权信息部分的可见性 */
-  .md-copyright__highlight {
+.md-copyright__highlight {
     font-size: 14px !important;  /* 恢复字体大小（根据主题默认值调整） */
     visibility: visible !important;
     display: block !important;
   }
 
+
+  /* ddddd */
+
+/* 强制页脚背景同步header主色 */
+.md-footer-meta {
+    background-color: var(--md-primary-fg-color) !important;
+    color: var(--md-primary-bg-color) !important; /* 同步header文字色 */
+  }
+  
+  /* 浅色模式header蓝调配置 */
+  [data-md-color-scheme="default"] {
+    --md-primary-fg-color:        #1976D2; /* 标准Material蓝 */
+    --md-primary-fg-color--light: #63A4FF; /* 悬停高亮色 */
+    --md-primary-fg-color--dark:  #004BA0;
+  }
+  
+  /* 深色模式自动适配 */
+  [data-md-color-scheme="slate"] {
+    --md-primary-fg-color:        #2B3A4D; /* 深蓝灰背景 */
+    --md-primary-fg-color--light: #445E77;
+    --md-primary-fg-color--dark:  #18232E;
+  }
+/* ===== 浅色模式专属配色 ===== */
+[data-md-color-scheme="default"] {
+    /* 头部颜色体系 */
+    --md-primary-fg-color:        #2d5a74; /* 标准Material蓝 (保留原色) */
+    --md-primary-fg-color--light: #3483d6; /* 悬停高亮 */
+    --md-primary-fg-color--dark:  #4285c7; /* 激活状态 */
+    
+    /* 页脚同步配色 */
+    --md-footer-bg-custom: var(--md-primary-fg-color); /* 继承header主色 */
+  }
+  
