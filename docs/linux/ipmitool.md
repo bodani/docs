@@ -13,7 +13,7 @@ IPMI，即智能平台管理接口（Intelligent Platform Management Interface�
 #### 安装
 
 ```
-yum install OpenIPMI ipmitools
+yum install OpenIPMI ipmitool
 ```
 
 ## 网络信息配置管理
