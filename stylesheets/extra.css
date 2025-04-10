@@ -1,0 +1,6 @@
+@media (min-width: 76.25em) {
+    .md-main__inner {
+        max-width: 95%; /* 调整这个值来改变宽度比例，例如90% */
+    }
+
+}
