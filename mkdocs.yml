@@ -23,8 +23,8 @@ theme:
         name: Switch to light mode
     - media: "(prefers-color-scheme: light)" # 浅色
       scheme: default
-      primary: indigo
-      accent: indigo
+      primary: green
+      accent: deep_orange
       toggle:
         icon: material/toggle-switch
         name: Switch to dark mode
