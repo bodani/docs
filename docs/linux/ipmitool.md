@@ -214,11 +214,12 @@ Supported chassis power policy:  always-off always-on previous
 Set chassis power restore policy to always-on
 ```
 
-## TODO 远程屏幕
+## 远程屏幕
 
-需要BIOS 中配置 Serial Communication 重定向到COM2 口。
+Supermicro IPMI
 
-默认是将显示信息输出到COM1，本地显示器。
+进入 Remote Control → Launch Console。
+下载并运行 Java KVM Viewer 或 HTML5 KVM（较新固件支持）。
 
 
 ## 补充 远程屏幕管理
