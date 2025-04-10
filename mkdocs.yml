@@ -9,11 +9,10 @@ site_description: >- # 项目描述
 # repo_url: https://github.com/bodani/docs.git # 仓库地址
 
 # 版权信息
-copyright: Copyright &copy; 2024  |   Eamon
+copyright: Copyright &copy;  2021-2025 | Eamon
 
 theme:
   name: "material"
-  powered_by: true
   palette:
     - media: "(prefers-color-scheme)" # 主题颜色
       scheme: slate
@@ -50,7 +49,7 @@ theme:
     - content.tooltips # 不太清楚呢这个
     # - header.autohide # 自动隐藏header
     # - navigation.expand # 默认展开导航栏
-    - navigation.footer  # 底部导航栏
+    # - navigation.footer  # 底部导航栏
     - navigation.indexes # 索引按钮可以直接触发文件，而不是只能点击其下属选项浏览，这个功能可以给对应的section提供很好的预览和导航功能
     # - navigation.instant # 瞬间加载 最好注释掉，多语言切换这个会导致跳回首页
     - navigation.instant.prefetch # 预加载

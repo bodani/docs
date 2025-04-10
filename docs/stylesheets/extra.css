@@ -4,3 +4,16 @@
     }
 
 }
+/* 隐藏整个 .md-copyright 容器内的所有内容 */
+.md-copyright {
+    font-size: 0 !important;    /* 隐藏所有文本 */
+    visibility: hidden !important; /* 双重保险 */
+  }
+  
+  /* 单独恢复版权信息部分的可见性 */
+  .md-copyright__highlight {
+    font-size: 14px !important;  /* 恢复字体大小（根据主题默认值调整） */
+    visibility: visible !important;
+    display: block !important;
+  }
+
