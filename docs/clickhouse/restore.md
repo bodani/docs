@@ -28,7 +28,7 @@ SELECT shard_num, host_address,is_local FROM system.clusters;
    └───────────┴──────────────┴──────────┘
 ```
 
-确定和故障节点位置。利用同分配的其他节点的数据进行恢复。
+确定和故障节点位置。利用同副本的其他节点的数据进行恢复。
 
 查看数据具体分布情况。
 ```
@@ -68,18 +68,18 @@ mkdir /tmp/clickhouse  && cd /tmp/clickhouse
 ### 备份数据 
 ```
 数据
-kubectl exec -n <namespaces> <pod> -- tar cvfh - /var/lib/clickhouse/data/metadata | tar xf - -C .
+kubectl exec -n <namespaces> <pod> -- tar cvfh - /var/lib/clickhouse/metadata | tar xf - -C .
 用户
-kubectl exec -n <namespaces> <pod> -- tar cvfh - /var/lib/clickhouse/data/access | tar xf - -C .
+kubectl exec -n <namespaces> <pod> -- tar cvfh - /var/lib/clickhouse/access | tar xf - -C .
 ```
 
 
 ### 恢复数据
 ```
 数据库信息
-tar cf - var/lib/clickhouse/data/metadata/*.sql | kubectl exec -i -n <namespaces> <pod> -- tar xkf - -C /
+tar cf - var/lib/clickhouse/metadata/*.sql | kubectl exec -i -n <namespaces> <pod> -- tar xkf - -C /
 用户信息
-tar cf - var/lib/clickhouse/data/access | kubectl exec -i -n <namespaces> <pod> -- tar xf - -C /
+tar cf - var/lib/clickhouse/access | kubectl exec -i -n <namespaces> <pod> -- tar xf - -C /
 zk 数据 
 kubectl exec -i -n <namespaces> <pod> -- touch /drycc/clickhouse/data/flags/force_restore_data
 ```
@@ -87,7 +87,7 @@ kubectl exec -i -n <namespaces> <pod> -- touch /drycc/clickhouse/data/flags/forc
 
 ```
 表结构信息
-tar cf - --exclude='*.sql' var/lib/clickhouse/data/metadata/ | kubectl exec -i -n <namespaces> <pod> -- tar xkvf - -C /
+tar cf - --exclude='*.sql' var/lib/clickhouse/metadata/ | kubectl exec -i -n <namespaces> <pod> -- tar xkvf - -C /
 ```
 重启 clickhouse
 

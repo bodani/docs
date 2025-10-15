@@ -48,6 +48,8 @@ pmap -x $(pgrep mysqld) | grep -i "anon" | sort -nrk3
 
 查看 database size
 
+selectname,FILE_SIZE/1024/1024/1024as  GB from information_schema.INNODB_TABLESPACES wherename='test/t1';
+
 SELECT 
 table_schema as '数据库',
 sum(table_rows) as '记录数',
@@ -59,8 +61,14 @@ group by table_schema
 order by sum(data_length) desc, sum(index_length) desc;
 
 查看 table size 
+
 SELECT  table_name AS `表名`,  ROUND((DATA_LENGTH) / 1024 / 1024 / 1024, 2) AS `表大小(GB)`,  ROUND((INDEX_LENGTH) / 1024 / 1024 / 1024, 2) AS `索引大小(GB)`,     ROUND(DATA_FREE / 1024 / 1024 / 1024, 2) AS `碎片/未释放空间(GB)` FROM information_schema.TABLES where   table_schema = DATABASE();
 
 查看 optimize table 事件
 
 SELECT EVENT_NAME, WORK_COMPLETED, WORK_ESTIMATED FROM performance_schema.events_stages_current;
+
+optimize table xx 后查看进度
+ SELECT   EVENT_NAME,   WORK_COMPLETED,   WORK_ESTIMATED FROM performance_schema.events_stages_current WHERE EVENT_NAME LIKE 'stage/innodb/alter%';
+
+ SELECT * FROM sys.innodb_lock_waits\G

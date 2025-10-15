@@ -148,7 +148,19 @@ SELECT event_name,
 FROM performance_schema.memory_summary_global_by_event_name
 ORDER BY  CURRENT_NUMBER_OF_BYTES_USED DESC
 LIMIT 10;
+
+
+-- 查看内存分配器统计（需 MySQL 5.7+）
+SELECT 
+  EVENT_NAME, 
+  COUNT_ALLOC 
+FROM performance_schema.memory_summary_global_by_event_name 
+WHERE EVENT_NAME LIKE 'memory/sql/%' 
+ORDER BY COUNT_ALLOC DESC;
 ```
+
+SELECT   sys.format_bytes(SUM(CURRENT_NUMBER_OF_BYTES_USED))
+FROM performance_schema.memory_summary_global_by_event_name
 
 #### 分账号统计
 
@@ -264,3 +276,104 @@ https://mp.weixin.qq.com/s?__biz=MjM5NzAzMTY4NQ==&mid=2653941614&idx=1&sn=8f1eea
 ```
 @@group_replication_message_cache_size=1073741824
 ```
+
+pmap -x $(pidof mysqld) | sort -k3 -nr | head -n 20
+
+
+
+实测分析
+
+```
+pt-mysql-summary --user=administrator --password=zVft37KE9Z --host=10.2.14.23 --port=3306
+```
+分析内存
+
+-- 限制临时表内存
+SET persist tmp_table_size = 64 * 1024 * 1024;     -- 64M
+SET persist max_heap_table_size = 64 * 1024 * 1024;
+
+-- 降低排序/JOIN 缓冲区
+SET persist sort_buffer_size = 128 * 1024;        -- 128K
+SET persist join_buffer_size = 128 * 1024;
+
+-- 缩小 InnoDB 缓冲池
+SET persist innodb_buffer_pool_size = 700 * 1024 * 1024;  -- 700M
+
+-- 增加线程缓存
+SET persist thread_cache_size = 100;
+SET persist max_connections = 100;
+
+
+
+## mysql 内存问题分析
+
+系统级别 
+```
+#top -p $(pidof mysqld)
+
+PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM  TIME+ COMMAND 
+1   1001      20   0   14.8g   5.9g  50568 S   0.7   0.6 211:56.90 mysqld
+```
+
+```
+top -p $(pidof mysqld)  # 实时监控MySQL进程内存
+cat /proc/$(pidof mysqld)/status | grep Vm  # 查看虚拟内存使用
+```
+
+```
+SELECT * FROM sys.memory_global_total;  
+SELECT EVENT_NAME, 
+       ROUND(CURRENT_NUMBER_OF_BYTES_USED/1024/1024,2) AS memory_mb
+FROM performance_schema.memory_summary_global_by_event_name
+ORDER BY memory_mb DESC LIMIT 10; 
+```
+```
+SELECT m.EVENT_NAME, t.PROCESSLIST_ID, 
+       ROUND(m.CURRENT_NUMBER_OF_BYTES_USED/1024/1024,2) AS mem_mb
+FROM performance_schema.memory_summary_by_thread_by_event_name m
+JOIN performance_schema.threads t USING (THREAD_ID)
+WHERE t.PROCESSLIST_ID != CONNECTION_ID()
+ORDER BY m.CURRENT_NUMBER_OF_BYTES_USED DESC LIMIT 10;
+```
+
+## 压测
+
+sysbench /usr/local/sysbench/share/sysbench/oltp_read_only.lua  --mysql-host=127.0.0.1 --mysql-port=3306 --mysql-user=root --mysql-password=root --mysql-db=sbtest --tables=15 --table-size=1000000 --threads=150 --time=60 run
+
+关联
+https://mp.weixin.qq.com/s?__biz=MzU5MDU1NDE2MA==&mid=2247484558&idx=1&sn=953551bf6e5830968019415c1f94bcde&chksm=ff3a1efe753cdc85689b7a0ac4323e926075f234ede914078a62a77435e8824aaecb23844424#rd
+
+https://mp.weixin.qq.com/s?__biz=Mzg2Mjc5MzQ4OQ==&mid=2247483828&idx=1&sn=09eaef6aeaaa7cf1ed20d4bf7d9b5b12&chksm=ce033bcaf974b2dc80e826d648e69288156276086c7a017c1b8acc62272e3caf14ae10f745df#rd
+
+https://segmentfault.com/a/1190000045371971
+
+https://cloud.tencent.com/developer/inventory/14836/article/1621898
+
+gdb --batch --pid `pidof mysqld` --ex 'call malloc_trim(0)'
+
+连接时候需要的参数
+```
+read_buffer_size = 4M
+read_rnd_buffer_size = 4M
+sort_buffer_size = 4M
+join_buffer_size = 4M
+tmp_table_size = 32M
+max_heap_table_size = 32M
+max_connections = 512
+```
+
+## 处理
+
+thread_cache_size = 0
+innodb_flush_method=O_DIRECT
+
+
+
+group_replication_single_primary_mode=ON
+log_error_verbosity=3
+group_replication_bootstrap_group=OFF 
+group_replication_transaction_size_limit=<默认值150MB，但建议调低在20MB以内，不要使用大事务>
+group_replication_communication_max_message_size=10M
+group_replication_flow_control_mode=OFF #官方版本的流控机制不太合理，其实可以考虑关闭
+group_replication_exit_state_action=READ_ONLY
+group_replication_member_expel_timeout=5 

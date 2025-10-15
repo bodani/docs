@@ -324,3 +324,63 @@ mysql_static_variables": {
     }
 ```
 </details>
+
+
+
+线上问题
+
+```
+dba.getCluster().status();
+WARNING: Error connecting to Cluster: MYSQLSH 51004: Unable to find a primary member in the Cluster
+Retrying getCluster() using a secondary member
+WARNING: You are connected to an instance in state 'Read Only'
+Write operations on the InnoDB cluster will not be allowed.
+
+{
+    "clusterName": "MXMGR", 
+    "defaultReplicaSet": {
+        "name": "default", 
+        "primary": "helmbroker-lasm-mysql-base-demo-1:3306", 
+        "ssl": "REQUIRED", 
+        "status": "OK_NO_TOLERANCE_PARTIAL", 
+        "statusText": "Cluster is NOT tolerant to any failures. 1 member is not active.", 
+        "topology": {
+            "helmbroker-lasm-mysql-base-demo-0:3306": {
+                "address": "helmbroker-lasm-mysql-base-demo-0:3306", 
+                "memberRole": "SECONDARY", 
+                "mode": "R/O", 
+                "readReplicas": {}, 
+                "replicationLag": "applier_queue_applied", 
+                "role": "HA", 
+                "status": "ONLINE", 
+                "version": "8.0.34"
+            }, 
+            "helmbroker-lasm-mysql-base-demo-1:3306": {
+                "address": "helmbroker-lasm-mysql-base-demo-1:3306", 
+                "instanceErrors": [
+                    "NOTE: group_replication is stopped."
+                ], 
+                "memberRole": "PRIMARY", 
+                "memberState": "OFFLINE", 
+                "mode": "n/a", 
+                "readReplicas": {}, 
+                "role": "HA", 
+                "status": "UNREACHABLE", 
+                "version": "8.0.34"
+            }, 
+            "helmbroker-lasm-mysql-base-demo-2:3306": {
+                "address": "helmbroker-lasm-mysql-base-demo-2:3306", 
+                "memberRole": "SECONDARY", 
+                "mode": "R/O", 
+                "readReplicas": {}, 
+                "replicationLag": "applier_queue_applied", 
+                "role": "HA", 
+                "status": "ONLINE", 
+                "version": "8.0.34"
+            }
+        }, 
+        "topologyMode": "Single-Primary"
+    }, 
+    "groupInformationSourceMember": "helmbroker-lasm-mysql-base-demo-2:3306"
+}
+```

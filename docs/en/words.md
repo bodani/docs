@@ -370,3 +370,192 @@
 **v.** 调查；研究；  
 **例句** Police are investigating the cause of the accident.  
 > 警方正在调查事故原因。
+
+# decoupled - 解耦  
+**常见释义** 英 [dɪˈkʌpld] 美 [dɪˈkʌpld]  
+**adj./v.** 解耦的；分离的；  
+**例句** Modern software architectures use decoupled components for better scalability.  
+> 现代软件架构使用解耦组件以获得更好的可扩展性。
+
+## essential - 至关重要  
+**常见释义** 英 [ɪˈsenʃl] 美 [ɪˈsenʃl]  
+**adj.** 必要的；至关重要的；  
+**例句** Regular backups are essential for data protection.  
+> 定期备份对数据保护至关重要。
+
+## simultaneously - 并行，同时  
+**常见释义** 英 [ˌsɪmlˈteɪniəsli] 美 [ˌsaɪmlˈteɪniəsli]  
+**adv.** 同时地；并行地；  
+**例句** The system processes multiple requests simultaneously.  
+> 该系统同时处理多个请求。
+
+## fluctuate - 波动  
+**常见释义** 英 [ˈflʌktʃueɪt] 美 [ˈflʌktʃueɪt]  
+**v.** 波动；起伏；  
+**例句** Network latency may fluctuate during peak hours. 
+
+> 网络延迟在高峰时段可能出现波动。
+## mandatory - 强制性的  
+**常见释义** 英 [ˈmændətəri] 美 [ˈmændətɔːri]  
+**adj.** 强制性的；义务的；  
+**例句** Two-factor authentication is mandatory for system access.  
+
+> 双因素认证是系统访问的强制性要求。
+## provisioned - 被提供的  
+**常见释义** 英 [prəˈvɪʒnd] 美 [prəˈvɪʒnd]  
+**adj.** 已配置的；被供应的；  
+**例句** The virtual machines were provisioned with 16GB RAM.  
+> 虚拟机被提供了16GB内存。
+
+## data-at-rest - 静态数据  
+**常见释义** 英 [ˈdeɪtə æt rest] 美 [ˈdætə æt rest]  
+**n.** 静态数据；  
+**例句** Encryption of data-at-rest prevents physical theft risks.  
+> 静态数据加密可防止物理盗窃风险。
+
+## transparently - 透明的  
+**常见释义** 英 [trænsˈpærəntli] 美 [trænsˈpærəntli]  
+**adv.** 透明地；明显地；  
+**例句** The cache operates transparently without user intervention.  
+> 缓存透明地运行，无需用户干预。
+
+## identical - 完全相同的  
+**常见释义** 英 [aɪˈdentɪkl] 美 [aɪˈdentɪkl]  
+**adj.** 完全相同的；一模一样的；  
+**例句** The replicas maintain identical copies of the database.  
+> 副本保持数据库的完全相同的副本。
+
+## occupied - 占用  
+**常见释义** 英 [ˈɒkjupaɪd] 美 [ˈɑːkjupaɪd]  
+**adj.** 被占用的；忙碌的；  
+**例句** The CPU was fully occupied during the stress test.  
+> 在压力测试期间CPU被完全占用。
+
+## under performing - 表现不佳  
+**常见释义** 英 [ˌʌndə pəˈfɔːmɪŋ] 美 [ˌʌndər pərˈfɔːrmɪŋ]  
+**adj.** 表现不佳的；  
+**例句** Replacing the under performing disk resolved the bottleneck.  
+> 更换表现不佳的磁盘解决了瓶颈问题。
+
+## profiling - 收集资料  
+**常见释义** 英 [ˈprəʊfaɪlɪŋ] 美 [ˈproʊfaɪlɪŋ]  
+**n.** 分析；收集资料；  
+**例句** CPU profiling helps identify optimization opportunities.  
+> CPU资料收集有助于识别优化机会。
+
+## prominent - 杰出  
+**常见释义** 英 [ˈprɒmɪnənt] 美 [ˈprɑːmɪnənt]  
+**adj.** 杰出的；显著的；  
+**例句** He is a prominent contributor to the open-source project.  
+> 他是该开源项目的杰出贡献者。
+
+## urgently - 紧急  
+**常见释义** 英 [ˈɜːdʒəntli] 美 [ˈɜːrdʒəntli]  
+**adv.** 紧急地；迫切地；  
+**例句** The security patch needs to be applied urgently.  
+> 安全补丁需要紧急应用。
+
+## occupy - 占用  
+**常见释义** 英 [ˈɒkjupaɪ] 美 [ˈɑːkjupaɪ]  
+**v.** 占用；占据；  
+**例句** Temporary files occupy significant disk space.  
+> 临时文件占用大量磁盘空间。
+
+## outage - 中断  
+**常见释义** 英 [ˈaʊtɪdʒ] 美 [ˈaʊtɪdʒ]  
+**n.** 中断；停运；  
+**例句** The power outage caused unexpected system downtime.  
+> 电力中断导致意外系统停机。
+
+## arbitration - 仲裁  
+**常见释义** 英 [ˌɑːbɪˈtreɪʃn] 美 [ˌɑːrbɪˈtreɪʃn]  
+**n.** 仲裁；公断；  
+**例句** Disk arbitration prevents concurrent access conflicts.  
+> 磁盘仲裁防止并发访问冲突。
+
+## arbitrary - 任意  
+**常见释义** 英 [ˈɑːbɪtrəri] 美 [ˈɑːrbɪtreri]  
+**adj.** 任意的；武断的；  
+**例句** Avoid using arbitrary values in configuration files.  
+> 避免在配置文件中使用任意值。
+
+## definer - 定义者  
+**常见释义** 英 [dɪˈfaɪnə] 美 [dɪˈfaɪnər]  
+**n.** 定义者；  
+**例句** The database definer must specify access permissions.  
+> 数据库定义者必须指定访问权限。
+
+## perimeter - 周边  
+**常见释义** 英 [pəˈrɪmɪtə] 美 [pəˈrɪmɪtər]  
+**n.** 周边；边界；  
+**例句** Firewalls protect the network perimeter from intrusions.  
+> 防火墙保护网络周边免受入侵。
+
+## resilient - 弹性  
+**常见释义** 英 [rɪˈzɪliənt] 美 [rɪˈzɪliənt]  
+**adj.** 有弹性的；能复原的；  
+**例句** The distributed system is resilient to node failures.  
+> 该分布式系统对节点故障具有弹性。
+
+## compatible - 兼容  
+**常见释义** 英 [kəmˈpætəbl] 美 [kəmˈpætəbl]  
+**adj.** 兼容的；相容的；  
+**例句** Ensure the driver is compatible with your OS version.  
+> 确保驱动程序与您的操作系统版本兼容。
+
+## heterogeneous - 异构  
+**常见释义** 英 [ˌhetərəˈdʒiːniəs] 美 [ˌhetərəˈdʒiːniəs]  
+**adj.** 异构的；多样的；  
+**例句** The platform supports heterogeneous hardware configurations.  
+> 该平台支持异构硬件配置。
+
+## significantly - 显著的  
+**常见释义** 英 [sɪɡˈnɪfɪkəntli] 美 [sɪɡˈnɪfɪkəntli]  
+**adv.** 显著地；重要地；  
+**例句** Compression algorithms can significantly reduce storage needs.  
+> 压缩算法能显著减少存储需求。
+
+## facilitate - 协助  
+**常见释义** 英 [fəˈsɪlɪteɪt] 美 [fəˈsɪlɪteɪt]  
+**v.** 促进；协助；  
+**例句** Automation tools facilitate deployment processes.  
+> 自动化工具协助部署流程。
+
+## relatively - 相对的  
+**常见释义** 英 [ˈrelətɪvli] 美 [ˈrelətɪvli]  
+**adv.** 相对地；比较地；  
+**例句** SSD storage offers relatively faster access speeds.  
+> SSD存储提供相对更快的访问速度。
+
+## most up-to-date - 最新的  
+**常见释义** 英 [məʊst ʌp tu deɪt] 美 [moʊst ʌp tu deɪt]  
+**adj.** 最新的；最现代的；  
+**例句** Always reference the most up-to-date documentation.  
+> 始终参考最新的文档。
+
+## perspective - 看法  
+**常见释义** 英 [pəˈspektɪv] 美 [pərˈspektɪv]  
+**n.** 看法；观点；  
+**例句** From a technical perspective, the solution is sound.  
+> 从技术角度看，该解决方案是可靠的。
+
+## characteristics - 特征  
+**常见释义** 英 [ˌkærəktəˈrɪstɪks] 美 [ˌkærəktəˈrɪstɪks]  
+**n.** 特征；特性；  
+**例句** The performance characteristics are listed in the report.  
+> 性能特征在报告中列出。
+
+## Consulting - 咨询  
+**常见释义** 英 [kənˈsʌltɪŋ] 美 [kənˈsʌltɪŋ]  
+**n.** 咨询；顾问；  
+**例句** She specializes in cloud infrastructure consulting.  
+> 她专注于云基础设施咨询。
+
+## strengths - 优势  
+**常见释义** 英 [streŋθs] 美 [streŋθs]  
+**n.** 优势；长处；  
+**例句** Understanding your product's strengths is key to marketing.  
+> 了解产品的优势是营销的关键。
+
+autonomous 自主的
+molecule 分子

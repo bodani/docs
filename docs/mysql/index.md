@@ -1,7 +1,7 @@
 # MySQL
 
 ## 目录
-
+- [安装](install.md)
 - [活跃](active.md)
 - [管理](admin.md)
 - [备份](backup.md)
@@ -24,6 +24,7 @@
 - [复制](replication.md)
 - [表大小](table_size.md)
 - [用户管理](users.md)
+
 
 ## 变更日志
 - [Pro1](changelog/pro1.md)

@@ -132,6 +132,9 @@ nav:
     - 删除: "postgres/delete.md"
     - 表空间: "postgres/pgstattuple.md"
 
+  - 数据迁移:
+    - pgcopydb: "postgres/backupandrestore/pgcopydb.md"
+
 - ClickHouse:
   - clickhouse/index.md
 
@@ -156,4 +159,12 @@ nav:
   - 结构设计: "./postgres/thinking_in_db_fd.md"
   - 性能优化 : "./postgres/thinking_in_db_performance.md"
   - 模块调优: "./postgres/thinking_in_db_tune.md"
+
+- 归档: 
+  - index.md
+  - Mysql: "./mysql/index.md"
+  - PostgreSQL: "./postgresql.md"
+  - ClickHouse: "./archive/clickhouse.md"
+  - Redis: "./archive/redis.md"
+  - InfluxDB: "./archive/influxdb.md"
 

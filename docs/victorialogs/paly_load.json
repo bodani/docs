@@ -1,0 +1,19 @@
+{
+  "_msg": "duration: 5.931 ms  execute <unnamed>: SELECT pg_database_size($1)",
+  "_stream": "{}",
+  "_time": "2025-08-25T20:23:12.643Z",
+  "command": "SELECT",
+  "command_num": "19",
+  "connection": "127.0.0.1:52530",
+  "database": "postgres",
+  "extra": ",\"parameters: $1 = 'cloud_back'\",,,,,,,,\"\",\"client backend\",,0",
+  "log_level": "LOG",
+  "log_time": "2025-08-25 14:23:12.643 CST",
+  "pid": "45295",
+  "session_id": "68ac0150.b0ef",
+  "session_time": "2025-08-25 14:23:12 CST",
+  "sql_state": "00000",
+  "tx_id": "0",
+  "user": "postgres",
+  "vtx_id": "2/28449338"
+}
