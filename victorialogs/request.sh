@@ -1,0 +1,1 @@
+curl -v -X POST   'http://10.1.80.54:9428/insert/jsonline?_stream_fields=stream&_msg_field=log&_time_field=date&debug=0'   -H 'Content-Type: application/json'   -d '@paly_load.json'

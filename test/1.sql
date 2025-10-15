@@ -27,3 +27,4 @@ GROUP BY
     u.user_email, s."user"  -- 双字段分组确保准确性
 ORDER BY 
     1 DESC;
+
