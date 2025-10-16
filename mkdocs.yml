@@ -2,7 +2,7 @@ site_name: Tea # 项目名称
 site_url: https://bodani.github.io/docs/ # 我在nginx中使用的是8000端口，如果你使用的是80端口，可以直接写成https://localhost/。
 site_author: Eamon # 作者
 site_description: >- # 项目描述
-  Welcome to Shaun's rabbit hole. This site serves as a personal knowledge base for me to record my thoughts and ideas. It is also a place for me to share my knowledge and experience with the world. I hope you find something useful here. 
+  Welcome to Shaun's rabbit hole. This site serves as a personal knowledge base for me to record my thoughts and ideas. It is also a place for me to share my knowledge and experience with the world. I hope you find something useful here.
 
 # 代码仓库信息
 # repo_name: docs # 仓库名称
@@ -71,7 +71,7 @@ theme:
       default: true # 默认语言
       name: English
       build: true # 是否构建
-  # site_name: Infinity
+    # site_name: Infinity
     - locale: zh
       name: 简体中文
       build: true
@@ -89,82 +89,86 @@ plugins:
 not_in_nav: |
   /docs/**/*.md
 
-nav: 
-- MYSQL: 
-    # - "mysql.md"
-  - 安装: "./mysql/install.md"
-  - 配置: "./mysql/config.md"
-  - 权限管理: "./mysql/PrivilegeManagement.md"
-  - 用户管理: "./mysql/users.md"
-  - 主从复制:
-    - mysql/replication/index.md
-    - 异步复制: mysql/replication/replication.md
-    - 半同步复制: mysql/replication/semisync.md
-  - 高可用:
-    - 组复制: "./mysql/MGR.md"
-    - mysqlsh: "./mysql/myshellMGR.md"
-  - 监控: 
-    - exporter: ./mysql/exporter.md
+nav:
+  - MYSQL:
+      # - "mysql.md"
+      - 安装: "./mysql/install.md"
+      - 配置: "./mysql/config.md"
+      - 权限管理: "./mysql/PrivilegeManagement.md"
+      - 用户管理: "./mysql/users.md"
+      - 主从复制:
+          - mysql/replication/index.md
+          - 异步复制: mysql/replication/replication.md
+          - 半同步复制: mysql/replication/semisync.md
+      - 高可用:
+          - 组复制: "./mysql/MGR.md"
+          - mysqlsh: "./mysql/myshellMGR.md"
+      - 监控:
+          - exporter: ./mysql/exporter.md
 
-  - 压测:
-    - mysqlslap: "./mysql/mysqlslap.md"
-    - mysql45: "https://bodani.github.io/mysql45"
+      - 压测:
+          - mysqlslap: "./mysql/mysqlslap.md"
+          - mysql45: "https://bodani.github.io/mysql45"
 
-- POSTGRES: 
-  - 安装维护:
-    - 安装: "./postgres/install01.md"
-    - 配置: "./postgres/config.md"
-    - 流复制: "./postgres/replication01.md"
-  
-  - 高可用:
-    - 设计分析: "./postgres/ha_fd.md"
+  - PostgreSQL:
+      - "./postgres/index.md"
+      - 安装维护:
+          - 安装: "./postgres/install01.md"
+          - 配置: "./postgres/config.md"
+          - 流复制: "./postgres/replication01.md"
 
-  - 索引篇:
-    - 索引类型及使用场景: "postgres/index01.md"
-    - 索引失效: "postgres/index-invalid.md"
-    - 假设索引: "postgres/hypopg-index.md"
+      - 高可用:
+          - 设计分析: "./postgres/ha_fd.md"
 
-  - 备份管理篇:
-    - 逻辑备份: "postgres/logical-backup.md"
-    - 物理备份: "postgres/physical-backup.md"
+      - 索引篇:
+          - 索引类型及使用场景: "postgres/index01.md"
+          - 索引失效: "postgres/index-invalid.md"
+          - 假设索引: "postgres/hypopg-index.md"
 
-  - 数据管理:
-    - 删除: "postgres/delete.md"
-    - 表空间: "postgres/pgstattuple.md"
+      - 备份管理篇:
+          - 备份方案设计: "postgres/backupandrestore/index.md"
+          - 逻辑备份: "postgres/logical-backup.md"
+          - 物理备份: "postgres/physical-backup.md"
+          - pgcopydb: "postgres/backupandrestore/pgcopydb.md"
+          - pgBackRest: "postgres/backupandrestore/pgbackrest.md"
+          - WAL-G: "postgres/backupandrestore/wal-g.md"
 
-  - 数据迁移:
-    - pgcopydb: "postgres/backupandrestore/pgcopydb.md"
+      - 数据管理:
+          - 删除: "postgres/delete.md"
+          - 表空间: "postgres/pgstattuple.md"
 
-- ClickHouse:
-  - clickhouse/index.md
+      - 数据迁移:
+          - pgcopydb: "postgres/backupandrestore/pgcopydb.md"
 
-  - 安装:
-    - clickhouse/install/index.md
-    - 单机版: clickhouse/install/install_single.md
-    - 集群版: clickhouse/install/install_cluster.md
-    - 数仓版: clickhouse/install/install_s3.md
-  - keeper: clickhouse/ch-keeper.md
-  - 表引擎: 
-    - clickhouse/demo.md
-  - 压缩: clickhouse/compresstion.md
-  - 恢复: clickhouse/restore.md
+  - ClickHouse:
+      - clickhouse/index.md
 
-- 中间件:
-  - etcd: middleware/etcd.md
-  - YugabyteDB:
-    - 安装: ./yugabytedb/install.md
-    - 部署: ./yugabytedb/deploy.md
+      - 安装:
+          - clickhouse/install/index.md
+          - 单机版: clickhouse/install/install_single.md
+          - 集群版: clickhouse/install/install_cluster.md
+          - 数仓版: clickhouse/install/install_s3.md
+      - keeper: clickhouse/ch-keeper.md
+      - 表引擎:
+          - clickhouse/demo.md
+      - 压缩: clickhouse/compresstion.md
+      - 恢复: clickhouse/restore.md
 
-- 数据库思考:
-  - 结构设计: "./postgres/thinking_in_db_fd.md"
-  - 性能优化 : "./postgres/thinking_in_db_performance.md"
-  - 模块调优: "./postgres/thinking_in_db_tune.md"
+  - 中间件:
+      - etcd: middleware/etcd.md
+      - YugabyteDB:
+          - 安装: ./yugabytedb/install.md
+          - 部署: ./yugabytedb/deploy.md
 
-- 归档: 
-  - index.md
-  - Mysql: "./mysql/index.md"
-  - PostgreSQL: "./postgresql.md"
-  - ClickHouse: "./archive/clickhouse.md"
-  - Redis: "./archive/redis.md"
-  - InfluxDB: "./archive/influxdb.md"
+  - 数据库思考:
+      - 结构设计: "./postgres/thinking_in_db_fd.md"
+      - 性能优化: "./postgres/thinking_in_db_performance.md"
+      - 模块调优: "./postgres/thinking_in_db_tune.md"
 
+  - 归档:
+      - index.md
+      - Mysql: "./mysql/index.md"
+      - PostgreSQL: "./postgresql.md"
+      - ClickHouse: "./archive/clickhouse.md"
+      - Redis: "./archive/redis.md"
+      - InfluxDB: "./archive/influxdb.md"
