@@ -140,25 +140,35 @@ nav:
       - 数据迁移:
           - pgcopydb: "postgres/backupandrestore/pgcopydb.md"
 
-  - ClickHouse:
-      - clickhouse/index.md
-
-      - 安装:
-          - clickhouse/install/index.md
-          - 单机版: clickhouse/install/install_single.md
-          - 集群版: clickhouse/install/install_cluster.md
-          - 数仓版: clickhouse/install/install_s3.md
-      - keeper: clickhouse/ch-keeper.md
-      - 表引擎:
-          - clickhouse/demo.md
-      - 压缩: clickhouse/compresstion.md
-      - 恢复: clickhouse/restore.md
-
   - 中间件:
       - etcd: middleware/etcd.md
-      - YugabyteDB:
-          - 安装: ./yugabytedb/install.md
-          - 部署: ./yugabytedb/deploy.md
+      - ClickHouse:
+          - 安装: ./clickhouse/install/index.md
+          - 单机版: ./clickhouse/install/install_single.md
+          - 集群版: ./clickhouse/install/install_cluster.md
+          - keeper: ./clickhouse/ch-keeper.md
+          - 表引擎: ./clickhouse/demo.md
+          - 压缩: ./clickhouse/compresstion.md
+          - 恢复: ./clickhouse/restore.md
+      - MongoDB:
+          - 安装: ./mongodb/install.md
+          - 配置: ./mongodb/config.md
+          - 复制集: ./mongodb/replication.md
+          - 分片集群: ./mongodb/sharding.md
+          - 权限管理: ./mongodb/privilege.md
+      - 监控系统:
+          - Prometheus: ./monitor/prometheus.md
+          - Grafana: ./monitor/grafana.md
+          - exporter: ./monitor/exporter.md
+          - 监控指标: ./monitor/metrics.md
+      - fluentbit:
+          - 介绍: ./fluentbit/intro.md
+          - 安装配置: ./fluentbit/config.md
+          - 使用场景: ./fluentbit/usecases.md
+          - 日志收集: ./fluentbit/logcollection.md
+
+  - Linux:
+      - linux: linux/index.md
 
   - 数据库思考:
       - 结构设计: "./postgres/thinking_in_db_fd.md"
