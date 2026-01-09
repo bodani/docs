@@ -101,6 +101,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://bodani.github.io/docs/fluentbit/intro/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://bodani.github.io/docs/fluentbit/problems/</loc>
          <lastmod>2026-01-09</lastmod>
          <changefreq>daily</changefreq>
@@ -186,7 +191,52 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://bodani.github.io/docs/mongodb/config/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/mongodb/install/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/mongodb/privilege/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/mongodb/replication/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/mongodb/sharding/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://bodani.github.io/docs/monitor/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/monitor/exporter/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/monitor/grafana/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/monitor/metrics/</loc>
+         <lastmod>2026-01-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/monitor/prometheus/</loc>
          <lastmod>2026-01-09</lastmod>
          <changefreq>daily</changefreq>
     </url>
