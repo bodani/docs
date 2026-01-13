@@ -19,7 +19,8 @@
 只备份用户(角色)信息: pg_dumpall -g > roles.sql
 ```
 
-#### 备份压缩并存储到minio
+#### 备份压缩并存储到 minio
+
 ```
   #!/bin/bash
 
@@ -57,12 +58,14 @@
 ```
 
 ## copy 拷贝数据
+
 ```
 数据拷贝到本地： psql -U postgres -d databasename  -p 5432 -h 10.1.1.1 -c "\copy (select * from $tablename where xxx) to '/tmp/db/$tablename.csv'";
 
-数据恢复到数据库: psql -U postgres -d databasename -p 5432 -h 127.0.0.1 -c "\copy $tablename from '/tmp/db/$tablename.csv'"; 
+数据恢复到数据库: psql -U postgres -d databasename -p 5432 -h 127.0.0.1 -c "\copy $tablename from '/tmp/db/$tablename.csv'";
 ```
-说明： copy 与 \copy 区别， \copy cvs数据在client端、copy svs数据在server端。
+
+说明： copy 与 \copy 区别， \copy cvs 数据在 client 端、copy svs 数据在 server 端。
 
 ##### 注意事项: 需要在新数据库中对序列进行更新
 
@@ -77,15 +80,13 @@ copy from 数据量大时效率太低替代方法
 /usr/pgsql-10/bin/pg_bulkload -U postgres -d dataname -i /xxx/xxx.csv -O tablename -l /tmp/xxx.log -P /tmp/xxx.bad -o "TYPE=CSV" -o $'DELIMITER=\t'
 ```
 
-说明： pg_bulkload 为拓展形式。 需要在数据库中'create extends pg_bulkload' 。 
+说明： pg_bulkload 为拓展形式。 需要在数据库中'create extends pg_bulkload' 。
 
+## pg_bulkload 与 copy 区别
 
-## pg_bulkload 与copy 区别
+copy 将构造出的元组插入共享内存，同时写日志，pg_bulkload 绕过了共享内存，不写日志，这样会减少磁盘 I/O，但是也很危险。
 
- 
-copy将构造出的元组插入共享内存，同时写日志，pg_bulkload绕过了共享内存，不写日志，这样会减少磁盘I/O，但是也很危险。
-
-##### 使用pg_bulkload方式导入数据时一定要注意，注意，注意！！！　由于不写wal日志从库无法同步，从库直接宕掉，直接宕掉！！！ 测试用就好,生产环境需谨慎
+##### 使用 pg_bulkload 方式导入数据时一定要注意，注意，注意！！！　由于不写 wal 日志从库无法同步，从库直接宕掉，直接宕掉！！！ 测试用就好,生产环境需谨慎
 
 ## 实时备份恢复
 
@@ -103,11 +104,11 @@ https://github.com/postgrespro/pg_probackup
 
 https://github.com/pgbackrest/pgbackrest
 
-由于原始库中存在extension 需要超级管理员权限进行恢复，恢复后将所有者变更为普通用户。
-pg中没有方法可以将整个database 中table 的 owner 进行修改，使用如下方法进行批量修改
-
+由于原始库中存在 extension 需要超级管理员权限进行恢复，恢复后将所有者变更为普通用户。
+pg 中没有方法可以将整个 database 中 table 的 owner 进行修改，使用如下方法进行批量修改
 
 批量修改表和视图的所有者
+
 ```
 DO $$DECLARE r record;
 BEGIN
@@ -117,8 +118,5 @@ LOOP
 END LOOP;
 END$$;
 ```
+
 ---
-
-
-
-

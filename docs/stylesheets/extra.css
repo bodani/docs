@@ -1,52 +1,205 @@
+/*
+ * 自定义样式 - 美化MkDocs Material主题
+ */
+
+/* ===== 全局布局优化 ===== */
 @media (min-width: 76.25em) {
     .md-main__inner {
-        max-width: 95%; /* 调整这个值来改变宽度比例，例如90% */
+        max-width: 95%;
+        margin: 0 auto;
+        padding: 0 1rem;
     }
 
+    .md-content {
+        padding: 1rem;
+    }
 }
-/* 隐藏整个 .md-copyright 容器内的所有内容 */
+
+/* ===== 颜色主题优化 ===== */
+
+/* 浅色模式主题色 */
+[data-md-color-scheme="default"] {
+    --md-primary-fg-color: #1e88e5; /* 蓝色主题 */
+    --md-primary-fg-color--light: #64b5f6; /* 浅蓝色高亮 */
+    --md-primary-fg-color--dark: #0d47a1; /* 深蓝色 */
+    --md-accent-fg-color: #64b5f6; /* 粉色强调色 */
+    --md-typeset-a-color: var(--md-primary-fg-color--dark); /* 链接颜色 */
+}
+
+/* 深色模式主题色 */
+[data-md-color-scheme="slate"] {
+    --md-primary-fg-color: #263238; /* 深灰色背景 */
+    --md-primary-fg-color--light: #4f5b62; /* 浅灰色 */
+    --md-primary-fg-color--dark: #000a12; /* 深灰黑色 */
+    --md-accent-fg-color: #ff4081; /* 粉色强调色 */
+    --md-typeset-a-color: var(--md-primary-fg-color--light);
+}
+
+/* ===== 页面内容样式优化 ===== */
+
+/* 调整主标题 */
+.md-typeset h1 {
+    color: var(--md-primary-fg-color);
+    border-bottom: 2px solid var(--md-primary-fg-color);
+    padding-bottom: 0.3em;
+    margin-top: 0;
+}
+
+/* 调整次标题 */
+.md-typeset h2 {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.3em;
+}
+
+[data-md-color-scheme="slate"] .md-typeset h2 {
+    border-bottom: 1px solid #424242;
+}
+
+/* 代码块样式增强 */
+.md-typeset code:not(.highlight) {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000000; /* 使用纯黑色 */
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-family: "Roboto Mono", monospace;
+}
+
+
+/* 代码块增强 */
+.md-code__highlight {
+    font-size: 0.85em;
+    border-radius: 0.5em;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* 表格美化 */
+.md-typeset table:not([class]) {
+    border-radius: 0.5em;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.md-typeset table:not([class]) th {
+    background-color: var(--md-primary-fg-color);
+    color: var(--md-primary-bg-color);
+    font-weight: 600;
+}
+
+/* 列表美化 */
+.md-typeset ul li,
+.md-typeset ol li {
+    margin-bottom: 0.3em;
+}
+
+/* 行内引用美化 */
+.md-typeset blockquote {
+    border-left: 4px solid var(--md-primary-fg-color);
+    background-color: rgba(33, 150, 243, 0.03);
+    padding: 1em 1.5em;
+    margin: 1.5em 0;
+    border-radius: 0 0.5em 0.5em 0;
+}
+
+[data-md-color-scheme="slate"] .md-typeset blockquote {
+    background-color: rgba(15, 65, 110, 0.15);
+}
+
+/* 隐藏默认版权文本但保留关键信息 */
 .md-copyright {
-    font-size: 0 !important;    /* 隐藏所有文本 */
-    visibility: hidden !important; /* 双重保险 */
-  }
-  
-  /* 单独恢复版权信息部分的可见性 */
+    font-size: 0 !important;
+    visibility: hidden !important;
+}
+
 .md-copyright__highlight {
-    font-size: 14px !important;  /* 恢复字体大小（根据主题默认值调整） */
+    font-size: 0.75rem !important;
     visibility: visible !important;
     display: block !important;
-  }
+    color: inherit !important;
+    opacity: 0.7;
+}
 
-
-  /* ddddd */
-
-/* 强制页脚背景同步header主色 */
+/* 页脚背景同步主题 */
 .md-footer-meta {
     background-color: var(--md-primary-fg-color) !important;
-    color: var(--md-primary-bg-color) !important; /* 同步header文字色 */
-  }
-  
-  /* 浅色模式header蓝调配置 */
-  [data-md-color-scheme="default"] {
-    --md-primary-fg-color:        #1976D2; /* 标准Material蓝 */
-    --md-primary-fg-color--light: #63A4FF; /* 悬停高亮色 */
-    --md-primary-fg-color--dark:  #004BA0;
-  }
-  
-  /* 深色模式自动适配 */
-  [data-md-color-scheme="slate"] {
-    --md-primary-fg-color:        #2B3A4D; /* 深蓝灰背景 */
-    --md-primary-fg-color--light: #445E77;
-    --md-primary-fg-color--dark:  #18232E;
-  }
-/* ===== 浅色模式专属配色 ===== */
-[data-md-color-scheme="default"] {
-    /* 头部颜色体系 */
-    --md-primary-fg-color:        #2d5a74; /* 标准Material蓝 (保留原色) */
-    --md-primary-fg-color--light: #3483d6; /* 悬停高亮 */
-    --md-primary-fg-color--dark:  #4285c7; /* 激活状态 */
-    
-    /* 页脚同步配色 */
-    --md-footer-bg-custom: var(--md-primary-fg-color); /* 继承header主色 */
-  }
+    color: var(--md-primary-bg-color) !important;
+}
+
+/* 导航栏样式 */
+.md-nav__item--active > .md-nav__link {
+    color: var(--md-primary-fg-color);
+    font-weight: bold;
+}
+
+/* 内容区域间距调整 */
+.md-content__inner {
+    padding: 1.5rem 1.6rem 0.5rem;
+}
+
+/* 滚动条美化 (Webkit内核浏览器) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+[data-md-color-scheme="slate"] ::-webkit-scrollbar-track {
+    background: #424242;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--md-primary-fg-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--md-primary-fg-color--light);
+}
+
+/* 搜索框增强 */
+.md-search__form {
+    background-color: rgba(255,255,255,0.15);
+}
+
+[data-md-color-scheme="slate"] .md-search__form {
+    background-color: rgba(255,255,255,0.05);
+}
+
+/* 按钮样式 */
+.md-button {
+    border-radius: 4px;
+    padding: 0.3rem 0.8rem;
+    font-weight: 500;
+}
+
+/* 页脚版权文字颜色 */
+.md-footer-copyright {
+    color: var(--md-primary-bg-color);
+    opacity: 0.8;
+}
+
+/* 响应式优化 */
+@media screen and (max-width: 76.1875em) {
+    .md-nav--primary .md-nav__title--site {
+        background-color: var(--md-primary-fg-color);
+    }
+}
+
+/* 美化表格头部行 */
+.md-typeset table:not([class]) thead tr th {
+    padding: 0.75rem 0.5rem;
+}
+
+/* 美化表格数据行 */
+.md-typeset table:not([class]) tbody tr td {
+    padding: 0.75rem 0.5rem;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+[data-md-color-scheme="slate"] .md-typeset table:not([class]) tbody tr td {
+    border-bottom: 1px solid #424242;
+}
   

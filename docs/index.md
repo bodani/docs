@@ -1,243 +1,185 @@
-# TeaLabs
+# 🏠 技术文档中心
 
-> “知之者不如好之者，好之者不如乐之者。” - 孔子
+<div class="home-hero">
+  <h2>综合技术资源文档中心</h2>
+  <p><strong>开源 • 专业 • 全面 • 实用</strong></p>
+</div>
 
-## 目录
+<style>
+.home-hero {
+    background: linear-gradient(135deg, #1e88e5 0%, #64b5f6 100%);
+    color: white;
+    padding: 3rem 1rem;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+    text-align: center;
+    box-shadow: 0 8px 32px rgba(30, 136, 229, 0.3);
+}
 
-- [Linux](linux)
-- [Mysql 笔记](mysql)
-- [PostgreSQL 笔记](postgres)
-- [常见问题](#常见问题)
-- [资源推荐](#资源推荐)
-- [贡献指南](#贡献指南)
-- [许可](#许可)
+.grid-cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
 
-## MySQL 笔记
+.card-item {
+    background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #dee2e6;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
 
-在这里，你将找到关于 MySQL 数据库的详细笔记和教程：
+.card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(30, 136, 229, 0.15);
+    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+}
 
-- [MySQL 安装与配置](docs/mysql/installation.md)
-- [MySQL 基本操作](docs/mysql/basic_operations.md)
-- [MySQL 高级特性](docs/mysql/advanced_features.md)
-- [MySQL 性能优化](docs/mysql/performance_tuning.md)
+.card-item h3 {
+    margin-top: 0;
+    color: #1e88e5;
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+}
 
-## PostgreSQL 笔记
+.card-item p {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+}
 
-以下是关于 PostgreSQL 数据库的详细笔记和教程：
+.btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #1e88e5;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
 
-- [PostgreSQL 安装与配置](docs/postgresql/installation.md)
-- [PostgreSQL 基本操作](docs/postgresql/basic_operations.md)
-- [PostgreSQL 高级特性](docs/postgresql/advanced_features.md)
-- [PostgreSQL 性能优化](docs/postgresql/performance_tuning.md)
+.btn:hover {
+    background-color: #0d47a1;
+    color: white;
+}
 
-## 常见问题
+.md-typeset .mermaid {
+    text-align: center;
+    margin: 1.5rem 0;
+}
 
-一些在使用过程中可能会遇到的常见问题及其解决方案：
+.md-typeset table:not([class]) {
+    box-shadow: 0 4px 6px rgba(30, 136, 229, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
 
-- [MySQL 常见问题](docs/mysql/faq.md)
-- [PostgreSQL 常见问题](docs/postgresql/faq.md)
+.md-typeset h2, .md-typeset h3 {
+    color: #1e88e5;
+}
 
-## 资源推荐
+.md-typeset blockquote {
+    background-color: #e3f2fd;
+    border-left-color: #1e88e5;
+}
 
-一些推荐的学习资源和工具：
+.md-typeset blockquote > :first-child {
+    margin-top: 0;
+}
 
-- [官方文档 - MySQL](https://dev.mysql.com/doc/)
-- [官方文档 - PostgreSQL](https://www.postgresql.org/docs/)
-- [在线 SQL 教程](https://www.w3schools.com/sql/)
-- [数据库设计工具](https://www.dbdesigner.net/)
-- [数据结构动态图](https://www.cs.usfca.edu/~galles/visualization/)
-## 贡献指南
+.md-typeset blockquote > :last-child {
+    margin-bottom: 0;
+}
 
-欢迎任何形式的贡献！请阅读 [贡献指南](CONTRIBUTING.md) 以了解如何参与其中。
-
-## 许可
-
-本项目采用 [MIT 许可证](LICENSE)。
-
-## 所有文章
-
-### 测试
-- [测试](test.md)
-
-### 书籍
-- [书籍](books/)
-
-### ClickHouse
-- [基准测试](clickhouse/benchmark.md)
-- [最佳实践](clickhouse/bestpractices.md)
-- [C1](clickhouse/c1.md)
-- [Keeper](clickhouse/ch-keeper.md)
-- [压缩](clickhouse/compresstion.md)
-- [演示](clickhouse/demo.md)
-- [用户](clickhouse/user.md)
-
-#### ClickHouse 安装
-- [安装集群](clickhouse/install/install_cluster.md)
-- [安装 S3](clickhouse/install/install_s3.md)
-- [安装单机版](clickhouse/install/install_single.md)
-
-### 数据湖
-- [Iceberg](datalake/iceberg.md)
-- [Nessie](datalake/nessie.md)
-
-### 英文词汇
-- [英文词汇](en/words.md)
-
-### Fluent Bit
-- [问题](fluentbit/problems.md)
-
-### Grafana
-- [警报](grafana/alert.md)
-
-### Kubernetes
-- [StatefulSet 更新](kubernetes/sts_update.md)
-
-### Linux
-- [ELF 工具](linux/elfutil.md)
-- [IPMI 工具](linux/ipmitool.md)
-- [Kubectl](linux/kuberctl.md)
-- [KVM](linux/kvm01.md)
-- [补丁](linux/patch.md)
-- [工具](linux/tools.md)
-- [Web 管理](linux/webmanage.md)
-
-### 中间件
-- [Etcd](middleware/etcd.md)
-- [Nginx](middleware/nginx.md)
-
-### MongoDB
-- [索引](mongodb/index.md)
-
-### 监控
-- [监控](monitor/index.md)
-- [监控 VM](monitor/vm/index.md)
-
-### MySQL
-- [活跃](mysql/active.md)
-- [管理](mysql/admin.md)
-- [备份](mysql/backup.md)
-- [二进制日志](mysql/binary.md)
-- [克隆](mysql/clone.md)
-- [配置](mysql/config.md)
-- [双写](mysql/doublewrite.md)
-- [导出器](mysql/exporter.md)
-- [锁](mysql/lock.md)
-- [内存](mysql/memory.md)
-- [MGR](mysql/MGR.md)
-- [监控](mysql/monitor.md)
-- [Shell MGR](mysql/myshellMGR.md)
-- [内存管理](mysql/mysqlmem.md)
-- [MySQLslap](mysql/mysqlslap.md)
-- [导航树](mysql/navtree.md)
-- [权限管理](mysql/PrivilegeManagement.md)
-- [代理](mysql/proxy.md)
-- [Pt 工具](mysql/pt.md)
-- [复制](mysql/replication.md)
-- [表大小](mysql/table_size.md)
-- [用户管理](mysql/users.md)
-
-#### mysql 变更日志
-- [Pro1](mysql/changelog/pro1.md)
-
-### PostgreSQL
-- [AD 锁](postgres/adlock.md)
-- [归档](postgres/archive.md)
-- [自动真空触发](postgres/auto_vacuum_trigger.md)
-- [性能优化](postgres/awsome-postgres.md)
-- [后台写入](postgres/bgwriter.md)
-- [Citus 01](postgres/citus01.md)
-- [Citus 11](postgres/citus11.md)
-- [集群](postgres/cluster.md)
-- [日常管理](postgres/daily_management.md)
-- [DBA](postgres/dba.md)
-- [Debezium](postgres/debezium.md)
-- [删除](postgres/delete.md)
-- [DTS](postgres/dts.md)
-- [解释](postgres/explain.md)
-- [扩展](postgres/extention.md)
-- [填充因子](postgres/fillfactor.md)
-- [函数与操作符](postgres/FunctionsandOperators.md)
-- [高级 SQL](postgres/high_level_sql.md)
-- [HLL](postgres/hll.md)
-- [热更新](postgres/hotupdate.md)
-- [HypoPG 索引](postgres/hypopg-index.md)
-- [Bloom 索引](postgres/index-bloom.md)
-- [索引失效](postgres/index-invalid.md)
-- [索引类型及使用场景](postgres/index01.md)
-- [插入](postgres/insert01.md)
-- [安装](postgres/install.md)
-- [安装 01](postgres/install01.md)
-- [安装 02](postgres/install02.md)
-- [LibPG](postgres/libpg.md)
-- [锁等待](postgres/lock_wait.md)
-- [日志](postgres/log.md)
-- [逻辑备份](postgres/logical-backup.md)
-- [逻辑复制故障转移](postgres/logical-replication_failover.md)
-- [逻辑复制](postgres/logical-replication.md)
-- [无密码登录](postgres/login_nopasswd.md)
-- [物化视图](postgres/materialized.md)
-- [监控解释](postgres/monitor_explain.md)
-- [监控 SQL](postgres/monitor-sql.md)
-- [监控](postgres/monitor.md)
-- [正规化](postgres/normal-form.md)
-- [OOM](postgres/oom.md)
-- [参数](postgres/params.md)
-- [分区](postgres/partition.md)
-- [Partman](postgres/partman.md)
-- [Patroni](postgres/patroni.md)
-- [Patroni 02](postgres/patroni02.md)
-- [Pg Activity](postgres/pg_activity.md)
-- [Pg Buffercache](postgres/pg_buffercache.md)
-- [Pg Citus](postgres/pg_citus.md)
-- [Pg ELK](postgres/pg_elk.md)
-- [Pg FDW](postgres/pg_fdw.md)
-- [Pg JSON](postgres/pg_json.md)
-- [Pg Lock](postgres/pg_lock.md)
-- [Pg Pathman](postgres/pg_pathman.md)
-- [Pg Prewarm](postgres/pg_prewarm.md)
-- [Pg Rewind](postgres/pg_rewind.md)
-- [Pg Rewrite](postgres/pg_rewrite.md)
-- [Pg Rman](postgres/pg_rman.md)
-- [Pg Trgm](postgres/pg_trgm.md)
-- [Pg Age](postgres/pgage.md)
-- [Pg Auto Failover](postgres/pgautofailover.md)
-- [Pg Bench](postgres/pgbench.md)
-- [Pg Bouncer](postgres/pgbouncer.md)
-- [Pg Fincore](postgres/pgfincore.md)
-- [Pg Pool2](postgres/pgpool2.md)
-- [Pg Stat Tuple](postgres/pgstattuple.md)
-- [Pg Watch2](postgres/pgwatch2.md)
-- [物理备份](postgres/physical-backup.md)
-- [PipelineDB 01](postgres/pipelinedb01.md)
-- [PipelineDB 02](postgres/pipelinedb02.md)
-- [PITR](postgres/pitr.md)
-- [12](postgres/postgres12.md)
-- [准备](postgres/prepare.md)
-- [只读](postgres/readonly.md)
-- [重新备份超级用户](postgres/reback_supper_user.md)
-- [重新备份](postgres/reback.md)
-- [复制 01](postgres/replication01.md)
-- [复制 02](postgres/replication02.md)
-- [角色管理](postgres/role-manager.md)
-- [SSL](postgres/ssl.md)
-- [统计](postgres/stat.md)
-- [表空间](postgres/tablespace.md)
-- [模板](postgres/template.md)
-- [数据库设计思考](postgres/thinking_in_db_fd.md)
-- [性能优化思考](postgres/thinking_in_db_performance.md)
-- [调优思考](postgres/thinking_in_db_tune.md)
-- [TimescaleDB](postgres/timescaledb.md)
-- [TOAST](postgres/toast.md)
-- [TPC-H](postgres/tpch.md)
-- [非日志表](postgres/unlogged_table.md)
-- [Upsert](postgres/upset.md)
-- [Vacuum Limit](postgres/vacuum_limit.md)
-- [Vacuum](postgres/vacuum.md)
-- [查看活动](postgres/view_pg_stat_activity.md)
-- [查看后台写入](postgres/view_pg_stat_bgwriter.md)
-- [WAL LSN](postgres/wal_lsn.md)
-- [WAL 大小](postgres/wal_size.md)
+@media (max-width: 768px) {
+    .grid-cards-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .home-hero {
+        padding: 1.5rem 0.5rem;
+    }
+}
+</style>
 
 ---
 
-感谢您的访问！希望这些文档对你有所帮助。如果你有任何问题或建议，请通过 [issues](https://github.com/bodani/docs/issues) 提出。
+## 📚 快速导航
+
+<div class="grid-cards-container">
+  <div class="card-item">
+    <h3>🐘 PostgreSQL</h3>
+    <p>功能强大的开源对象关系型数据库系统，注重可靠性和标准兼容性。</p>
+    <a href="./postgres/index.md" class="btn">立即查看</a>
+  </div>
+  
+  <div class="card-item">
+    <h3>🐬 MySQL</h3>
+    <p>世界最受欢迎的开源关系型数据库管理系统，以性能和易用性著称。</p>
+    <a href="./mysql/index.md" class="btn">立即查看</a>
+  </div>
+  
+  <div class="card-item">
+    <h3>🧩 中间件</h3>
+    <p>分布式系统的核心组件，包含监控、存储和其他关键中间件技术。</p>
+    <a href="./middleware/index.md" class="btn">立即查看</a>
+  </div>
+  
+  <div class="card-item">
+    <h3>🐧 Linux</h3>
+    <p>企业级操作系统平台与服务器管理，包含运维指南和最佳实践。</p>
+    <a href="./linux/index.md" class="btn">立即查看</a>
+  </div>
+</div>
+
+---
+
+## 技术中心概览
+
+本文档中心提供多种主流技术栈的专业文档，涵盖了数据库、中间件及操作系统等核心技术领域，致力于为开发者和运维人员提供全方位的技术支持和学习资源。
+
+### 技术分类导航
+
+- **PostgreSQL**：功能强大、符合 SQL 标准的对象关系型数据库
+- **MySQL**：广泛使用的关系型数据库管理系统，性能卓越
+- **中间件**：构建分布式系统的关键组件和服务
+- **Linux**：服务器操作系统与系统管理运维实践
+
+### 知识体系框架
+
+文档中心围绕以下技术领域构建：
+
+1. **数据库技术**
+
+   - 安装部署与初始化配置
+   - 性能调优与查询优化
+   - 高可用架构与容灾设计
+   - 安全管理与权限控制
+   - 备份恢复与数据迁移
+
+2. **中间件系统**
+
+   - 服务治理与消息队列
+   - 监控告警与日志分析
+   - 分布式缓存与网关管理
+   - 容器编排与云原生技术
+
+3. **系统运维**
+
+   - Linux 操作系统优化
+   - 虚拟化与云计算平台管理
+   - 网络安全与策略配置
+   - 自动化运维与工具实践
+
+## 资源特色
+
+平台整合了多个主流开源技术的实践经验和最佳实践，帮助用户快速解决实际工作中的问题，同时促进技术团队的交流与发展。每类技术都提供了从入门到进阶的完整知识路径，支持用户的持续成长。
+
+> ⭐ 开始您的技术探索之旅，从左侧导航栏或上方分类卡片选择感兴趣的主题深入了解

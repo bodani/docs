@@ -1,169 +1,86 @@
 # 🐘 PostgreSQL 专业文档中心
 
-<div class="postgres-hero">
-  <h2>开源关系型数据库管理系统的世界标准</h2>
-  <p><strong>高性能 • 高可靠 • 高扩展 </strong></p>
+欢迎来到 PostgreSQL 专业文档中心。这里汇聚了 PostgreSQL 数据库的全方位技术文档，助您深入了解这款强大而可靠的开源对象关系型数据库系统。
+
+## 快速导航
+
+借助 MkDocs Material 的 `grid cards` 插件，我们提供了便捷的功能入口。
+
+<div class="grid cards" markdown>
+
+- {: data-title="Installation" } **安装与配置**
+
+  ***
+
+  详细了解 PostgreSQL 的安装部署和性能配置方法。
+  {:.annotate}
+
+  1.  [详情链接](./install/install01.md){: .annotate target="\_blank" }
+
+- {: data-title="Security" } **安全管理**
+
+  ***
+
+  掌握 PostgreSQL 中的用户权限和安全认证策略。
+  {:.annotate}
+
+  1.  [详情链接](./security/role-manager.md){: .annotate target="\_blank" }
+
+- {: data-title="Optimization" } **索引与查询优化**
+
+  ***
+
+  优化数据库索引设计和查询性能提升技术。
+  {:.annotate}
+
+  1.  [详情链接](./index/index01.md){: .annotate target="\_blank" }
+
+- {: data-title="Performance" } **性能优化**
+
+  ***
+
+  全面的数据库性能分析与调优方法论。
+  {:.annotate}
+
+  1.  [详情链接](./performance/params.md){: .annotate target="\_blank" }
+
+- {: data-title="Replication" } **数据同步**
+
+  ***
+
+  深入理解流复制、逻辑复制等数据同步机制。
+  {:.annotate}
+
+  1.  [详情链接](./replication/replication01.md){: .annotate target="\_blank" }
+
+- {: data-title="Backup" } **备份与恢复**
+
+  ***
+
+  保障数据安全的备份策略与恢复技术详解。
+  {:.annotate}
+
+  1.  [详情链接](./backup/index.md){: .annotate target="\_blank" }
+
+- {: data-title="HA" } **高可用方案**
+
+  ***
+
+  实现业务连续性的 HA 解决方案和技术选型。
+  {:.annotate}
+
+  1.  [详情链接](./ha/patroni.md){: .annotate target="\_blank" }
+
+- {: data-title="Maintenance" } **维护管理**
+
+  ***
+
+  数据库日常运维管理和维护任务处理。
+  {:.annotate}
+
+  1.  [详情链接](./install/daily_management.md){: .annotate target="\_blank" }
+
 </div>
-
-<style>
-.postgres-hero {
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
-    color: white;
-    padding: 3rem 1rem;
-    border-radius: 12px;
-    margin: 10.0 rem 0;
-    text-align: center;
-    box-shadow: 0 8px 32px rgba(30, 58, 138, 0.3);
-}
-
-.grid-cards-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin: 2rem 0;
-}
-
-.card-item {
-    background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 10px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 1px solid #dee2e6;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-}
-
-.card-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
-    background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
-}
-
-.card-item h3 {
-    margin-top: 0;
-    color: #333;
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-}
-
-.card-item p {
-    color: #666;
-    margin-bottom: 1.5rem;
-    line-height: 1.5;
-}
-
-.btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #3b82f6;
-    color: white;
-    text-decoration: none;
-    border-radius: 6px;
-    transition: background-color 0.3s ease;
-    border: none;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-
-.btn:hover {
-    background-color: #2563eb;
-    color: white;
-}
-
-.md-typeset .mermaid {
-    text-align: center;
-    margin: 1.5rem 0;
-}
-
-.md-typeset table:not([class]) {
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-.md-typeset h2, .md-typeset h3 {
-    color: #1e40af;
-}
-
-.md-typeset blockquote {
-    background-color: #eff6ff;
-    border-left-color: #3b82f6;
-}
-
-.md-typeset blockquote > :first-child {
-    margin-top: 0;
-}
-
-.md-typeset blockquote > :last-child {
-    margin-bottom: 0;
-}
-
-@media (max-width: 768px) {
-    .grid-cards-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .postgres-hero {
-        padding: 1.5rem 0.5rem;
-    }
-}
-</style>
-
----
-
-## 📚 快速导航
-
-<div class="grid-cards-container">
-  <div class="card-item">
-    <h3>🚀 安装与配置</h3>
-    <p>详细了解 PostgreSQL 的安装部署和性能配置方法。</p>
-    <a href="./install/install01" class="btn">详情</a>
-  </div>
-  
-  <div class="card-item">
-    <h3>🔐 安全管理</h3>
-    <p>掌握 PostgreSQL 中的用户权限和安全认证策略。</p>
-    <a href="./security/role-manager" class="btn">详情</a>
-  </div>
-  
-  <div class="card-item">
-    <h3>🏗️ 索引与查询优化</h3>
-    <p>优化数据库索引设计和查询性能提升技术。</p>
-    <a href="./index/index01" class="btn">详情</a>
-  </div>
-  
-  <div class="card-item">
-    <h3>⚡ 性能优化</h3>
-    <p>全面的数据库性能分析与调优方法论。</p>
-    <a href="./performance/params" class="btn">详情</a>
-  </div>
-  
-  <div class="card-item">
-    <h3>🔄 数据同步</h3>
-    <p>深入理解流复制、逻辑复制等数据同步机制。</p>
-    <a href="./replication/replication01" class="btn">详情</a>
-  </div>
-  
-  <div class="card-item">
-    <h3>💾 备份与恢复</h3>
-    <p>保障数据安全的备份策略与恢复技术详解。</p>
-    <a href="./backup/" class="btn">详情</a>
-  </div>
-  
-  <div class="card-item">
-    <h3>🚨 高可用方案</h3>
-    <p>实现业务连续性的 HA 解决方案和技术选型。</p>
-    <a href="./ha/patroni" class="btn">详情</a>
-  </div>
-  
-  <div class="card-item">
-    <h3>🔧 维护管理</h3>
-    <p>数据库日常运维管理和维护任务处理。</p>
-    <a href="./install/daily_management" class="btn">详情</a>
-  </div>
-</div>
-
----
 
 ## PostgreSQL 简介
 
@@ -198,6 +115,7 @@ PostgreSQL 是一款功能强大的开源对象关系型数据库系统，具有
 | 无成本商用        | ✅         | ⚠️    | ❌     | ❌         |
 | MVCC 支持         | ✅         | ⚠️    | ✅     | ✅         |
 
+??? info "图标说明"
 🌟 卓越级 &nbsp;&nbsp; ✅ 优秀级 &nbsp;&nbsp; ⚠️ 中等级 &nbsp;&nbsp; ❌ 较弱级
 
 ## 何时使用 PostgreSQL？
