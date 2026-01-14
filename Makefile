@@ -17,7 +17,7 @@ install:
 	# 创建虚拟环境（如果不存在）
 	test -d .venv || python3 -m venv .venv
 	# 激活虚拟环境并安装依赖
-	bash -c "source .venv/bin/activate && pip install -r requirement.txt"
+	bash -c "source .venv/bin/activate && pip install --break-system-packages -r requirement.txt"
 
 # 检查虚拟环境是否存在
 check:

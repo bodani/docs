@@ -104,8 +104,87 @@
     }
     
     .home-hero {
-        padding: 1.5rem 0.5rem;
-    }
+    padding: 1.5rem 0.5rem;
+  }
+}
+
+/* 新增样式 */
+.overview-section {
+    margin: 3rem 0;
+    padding: 2rem 1rem;
+}
+
+.overview-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--md-primary-fg-color);
+    font-size: 1.8rem;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.feature-card {
+    background: linear-gradient(145deg, var(--md-default-bg-color) 0%, #f8f9fa 100%);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(145deg, transparent, rgba(var(--md-rgb-accent-fg-color), 0.05));
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.feature-card:hover::before {
+    opacity: 1;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-color: rgba(var(--md-rgb-accent-fg-color), 0.3);
+}
+
+.feature-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+    margin: 0 0 0.75rem 0;
+    color: var(--md-primary-fg-color);
+    font-size: 1.25rem;
+}
+
+.feature-card p {
+    color: var(--md-default-fg-color--light);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    margin: 1rem 0 0;
 }
 </style>
 
@@ -117,25 +196,25 @@
   <div class="card-item">
     <h3>🐘 PostgreSQL</h3>
     <p>功能强大的开源对象关系型数据库系统，注重可靠性和标准兼容性。</p>
-    <a href="./postgres/index.md" class="btn">立即查看</a>
+    <a href="./postgres/" class="btn">立即查看</a>
   </div>
   
   <div class="card-item">
     <h3>🐬 MySQL</h3>
     <p>世界最受欢迎的开源关系型数据库管理系统，以性能和易用性著称。</p>
-    <a href="./mysql/index.md" class="btn">立即查看</a>
+    <a href="./mysql/" class="btn">立即查看</a>
   </div>
   
   <div class="card-item">
     <h3>🧩 中间件</h3>
     <p>分布式系统的核心组件，包含监控、存储和其他关键中间件技术。</p>
-    <a href="./middleware/index.md" class="btn">立即查看</a>
+    <a href="./middleware/" class="btn">立即查看</a>
   </div>
   
   <div class="card-item">
     <h3>🐧 Linux</h3>
     <p>企业级操作系统平台与服务器管理，包含运维指南和最佳实践。</p>
-    <a href="./linux/index.md" class="btn">立即查看</a>
+    <a href="./linux/" class="btn">立即查看</a>
   </div>
 </div>
 
@@ -156,27 +235,27 @@
 
 文档中心围绕以下技术领域构建：
 
-1. **数据库技术**
+**数据库技术**
 
-   - 安装部署与初始化配置
-   - 性能调优与查询优化
-   - 高可用架构与容灾设计
-   - 安全管理与权限控制
-   - 备份恢复与数据迁移
+- 安装部署与初始化配置
+- 性能调优与查询优化
+- 高可用架构与容灾设计
+- 安全管理与权限控制
+- 备份恢复与数据迁移
 
-2. **中间件系统**
+**中间件系统**
 
-   - 服务治理与消息队列
-   - 监控告警与日志分析
-   - 分布式缓存与网关管理
-   - 容器编排与云原生技术
+- 服务治理与消息队列
+- 监控告警与日志分析
+- 分布式缓存与网关管理
+- 容器编排与云原生技术
 
-3. **系统运维**
+**系统运维**
 
-   - Linux 操作系统优化
-   - 虚拟化与云计算平台管理
-   - 网络安全与策略配置
-   - 自动化运维与工具实践
+- Linux 操作系统优化
+- 虚拟化与云计算平台管理
+- 网络安全与策略配置
+- 自动化运维与工具实践
 
 ## 资源特色
 

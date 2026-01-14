@@ -1,4 +1,4 @@
-site_name: Tea # 项目名称
+site_name: TeaLabs # 项目名称
 site_url: https://bodani.github.io/docs/ # 我在nginx中使用的是8000端口，如果你使用的是80端口，可以直接写成https://localhost/。
 site_author: Eamon # 作者
 site_description: >- # 项目描述
@@ -13,6 +13,7 @@ copyright: Copyright &copy;  2021-2025 | Eamon
 
 theme:
   name: "material"
+  custom_dir: "custom_theme_overrides"
   palette:
     - media: "(prefers-color-scheme)" # 主题颜色
       scheme: slate
@@ -77,6 +78,9 @@ theme:
       build: true
 extra_css:
   - stylesheets/extra.css
+  - custom-style/custom-styles.css
+extra_javascript:
+  - custom-js/custom-js.js
 
 # Plugins
 plugins:

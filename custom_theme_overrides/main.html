@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+<!-- Custom styles and theme overrides -->
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ base_url }}/custom-style/custom-styles.css">
+{% endblock %}
+
+<!-- Custom JavaScript -->
+{% block scripts %}
+  {{ super() }}
+  <script src="{{ base_url }}/custom-js/custom-js.js"></script>
+{% endblock %}
+
+<!-- Only customize the footer meta section without replacing the entire footer -->
+{% block footer_meta %}
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <!-- Footer Copyright -->
+      <div class="md-footer-copyright">
+        {% if config.copyright %}
+          <div class="md-footer-copyright__highlight">
+            {{ config.copyright }}
+          </div>
+        {% endif %}
+        {% if config.extra and config.extra.social %}
+          <div class="md-footer-social">
+            {% for social in config.extra.social %}
+              <a href="{{ social.link }}" target="_blank" rel="noopener" title="{{ social.type }}" class="md-footer-social__link">
+                {% include ".icons/" ~ social.icon ~ ".svg" %}
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+      
+      <!-- Additional footer menu (custom) -->
+      <div class="md-footer-links">
+        <h3>相关链接</h3>
+        <ul>
+          <li><a href="{{ config.site_url | url }}" title="{{ config.site_name }}">主页</a></li>
+          <li><a href="{{ config.site_url | url }}docs/">文档首页</a></li>
+          {% if config.repo_url %}
+            <li><a href="{{ config.repo_url }}" target="_blank" rel="noopener">GitHub仓库</a></li>
+          {% endif %}
+          <li><a href="mailto:{{ config.site_author }}@example.com">联系作者</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

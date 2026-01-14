@@ -1,0 +1,213 @@
+/* ========== 简化版本自定义样式文件 ========== */
+
+/* 禁用所有可能与主题内置样式冲突的自定义列表标记样式 */
+.md-content__inner ul,
+.md-content__inner ol {
+  /* 让主题决定列表符号，而不是自定义 */
+}
+
+/* 针对可能导致重复标记的CSS进行处理 */
+.md-typeset :is(ul, ol) {
+  padding-left: initial;
+}
+
+.md-typeset :is(ul, ol) :is(li) {
+  position: relative;
+  padding-left: initial;
+  list-style: initial;
+  margin: initial;
+}
+
+/* 解决列表项中特殊图标重复的问题 */
+.md-typeset .admonition {
+  padding: 0.1em 0.5em 0.1em 0.5em !important;
+}
+
+/* 首页英雄区域样式 - 确保这部分正常 */
+.home-hero {
+  background: linear-gradient(145deg, var(--md-primary-fg-color) 0%, var(--md-primary-fg-color--light) 100%);
+  color: white;
+  padding: 3rem 1.5rem;
+  border-radius: 16px;
+  margin: 1.5rem 0;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.home-hero h2 {
+  color: white !important;
+  margin: 0 0 1rem 0;
+  position: relative;
+  z-index: 2;
+}
+
+.home-hero p {
+  color: rgba(255,255,255,0.9) !important;
+  font-size: 1.1rem;
+  margin: 0.5rem 0 0;
+  position: relative;
+  z-index: 2;
+}
+
+/* 主页卡片布局 - 增强但不影响列表 */
+.grid-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.card-item {
+  background: linear-gradient(145deg, var(--md-default-bg-color) 0%, var(--md-primary-bg-color) 100%);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+}
+
+.card-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(145deg, transparent, rgba(var(--md-rgb-accent-fg-color), 0.05));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.card-item:hover::before {
+  opacity: 1;
+}
+
+.card-item:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+  border-color: rgba(var(--md-rgb-accent-fg-color), 0.3);
+}
+
+.card-item h3 {
+  margin-top: 0;
+  color: var(--md-primary-fg-color);
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 2;
+}
+
+.card-item p {
+  color: var(--md-default-fg-color--light);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+  position: relative;
+  z-index: 2;
+}
+
+/* 按钮增强样式 */
+.btn, .md-button {
+  display: inline-block;
+  padding: 0.6rem 1.2rem;
+  background: linear-gradient(145deg, var(--md-primary-fg-color) 0%, var(--md-primary-fg-color--light) 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  position: relative;
+  z-index: 2;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(30, 136, 229, 0.3);
+}
+
+.btn::before, .md-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: 0.5s;
+}
+
+.btn:hover::before, .md-button:hover::before {
+  left: 100%;
+}
+
+.btn:hover, .md-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(30, 136, 229, 0.4);
+  background: linear-gradient(145deg, var(--md-primary-fg-color--light) 0%, var(--md-primary-fg-color) 100%);
+}
+
+/* 页面内容区标题样式 */
+.md-content__inner h1,
+.md-content__inner h2,
+.md-content__inner h3,
+.md-content__inner h4 {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* 导航菜单样式 */
+.md-nav__item .md-nav__link--active {
+  color: var(--md-accent-fg-color);
+  font-weight: 500;
+}
+
+.md-nav__item .md-nav__link:hover {
+  color: var(--md-accent-fg-color);
+  background-color: rgba(0, 0, 0, 0.03);
+  border-radius: 4px;
+}
+
+/* 响应式优化 */
+@media screen and (max-width: 76.1875em) {
+  .md-footer-meta__inner {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .md-footer-copyright {
+    text-align: center;
+  }
+}
+
+/* 不重写footer内容，仅提供必要样式 */
+.md-footer-copyright__highlight {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.md-footer-meta__inner {
+  position: relative;
+}
+
+.md-footer-links,
+.md-footer-social,
+.md-footer-copyright {
+  position: relative;
+  z-index: 1;
+}
+
+/* 关键：确保所有列表保持原始主题样式，不做任何可能导致重复符号的设置 */
+.md-content__inner ul li,
+.md-content__inner ol li {
+  list-style: inherit;
+  padding-left: inherit;
+  position: static;
+}
