@@ -80,6 +80,7 @@ extra_css:
   - custom-style/custom-styles.css
 extra_javascript:
   - custom-js/custom-js.js
+  - redirect-md.js
 
 # Plugins
 plugins:

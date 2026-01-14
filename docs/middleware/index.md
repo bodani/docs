@@ -123,25 +123,25 @@
   <div class="card-item">
     <h3>⚡ ClickHouse</h3>
     <p>面向联机分析处理(OLAP)的列式数据库管理系统。</p>
-    <a href="../middleware/clickhouse/install" class="btn">详情</a>
+    <a href="../clickhouse/install" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>🍃 MongoDB</h3>
     <p>基于分布式文件存储的开源文档数据库，支持灵活的数据模型。</p>
-    <a href="../middleware/mongodb/install" class="btn">详情</a>
+    <a href="../mongodb/install" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>📊 监控系统</h3>
     <p>Prometheus、Grafana 等监控与可视化工具集。</p>
-    <a href="../middleware/monitor/prometheus" class="btn">详情</a>
+    <a href="../monitor/prometheus" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>🔄 fluentbit</h3>
     <p>轻量级的日志处理器和转发器，用于统一日志处理链路。</p>
-    <a href="../middleware/fluentbit/intro" class="btn">详情</a>
+    <a href="../fluentbit/intro" class="btn">详情</a>
   </div>
 </div>
 

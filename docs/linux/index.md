@@ -117,49 +117,49 @@
   <div class="card-item">
     <h3>🔧 系统管理工具</h3>
     <p>常用的 Linux 系统管理工具与实用程序。</p>
-    <a href="./tools.md" class="btn">详情</a>
+    <a href="./tools" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>💻 KVM 虚拟化</h3>
     <p>KVM 虚拟化平台配置与管理指南。</p>
-    <a href="./kvm01.md" class="btn">详情</a>
+    <a href="./kvm01" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>📦 数据恢复</h3>
     <p>使用 ddrescue 进行数据恢复的技术说明。</p>
-    <a href="./ddrescue.md" class="btn">详情</a>
+    <a href="./ddrescue" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>🔐 安全管理</h3>
     <p>Linux 系统安全管理与防护实践。</p>
-    <a href="./webmanage.md" class="btn">详情</a>
+    <a href="./webmanage" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>🔍 硬件监控</h3>
     <p>利用 smartctl 和 ipmitool 监控硬件健康状态。</p>
-    <a href="./smartctl.md" class="btn">详情</a>
+    <a href="./smartctl" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>🧩 ELF 工具</h3>
     <p>elfutil 等二进制文件处理工具详解。</p>
-    <a href="./elfutil.md" class="btn">详情</a>
+    <a href="./elfutil" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>🔧 补丁管理</h3>
     <p>Linux 系统补丁管理与更新流程。</p>
-    <a href="./patch.md" class="btn">详情</a>
+    <a href="./patch" class="btn">详情</a>
   </div>
   
   <div class="card-item">
     <h3>ernetes K8s 工具</h3>
     <p>kuberctl 等 Kubernetes 管理工具使用指南。</p>
-    <a href="./kuberctl.md" class="btn">详情</a>
+    <a href="./kuberctl" class="btn">详情</a>
   </div>
 </div>
 
