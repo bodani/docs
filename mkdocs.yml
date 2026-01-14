@@ -9,11 +9,10 @@ site_description: >- # 项目描述
 # repo_url: https://github.com/bodani/docs.git # 仓库地址
 
 # 版权信息
-copyright: Copyright &copy;  2021-2025 | Eamon
+copyright: Copyright &copy;  2021-2026 | Eamon
 
 theme:
   name: "material"
-  custom_dir: "custom_theme_overrides"
   palette:
     - media: "(prefers-color-scheme)" # 主题颜色
       scheme: slate
