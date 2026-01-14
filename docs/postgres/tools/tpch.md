@@ -11,21 +11,23 @@ draft: false
 #### TPC-H 基准测试
 
 ##### 下载安装
-[tpch-tools安装包](./tools/tpch-tools.tgz)
 
-修改makefile.suite 模版
+[tpch-tools 安装包](./tools/tpch-tools.tgz)
+
+修改 makefile.suite 模版
 
 ```
-CC=gcc 
+CC=gcc
 DATABASE-TDAT
 MACHINE=LINUX
 WORKLOAD=TPCH
 ```
+
 执行 make 进行编译
 
 ##### 生成测试数据
 
-生成20G测试数据
+生成 20G 测试数据
 
 ```
 ./dbgen -s 20
@@ -40,9 +42,9 @@ for i in `ls *.tbl`; do sed 's/|$//' $i > ${i/tbl/csv}; echo $i; done;
 
 ##### 创建表及索引
 
-在下面的文件中分别是创建表和对应索引的sql
+在下面的文件中分别是创建表和对应索引的 sql
 
-dss.ddl      
+dss.ddl  
 dss.ri
 
 ##### 导入数据
@@ -59,4 +61,4 @@ copy supplier from '/opt/tpch-tools/dbgen/supplier.csv' with DELIMITER '|';
 
 ##### 基准测试
 
-在queries 目录下存放的是24条sql
+在 queries 目录下存放的是 24 条 sql

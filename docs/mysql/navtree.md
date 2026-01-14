@@ -21,14 +21,14 @@ then you can skip these steps. Sometimes there will be ways of achieving the
 same goal that differ between the public version and the Insider edition. In
 that case, we will show them in a tabbed view so you can see one or the other.
 
-[public version]: ../getting-started.md
-[Insiders edition]: ../insiders/getting-started.md
-[creating your site]: ../creating-your-site.md
+[public version]: ./index.md
+[Insiders edition]: ./index.md
+[creating your site]: ./index.md
 
 !!! note "Feedback wanted!"
-    The tutorials are a recent addition to our documentation and we are still
-    working out what shape they should have in the end. Please [provide any
-    feedback you might have in this discussion thread].
+The tutorials are a recent addition to our documentation and we are still
+working out what shape they should have in the end. Please [provide any
+feedback you might have in this discussion thread].
 
     Note, however, that suggestions should be specific and feasible. We want to
     focus on creating more content at the moment, instead of developing a
@@ -39,20 +39,22 @@ that case, we will show them in a tabbed view so you can see one or the other.
 [provide any feedback you might have in this discussion thread]: https://github.com/squidfunk/mkdocs-material/discussions/7220
 
 ## Blogs
-* [Basics](blogs/basic.md) (20 min) <br/>
+
+- [Basics](./index.md) (20 min) <br/>
   covers the basics of setting up a blog, including post metadata.
-* [Navigation, pagination, multiple authors](blogs/navigation.md) (30 min)<br/>
+- [Navigation, pagination, multiple authors](./index.md) (30 min)<br/>
   describes how to make it easier for your readers to find content.
-* [Engagement and dissemination](blogs/engage.md) (30 min)<br/>
+- [Engagement and dissemination](./index.md) (30 min)<br/>
   walks you through ways of increasing engagement with your content.
 
 [:octicons-repo-template-24: Template Repository](https://github.com/mkdocs-material/create-blog)
 
 ## Social cards
-* [Basics](social/basic.md) (20 min) <br/>
+
+- [Basics](./index.md) (20 min) <br/>
   shows you how to configure Material for MkDocs to create social cards for
   your content.
-* [Custom cards](social/custom.md) (15 min)<br/>
+- [Custom cards](./index.md) (15 min)<br/>
   shows you how to design your own custom social cards.
 
 [:octicons-repo-template-24: Template Repository](https://github.com/mkdocs-material/create-social-cards)

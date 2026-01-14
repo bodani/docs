@@ -187,7 +187,7 @@ nav:
           - 复制原理: "./postgres/replication/replication02.md"
           - 逻辑复制: "./postgres/replication/logical-replication.md"
           - 逻辑复制故障切换: "./postgres/replication/logical-replication_failover.md"
-          - pg_rewind: "./postgres/replication/pg_rewind.md"
+          - pg_rewind: "./postgres/tools/pg_rewind.md"
 
       - 备份与恢复:
           - 逻辑备份: "./postgres/backup/logical-backup.md"
@@ -202,15 +202,15 @@ nav:
 
       - 安全管理:
           - 角色管理: "./postgres/security/role-manager.md"
-          - 权限管理: "./postgres/security/PrivilegeManagement.md"
+          - 权限管理: "./mysql/PrivilegeManagement.md"
           - 连接认证: "./postgres/security/login_nopasswd.md"
           - SSL安全: "./postgres/security/ssl.md"
           - 备用服务: "./postgres/security/prepare.md"
           - 只读实例: "./postgres/security/readonly.md"
 
       - 高级特性:
-          - WAL操作详解: "./postgres/troubleshooting/wal_lsn.md"
-          - WAL配置大小: "./postgres/troubleshooting/wal_size.md"
+          - WAL操作详解: "./postgres/design/wal_lsn.md"
+          - WAL配置大小: "./postgres/design/wal_size.md"
           - 高级插入技巧: "./postgres/design/insert01.md"
           - UPSERT: "./postgres/design/upset.md"
           - HLL统计: "./postgres/design/hll.md"
@@ -235,17 +235,17 @@ nav:
           - 备份压缩: "./postgres/tools/pg_rewrite.md"
           - 大页支持: "./postgres/tools/pg_prewarm.md"
           - 读写分析: "./postgres/tools/pg_lock.md"
-          - 表分析: "./postgres/tools/pgstattuple.md"
+          - 表分析: "./postgres/install/pgstattuple.md"
           - CITUS扩展: "./postgres/tools/pg_citus.md"
 
       - 版本与历史:
           - 12版特性: "./postgres/install/postgres12.md"
           - 使用指南: "./postgres/install/postgresql-howto.md"
           - TPC-H基准: "./postgres/tools/tpch.md"
-          - 备份归档: "./postgres/backup/archive.md"
-          - 扩展目录: "./postgres/extentions/"
-          - 配置文件目录: "./postgres/install/config/"
-          - 监控目录: "./postgres/monitor/"
+          - 备份归档: "./postgres/maintenance/archive.md"
+          - 扩展目录: "./postgres/extentions/citus01.md"
+          - 配置文件目录: "./postgres/install/config.md"
+          - 监控目录: "./postgres/tools/monitor.md"
 
       - 架构与原理:
           - 数据库架构: "./postgres/install/cluster.md"
@@ -253,12 +253,12 @@ nav:
           - 迁移与DTS: "./postgres/troubleshooting/dts.md"
           - 系统锁定分析: "./postgres/troubleshooting/explain.md"
           - 登录处理流程: "./postgres/troubleshooting/libpg.md"
-          - 功能分析: "./postgres/troubleshooting/pg_rewrite.md"
+          - 功能分析: "./postgres/tools/pg_rewrite.md"
 
       - 故障排除与问题解决:
           - OOM问题: "./postgres/troubleshooting/oom.md"
           - 空间自动清理: "./postgres/troubleshooting/auto_vacuum_trigger.md"
-          - 数据预加载: "./postgres/troubleshooting/pg_prewarm.md"
+          - 数据预加载: "./postgres/tools/pg_prewarm.md"
           - 案例研究: "./postgres/troubleshooting/awsome-postgres.md"
 
   - 中间件:
@@ -284,9 +284,7 @@ nav:
           - 监控指标: ./monitor/metrics.md
       - fluentbit:
           - 介绍: ./fluentbit/intro.md
-          - 安装配置: ./fluentbit/config.md
-          - 使用场景: ./fluentbit/usecases.md
-          - 日志收集: ./fluentbit/logcollection.md
+          - 问题排查: ./fluentbit/problems.md
 
   - Linux:
       - linux/index.md
