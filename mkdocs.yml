@@ -16,7 +16,7 @@ theme:
   palette:
     - media: "(prefers-color-scheme)" # 主题颜色
       scheme: slate
-      primary: black
+      primary: teal
       accent: indigo
       toggle:
         icon: material/link
@@ -30,7 +30,7 @@ theme:
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)" # 深色
       scheme: slate
-      primary: black
+      primary: teal
       accent: indigo
       toggle:
         icon: material/toggle-switch-off
