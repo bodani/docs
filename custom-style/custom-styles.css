@@ -1,213 +1,147 @@
-/* ========== 简化版本自定义样式文件 ========== */
+/* ========== 全新深色主题配色方案 ========== */
 
-/* 禁用所有可能与主题内置样式冲突的自定义列表标记样式 */
-.md-content__inner ul,
-.md-content__inner ol {
-  /* 让主题决定列表符号，而不是自定义 */
+/* 深色主题全局颜色定义 */
+[data-md-color-scheme="slate"] {
+  /* 背景颜色层次结构 */
+  --md-default-bg-color: #0d1117;
+  --md-default-bg-color--light: #161b22;
+  --md-default-bg-color--lighter: #21262d;
+  --md-default-bg-color--darkest: #0a0d12;
+
+  /* 文本颜色层次结构 */
+  --md-default-fg-color: #f0f6fc;
+  --md-default-fg-color--light: #c9d1d9;
+  --md-default-fg-color--lighter: #9ca3af;
+  --md-default-fg-color--muted: #6c757d;
+
+  /* 代码块配色 - 更好的对比度 */
+  --md-code-bg-color: #161b22;
+  --md-code-fg-color: #e6edf3;
+  
+  /* 高亮配色 */
+  --md-code-hl-color: rgba(169, 185, 206, 0.3);
+  --md-code-hl-number-color: #d2991d;
+  --md-code-hl-function-color: #e6edf3;
+  --md-code-hl-constant-color: #58a6ff;
+  --md-code-hl-keyword-color: #d2991d;
+  --md-code-hl-string-color: #89db3a;
+  --md-code-hl-name-color: #58a6ff;
+  --md-code-hl-operator-color: #ec7763;
+  --md-code-hl-punctuation-color: #e6edf3;
+  --md-code-hl-comment-color: #7d8590;
+  --md-code-hl-generic-color: #f0f6fc;
+  --md-code-hl-variable-color: #ff87d7;
+  --md-code-hl-special-color: #ec7763;
 }
 
-/* 针对可能导致重复标记的CSS进行处理 */
-.md-typeset :is(ul, ol) {
-  padding-left: initial;
+/* 内容区域背景调整 */
+.md-content__inner {
+  background-color: var(--md-default-bg-color);
+  padding: 1.2rem;
+  border-radius: 8px;
 }
 
-.md-typeset :is(ul, ol) :is(li) {
-  position: relative;
-  padding-left: initial;
-  list-style: initial;
-  margin: initial;
-}
-
-/* 解决列表项中特殊图标重复的问题 */
-.md-typeset .admonition {
-  padding: 0.1em 0.5em 0.1em 0.5em !important;
-}
-
-/* 首页英雄区域样式 - 确保这部分正常 */
-.home-hero {
-  background: linear-gradient(145deg, var(--md-primary-fg-color) 0%, var(--md-primary-fg-color--light) 100%);
-  color: white;
-  padding: 3rem 1.5rem;
-  border-radius: 16px;
-  margin: 1.5rem 0;
-  text-align: center;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
-  position: relative;
-  overflow: hidden;
-}
-
-.home-hero h2 {
-  color: white !important;
-  margin: 0 0 1rem 0;
-  position: relative;
-  z-index: 2;
-}
-
-.home-hero p {
-  color: rgba(255,255,255,0.9) !important;
-  font-size: 1.1rem;
-  margin: 0.5rem 0 0;
-  position: relative;
-  z-index: 2;
-}
-
-/* 主页卡片布局 - 增强但不影响列表 */
-.grid-cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  margin: 2rem 0;
-}
-
-.card-item {
-  background: linear-gradient(145deg, var(--md-default-bg-color) 0%, var(--md-primary-bg-color) 100%);
-  border: 1px solid rgba(0,0,0,0.08);
-  border-radius: 12px;
-  padding: 1.5rem;
-  text-align: center;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  position: relative;
-  overflow: hidden;
-  z-index: 1;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.03);
-}
-
-.card-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(145deg, transparent, rgba(var(--md-rgb-accent-fg-color), 0.05));
-  z-index: -1;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-}
-
-.card-item:hover::before {
-  opacity: 1;
-}
-
-.card-item:hover {
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-  border-color: rgba(var(--md-rgb-accent-fg-color), 0.3);
-}
-
-.card-item h3 {
-  margin-top: 0;
-  color: var(--md-primary-fg-color);
-  font-size: 1.25rem;
-  margin-bottom: 0.75rem;
-  position: relative;
-  z-index: 2;
-}
-
-.card-item p {
-  color: var(--md-default-fg-color--light);
-  margin-bottom: 1.5rem;
+/* 文本内容样式增强 */
+.md-typeset {
+  color: var(--md-default-fg-color);
   line-height: 1.6;
-  position: relative;
-  z-index: 2;
 }
 
-/* 按钮增强样式 */
-.btn, .md-button {
-  display: inline-block;
-  padding: 0.6rem 1.2rem;
-  background: linear-gradient(145deg, var(--md-primary-fg-color) 0%, var(--md-primary-fg-color--light) 100%);
-  color: white;
+.md-typeset a {
+  color: #58a6ff;
   text-decoration: none;
+}
+
+.md-typeset a:hover {
+  color: #79b8ff;
+  text-decoration: underline;
+}
+
+/* 标题样式 */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  color: var(--md-default-fg-color);
+  border-bottom: 1px solid rgba(100, 100, 120, 0.3);
+}
+
+/* 代码块基础样式 */
+.md-typeset pre > code,
+.md-typeset .highlight {
+  font-size: 0.85em;
+  border-radius: 8px;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  line-height: 1.6;
+  padding: 1.2em;
+  background-color: var(--md-code-bg-color) !important;
+  color: var(--md-code-fg-color) !important;
+}
+
+/* 深色模式下的普通代码背景 */
+code {
+  background-color: rgba(110, 118, 129, 0.4);
+  color: #ff87d7;
+  padding: 2px 6px;
   border-radius: 6px;
-  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  border: none;
-  cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.85em;
+}
+
+/* 代码行号样式 */
+.md-typeset .linenos {
+  background-color: rgba(110, 118, 129, 0.4) !important;
+  color: #8b949e;
+  border-right: 1px solid rgba(100, 100, 120, 0.3);
+  padding-right: 12px;
+  margin-right: 12px;
+}
+
+.md-typeset .linenodiv {
+  background-color: rgba(110, 118, 129, 0.4) !important;
+  color: #8b949e;
+}
+
+/* 代码高亮 */
+.highlight .hll {
+  background-color: var(--md-code-hl-color) !important;
+}
+
+/* 引用块优化 */
+.md-typeset blockquote {
+  background-color: rgba(110, 118, 129, 0.15);
+  border-left: 4px solid #58a6ff;
+  color: var(--md-default-fg-color--light);
+}
+
+/* 表格优化 */
+.md-typeset table:not([class]) th {
+  background-color: rgba(110, 118, 129, 0.4);
+  color: var(--md-default-fg-color);
+  border: 1px solid rgba(110, 118, 129, 0.5);
+}
+
+.md-typeset table:not([class]) td {
+  border: 1px solid rgba(110, 118, 129, 0.3);
+}
+
+/* 行内代码（反引号代码）高对比度配色 */
+.md-typeset code:not(pre code) {
+  background-color: rgba(240, 246, 252, 0.15) !important;
+  color: #f08d41 !important;
+  border: 1px solid rgba(86, 156, 214, 0.3) !important;
+  font-size: 0.85em;
+  padding: 2px 6px !important;
+  margin: 0 2px;
   font-weight: 500;
-  position: relative;
-  z-index: 2;
-  overflow: hidden;
-  box-shadow: 0 4px 10px rgba(30, 136, 229, 0.3);
 }
 
-.btn::before, .md-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-  transition: 0.5s;
-}
-
-.btn:hover::before, .md-button:hover::before {
-  left: 100%;
-}
-
-.btn:hover, .md-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 15px rgba(30, 136, 229, 0.4);
-  background: linear-gradient(145deg, var(--md-primary-fg-color--light) 0%, var(--md-primary-fg-color) 100%);
-}
-
-/* 页面内容区标题样式 */
-.md-content__inner h1,
-.md-content__inner h2,
-.md-content__inner h3,
-.md-content__inner h4 {
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-/* 导航菜单样式 */
-.md-nav__item .md-nav__link--active {
-  color: var(--md-accent-fg-color);
-  font-weight: 500;
-}
-
-.md-nav__item .md-nav__link:hover {
-  color: var(--md-accent-fg-color);
-  background-color: rgba(0, 0, 0, 0.03);
-  border-radius: 4px;
-}
-
-/* 响应式优化 */
-@media screen and (max-width: 76.1875em) {
-  .md-footer-meta__inner {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .md-footer-copyright {
-    text-align: center;
+/* 响应式调整 */
+@media screen and (min-width: 76.25em) {
+  .md-content__inner {
+    padding: 1.6rem 1.2rem 0;
   }
 }
 
-/* 不重写footer内容，仅提供必要样式 */
-.md-footer-copyright__highlight {
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  overflow: hidden;
-  word-break: break-word;
-}
-
-.md-footer-meta__inner {
-  position: relative;
-}
-
-.md-footer-links,
-.md-footer-social,
-.md-footer-copyright {
-  position: relative;
-  z-index: 1;
-}
-
-/* 关键：确保所有列表保持原始主题样式，不做任何可能导致重复符号的设置 */
-.md-content__inner ul li,
-.md-content__inner ol li {
-  list-style: inherit;
-  padding-left: inherit;
-  position: static;
-}
