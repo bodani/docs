@@ -9,7 +9,7 @@ site_description: >- # 项目描述
 # repo_url: https://github.com/bodani/docs.git # 仓库地址
 
 # 版权信息
-copyright: Copyright &copy;  2021-2026 | Eamon
+copyright: Copyright &copy;  2026 | Eamon
 
 theme:
   name: "material"
@@ -275,7 +275,7 @@ nav:
       - MongoDB:
           - 安装: ./mongodb/install.md
           - 配置: ./mongodb/config.md
-          - 复制集: ./mongodb/replication.md
+          - 副本集: ./mongodb/replication.md
           - 分片集群: ./mongodb/sharding.md
           - 权限管理: ./mongodb/privilege.md
       - 监控系统:

@@ -116,6 +116,10 @@ cd /home/dmdba/dmdbms/bin
 ./dminit path=/dmdata/data SYSDBA_PWD=MMdba123 SYSAUDITOR_PWD=DMdba123 CHARSET=1 CASE_SENSITIVE=Y
 ```
 
+- charset：字符集选项。取值范围 0、1、2。0 代表 GB18030，1 代表 UTF-8，2 代表韩文字符集 EUC-KR。缺省值为 0。可选参数。此参数在数据库创建成功后无法修改，可通过系统函数 SF_GET_UNICODE_FLAG()或 UNICODE()查询设置的参数值。
+
+- case_sensitive： 标识符大小写敏感。当大小写敏感时，小写的标识符应用""括起，否则被系统自动转换为大写；当大小写不敏感时，系统不会转换标识符的大小写，系统比较函数会将大写字母全部转为小写字母再进行比较。取值：Y、y、1 表示敏感；N、n、0 表示不敏感。缺省值为 Y。可选参数。此参数在数据库创建成功后无法修改，可通过系统函数 SF_GET_CASE_SENSITIVE_FLAG()或 CASE_SENSITIVE()查询设置的参数值。
+
 #### mysql 实例
 
 ```
@@ -150,3 +154,9 @@ systemctl disable firewalld
 ```
 
 ## selinux 关闭
+
+```
+sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+
+setenforce 0
+```

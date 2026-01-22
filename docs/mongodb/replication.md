@@ -1,10 +1,20 @@
-# MongoDB 复制集
+# MongoDB 副本集
 
 ## 概述
 
-MongoDB 复制集 (Replica Set) 是一组维护相同数据集合的 mongod 实例。复制集提供了冗余和高可用性，是生产环境中推荐的数据存储方式。
+MongoDB 复制集 (Replica Set) 是一组维护相同数据集合的 mongod 实例。副本集提供了冗余和高可用性，是生产环境中推荐的数据存储方式。
+
+副本集（Replica Set）的设计初衷是“数据冗余和高可用”，而不是“读写分离负载均衡”
 
 ## 复制集架构
+
+https://www.mongodb.com/zh-cn/docs/v8.0/tutorial/deploy-replica-set/
+
+| 成员 | 主机名               |
+| ---- | -------------------- |
+| 0    | mongodb0.example.net |
+| 1    | mongodb1.example.net |
+| 2    | mongodb2.example.net |
 
 ### 节点角色
 
@@ -12,9 +22,19 @@ MongoDB 复制集 (Replica Set) 是一组维护相同数据集合的 mongod 实�
 - **Secondary（从节点）**：从 Primary 节点复制数据
 - **Arbiter（仲裁节点）**：参与选举但不保存数据
 
+  一个副本集最多可以有 50 个节点，但只能有 7 个具有投票权的节点。
+
 ## 创建复制集
 
-### 1. 配置文件准备
+### 配置 DNS
+
+避免因 IP 变化导致复制集配置失效，使用 DNS 名称或主机名配置复制集成员。
+
+### 安装实例
+
+参考 [安装 MongoDB](../install)
+
+### 配置文件准备
 
 每个节点都需要相应配置：
 
@@ -23,12 +43,24 @@ MongoDB 复制集 (Replica Set) 是一组维护相同数据集合的 mongod 实�
 net:
   port: 27017
   bindIp: 0.0.0.0
-
 replication:
   replSetName: rs0
+security:
+  authorization: enabled
+  keyFile: /etc/mongodb/conf/keyfile
+  clusterAuthMode: keyFile
 ```
 
-### 2. 初始化复制集
+keyfile 为随机字符串。用于集群内通信验证,同一副本集保持相同 (openssl rand -base64 21 > keyfile)
+
+```
+sudo chmod 400  /etc/mongodb/conf/keyfile
+sudo chown mongodb:mongodb /etc/mongodb/conf/keyfile
+```
+
+`配置后重启mongodb实例`
+
+### 初始化复制集
 
 ```bash
 # 连接到其中一个节点
@@ -38,15 +70,23 @@ mongo --port 27017
 rs.initiate()
 ```
 
-### 3. 添加成员
+### 添加成员
 
 ```bash
 # 添加复制集成员
-rs.add("hostname2:27017")
-rs.add("hostname3:27017")
+rs.add("mongodb1.example.net:27017")
+rs.add("mongodb2.example.net:27017")
 
 # 或添加仲裁节点
 rs.addArb("arbiter-hostname:27017")
+```
+
+加入集群后将自动复制源主机的数据及账户
+
+#### 删除成员
+
+```
+rs.remove("mongod3.example.net")
 ```
 
 ## 成员配置
@@ -58,14 +98,18 @@ cfg = rs.conf();
 cfg.members[0].priority = 2; // 设置优先级
 cfg.members[1].priority = 1; // 设置优先级
 cfg.members[2].priority = 0; // 非选举成员
+// 心跳
+cfg.settings.heartbeatTimeoutSecs = 10;
+// 选举超时
+cfg.settings.electionTimeoutMillis = 10000;
 rs.reconfig(cfg);
 ```
 
 ### 成员属性
 
 - `priority`: 0-1000，影响选举，0 表示不可选举
-- `votes`: 0 或 1，影响投票权
-- `hidden`: true 为隐藏节点，对客户端不可见
+- `votes`: 0 或 1，影响投票权 没有投票权的成员的 votes 和 priority 都等于 0
+- `hidden`: true 为隐藏节点，对客户端不可见 同时priority=0
 - `slaveDelay`: 延迟复制（秒）
 
 ## 管理操作
@@ -80,8 +124,12 @@ rs.status()
 rs.conf()
 
 # 查看复制延迟
-db.printSlaveReplicationInfo()
+db.printSecondaryReplicationInfo
 ```
+
+### oplog
+
+oplog 保留策略，默认范围 990M - 50G。或 5% 的物理存储空间
 
 ### 故障转移
 
@@ -105,11 +153,13 @@ db.collection.insertOne({ x: 1 }, { writeConcern: { w: "majority" } });
 // 设置超时时间
 db.collection.insertOne(
   { x: 1 },
-  { writeConcern: { w: "majority", wtimeout: 5000 } }
+  { writeConcern: { w: "majority", wtimeout: 5000 } },
 );
 ```
 
 ### 读关注 (Read Concern)
+
+数据的一致性/隔离级别是什么？
 
 ```javascript
 // 最近数据
@@ -120,6 +170,16 @@ db.collection.find().readConcern("available");
 
 // 线性一致读
 db.collection.find().readConcern("linearizable");
+```
+
+## 读偏好
+
+从哪个节点读取数据
+
+```
+
+mongodb://myDatabaseUser:D1fficultP%40ssw0rd@db0.example.com,db1.example.com,db2.example.com/?replicaSet=myRepl&readConcernLevel=majority
+
 ```
 
 ## 复制延迟
