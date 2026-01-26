@@ -157,6 +157,5 @@ systemctl disable firewalld
 
 ```
 sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
-
 setenforce 0
 ```

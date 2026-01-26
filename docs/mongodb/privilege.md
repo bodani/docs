@@ -52,18 +52,9 @@ db.createUser({
 ### 为特定数据库创建用户
 
 ```javascript
-// 切换到目标数据库
-use myDatabase
-
-// 创建数据库用户
-db.createUser({
-    user: "myUser",
-    pwd: "password",
-    roles: [
-        { role: "readWrite", db: "myDatabase" },
-        { role: "read", db: "otherDatabase" }
-    ]
-})
+创建用户示例
+use admin
+db.createUser({user: 'test', pwd: '123456Aa', roles:[{role: 'readWrite', db: 'mydb'}]})
 ```
 
 ### 身份验证
