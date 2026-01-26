@@ -156,6 +156,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://bodani.github.io/docs/linux/lvm/</loc>
+         <lastmod>2026-01-26</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://bodani.github.io/docs/linux/patch/</loc>
          <lastmod>2026-01-26</lastmod>
          <changefreq>daily</changefreq>
