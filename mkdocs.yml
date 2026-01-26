@@ -289,18 +289,96 @@ nav:
 
   - Linux:
       - linux/index.md
-      - 工具与管理:
+      - 基础工具与系统管理:
           - 系统工具: ./linux/tools.md
-          - ddrescue 数据恢复: ./linux/ddrescue.md
-          - ELF 工具: ./linux/elfutil.md
-          - 补丁管理: ./linux/patch.md
-          - 硬件管理: ./linux/smartctl.md
-          - 远程管理: ./linux/ipmitool.md
-      - 虚拟化与容器:
+          - 进程管理: ./linux/process-comm.md
+          - 性能监控: ./linux/sysstat.md
+          - 内存管理: ./linux/meminfo.md
+          - 磁盘管理: ./linux/hard_store.md
+          - 文件系统工具: ./linux/findhidpid.md
+          - 时间管理: ./linux/time-cmd.md
+          - 邮件管理: ./linux/mail.md
+          - 电源管理: ./linux/cpu_temp.md
+          - 系统日志: ./linux/syslog.md
+      - 命令详解与实用工具:
+          - awk命令详解: ./linux/cmd-awk.md
+          - gpasswd命令: ./linux/cmd-gpasswd.md
+          - sed命令详解: ./linux/cmd-sed.md
+          - vim命令使用: ./linux/cmd-vim.md
+          - xargs命令使用: ./linux/cmd-xargs.md
+          - 其他常用命令: ./linux/fu-cmd.md
+          - 系统安装相关命令: ./linux/install-cmd.md
+          - 安装相关脚本工具: ./linux/cmd-pstack.md
+      - 虚拟化与容器技术:
           - KVM 虚拟化: ./linux/kvm01.md
-          - Kubernetes 工具: ./linux/kuberctl.md
-      - 安全与管理:
-          - Web 安全管理: ./linux/webmanage.md
+          - K8s 管理工具: ./linux/kuberctl.md
+          - 容器网络管理: ./linux/wind-run.md
+      - 硬件与驱动管理:
+          - 硬件监控: ./linux/smartctl.md
+          - 硬件信息查询: ./linux/dmidecode.md
+          - 磁盘阵列管理: ./linux/mdadm.md
+          - 硬盘性能检测: ./linux/hdparm.md
+          - 远程硬件管理: ./linux/ipmitool.md
+          - CPU温度与利用率: ./linux/cpu_utilize.md
+      - 安全与权限管理:
+          - 系统安全管理: ./linux/webmanage.md
+          - 用户权限管理: ./linux/nice.md
+          - 临时用户组: ./linux/wheel.md
+          - 免密登录配置: ./linux/no-passwd.md
+          - sudo配置与BMC: ./linux/bmcpasswd.md
+          - Git免密配置: ./linux/git-nopassword.md
+          - 账户密码重置: ./linux/resetpasswd-centos7.md
+          - 任务调度管理: ./linux/at-crontab.md
+          - 终端会话复用: ./linux/terminal-reuse.md
+          - SSH免密与连接: ./linux/ln-s.md
+          - 安全VPN管理: ./linux/openvpn.md
+      - 系统配置与调优:
+          - 系统参数调整: ./linux/linux_tunning.md
+          - 进程优先级与CPU亲和性: ./linux/cpu-affinity.md
+          - 内核后台进程: ./linux/kworker.md
+          - 网络QoS管理: ./linux/qos.md
+          - 系统启动优化: ./linux/init-centos.md
+          - 网络配置Ubuntu: ./linux/ubuntu2004-network.md
+          - 系统内存大页: ./linux/memtester.md
+          - I/O超时处理: ./linux/ssdiotimeout.md
+          - Backlog队列管理: ./linux/backlog-config.md
+      - 存储与文件系统管理:
+          - LVM存储管理: ./linux/lvm.md
+          - 磁盘分区工具: ./linux/parted.md
+          - 系统空间清理: ./linux/fastdeletfiles.md
+          - 无空间设备处理: ./linux/nospace-device.md
+      - 网络与协议分析:
+          - 网络抓包分析: ./linux/tcpdump.md
+          - 网络诊断工具: ./linux/iperf.md
+          - 网络状态监控: ./linux/last.md
+          - 下载工具wget: ./linux/wget.md
+          - 系统资源统计: ./linux/stat.md
+      - 数据恢复与备份:
+          - 数据恢复ddrescue: ./linux/ddrescue.md
+          - 磁盘性能测试fio: ./linux/fio.md
+          - VM性能配置: ./linux/vm-config.md
+          - 内存测试: ./linux/memtest.md
+          - 系统补丁管理: ./linux/patch.md
+      - 调试与性能分析:
+          - 性能分析工具perf: ./linux/perf.md
+          - 内存映射分析pmap: ./linux/pmap.md
+          - 进程调试: ./linux/pstack_strace.md
+          - 符号表与共享库: ./linux/so.md
+          - 硬件驱动分析: ./linux/cgroups.md
+      - 安全增强工具:
+          - ELF工具详解: ./linux/elfutil.md
+          - 调试堆栈分析: ./linux/pid_m.md
+          - 软件包语言配置: ./linux/lang.md
+      - 系统维护与问题解决:
+          - 轻量桌面管理: ./linux/lightdm.md
+          - 硬盘4K对齐: ./linux/4k-wa.md
+          - 仓库远程配置: ./linux/repo.md
+          - 版本控制优化: ./linux/git-sparsecheckout.md
+          - DNS优化配置: ./linux/github-dns.md
+          - Ubuntu2004常见问题: ./linux/ubuntu2004-qa.md
+          - Git对象清理: ./linux/git-objects-clean.md
+          - 归档压缩: ./linux/xz.md
+          - 便捷连接工具: ./linux/frp.md
 
   - 数据库思考:
       - 结构设计: "./postgres/maintenance/thinking_in_db_fd.md"

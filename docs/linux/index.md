@@ -115,51 +115,51 @@
 
 <div class="grid-cards-container">
   <div class="card-item">
-    <h3>🔧 系统管理工具</h3>
-    <p>常用的 Linux 系统管理工具与实用程序。</p>
-    <a href="./tools" class="btn">详情</a>
+    <h3>🔧 基础工具与系统管理</h3>
+    <p>常用系统管理工具、性能监控与系统配置等。</p>
+    <a href="./tools" class="btn">系统工具</a>
   </div>
   
   <div class="card-item">
-    <h3>💻 KVM 虚拟化</h3>
-    <p>KVM 虚拟化平台配置与管理指南。</p>
-    <a href="./kvm01" class="btn">详情</a>
+    <h3>💻 虚拟化与容器技术</h3>
+    <p>KVM虚拟化平台与Kubernetes容器管理。</p>
+    <a href="./kvm01" class="btn">KVM虚拟化</a>
   </div>
   
   <div class="card-item">
-    <h3>📦 数据恢复</h3>
-    <p>使用 ddrescue 进行数据恢复的技术说明。</p>
-    <a href="./ddrescue" class="btn">详情</a>
+    <h3>💾 数据恢复与备份</h3>
+    <p>使用ddrescue等工具进行数据恢复的指南。</p>
+    <a href="./ddrescue" class="btn">数据恢复</a>
   </div>
   
   <div class="card-item">
-    <h3>🔐 安全管理</h3>
-    <p>Linux 系统安全管理与防护实践。</p>
-    <a href="./webmanage" class="btn">详情</a>
+    <h3>🔐 安全与权限管理</h3>
+    <p>用户权限、安全管理和认证等知识。</p>
+    <a href="./webmanage" class="btn">安全管理</a>
   </div>
   
   <div class="card-item">
-    <h3>🔍 硬件监控</h3>
-    <p>利用 smartctl 和 ipmitool 监控硬件健康状态。</p>
-    <a href="./smartctl" class="btn">详情</a>
+    <h3>Hardware 硬件与驱动管理</h3>
+    <p>硬件监控、设备管理和驱动配置说明。</p>
+    <a href="./smartctl" class="btn">硬件监控</a>
   </div>
   
   <div class="card-item">
-    <h3>🧩 ELF 工具</h3>
-    <p>elfutil 等二进制文件处理工具详解。</p>
-    <a href="./elfutil" class="btn">详情</a>
+    <h3>⚙️ 系统配置与调优</h3>
+    <p>系统参数优化和内核性能调优实践。</p>
+    <a href="./linux_tunning" class="btn">系统调优</a>
   </div>
   
   <div class="card-item">
-    <h3>🔧 补丁管理</h3>
-    <p>Linux 系统补丁管理与更新流程。</p>
-    <a href="./patch" class="btn">详情</a>
+    <h3>📁 存储与文件系统</h3>
+    <p>LVM存储管理与文件系统操作。</p>
+    <a href="./lvm" class="btn">存储管理</a>
   </div>
   
   <div class="card-item">
-    <h3>ernetes K8s 工具</h3>
-    <p>kuberctl 等 Kubernetes 管理工具使用指南。</p>
-    <a href="./kuberctl" class="btn">详情</a>
+    <h3>Network 网络与协议</h3>
+    <p>网络分析、协议分析和网络监控。</p>
+    <a href="./tcpdump" class="btn">网络分析</a>
   </div>
 </div>
 
@@ -173,29 +173,27 @@ Linux 是一套免费使用和自由传播的类 UNIX 操作系统，是一个�
 
 ### 核心组成部分
 
-- **系统管理**: 系统监控、进程管理、服务配置等基础知识
-- **虚拟化技术**: KVM 等虚拟化平台的应用
-- **硬件管理**: 利用专用工具进行硬件监控和维护
-- **安全管控**: 权限管理、访问控制和安全加固
-- **集群管理**: Kubernetes 等容器编排技术
-- **应急维护**: 数据恢复、系统补丁等维护任务
+- **基础系统管理**: 包含常用系统工具、进程管理、性能监控、内存管理和磁盘管理等核心技能
+- **命令行应用**: 各种常用命令和实用工具的使用详解，包括 awk、sed、vim、xargs 等经典命令
+- **虚拟化与容器**: KVM 虚拟化技术和 K8s 容器编排工具的应用和管理
+- **硬件管理**: 利用 smartctl、ipmitool 等工具对硬件设备进行监控和维护
+- **安全管控**: 权限管理、用户管理、免密登录配置等安全相关主题
+- **系统调优**: 性能参数配置、网络调优、系统启动优化等方面的深度实践
+- **存储与文件系统**: LVM 存储管理、磁盘分区管理以及文件系统优化等内容
+- **网络分析**: 网络协议分析、抓包工具使用及网络安全等方面的内容
+- **数据恢复与备份**: 重要数据保护和恢复策略的实施指南
+- **调试与问题排查**: 通过各种工具和技术对系统问题进行分析与解决
 
-## 系统资源
+## 技术资源
 
-### Linux 工具与实用程序总览
+我们提供了全面的 Linux 系统管理技术资源，覆盖了从入门到进阶的不同层次需求，旨在帮助用户深入理解和高效应用 Linux 技术。
 
-涵盖常用的命令行工具，以及在运维场景中使用的重要工具如 ddrescue 用于数据恢复，elfutil 进行 ELF 文件分析等。
+## 深入学习路径
 
-### 系统维护
+您可以按照文档分类逐步学习 Linux 知识：
 
-- KVM 虚拟化技术的安装和配置
-- 系统补丁管理的正确流程和注意事项
-- 利用 smartctl 和 ipmitool 进行硬件监控
+1. **初学者**: 从系统工具、命令详解入手
+2. **进阶者**: 掌握系统调优、网络分析和安全策略
+3. **专业人员**: 深入虚拟化、容器、存储和性能优化领域
 
-### 相关主题文章
-
-- Web 管理与系统安全设置
-- kuberctl 与容器编排实践
-- 硬件级管理和 IPMI 工具的应用
-
-> ⭐ 深入掌握 Linux 运维技能，从基础配置到企业级实践，可参阅以上各个专题章节
+> ⭐ 深入掌握 Linux 运维技能，从基础配置到企业级实践，可参阅左侧菜单中的各个专题章节
