@@ -7,18 +7,9 @@ db.createUser({
     pwd: &quot;securePassword&quot;,
     roles: [{ role: &quot;userAdminAnyDatabase&quot;, db: &quot;admin&quot; }]
 })
-</code></pre> <h3 id=_10>为特定数据库创建用户</h3> <pre><code class=language-javascript>// 切换到目标数据库
-use myDatabase
-
-// 创建数据库用户
-db.createUser({
-    user: &quot;myUser&quot;,
-    pwd: &quot;password&quot;,
-    roles: [
-        { role: &quot;readWrite&quot;, db: &quot;myDatabase&quot; },
-        { role: &quot;read&quot;, db: &quot;otherDatabase&quot; }
-    ]
-})
+</code></pre> <h3 id=_10>为特定数据库创建用户</h3> <pre><code class=language-javascript>创建用户示例
+use admin
+db.createUser({user: 'test', pwd: '123456Aa', roles:[{role: 'readWrite', db: 'mydb'}]})
 </code></pre> <h3 id=_11>身份验证</h3> <pre><code class=language-bash># 连接时认证
 mongo -u username -p --authenticationDatabase databaseName
 
