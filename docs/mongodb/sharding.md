@@ -105,8 +105,6 @@ systemLog:
   logAppend: true
 storage:
   dbPath: /data/mongodb/shard1_1/db
-  journal:
-    enabled: true
 net:
   bindIp: 0.0.0.0
   port: 29911

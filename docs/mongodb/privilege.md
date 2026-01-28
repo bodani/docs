@@ -57,6 +57,12 @@ use admin
 db.createUser({user: 'test', pwd: '123456Aa', roles:[{role: 'readWrite', db: 'mydb'}]})
 ```
 
+### 修改密码
+
+```
+db.changeUserPassword("admin", "NewStrongPassword!@#")
+```
+
 ### 身份验证
 
 ```bash
@@ -136,13 +142,11 @@ db.revokeRolesFromUser("userName", [{ role: "readWrite", db: "oldDB" }]);
 ```javascript
 // 查看当前用户的权限
 db.runCommand({ connectionStatus: 1 });
-
-// 查看指定用户信息
-db.getUser("userName");
-
 // 查看所有用户
 db.getUsers();
-
+show users;
+// 查看指定用户信息
+db.getUser("userName");
 // 查看所有角色
 db.getRoles({ rolesInfo: 1 });
 ```

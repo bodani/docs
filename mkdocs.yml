@@ -278,6 +278,7 @@ nav:
           - 副本集: ./mongodb/replication.md
           - 分片集群: ./mongodb/sharding.md
           - 权限管理: ./mongodb/privilege.md
+          - 备份恢复: ./mongodb/backup_restore.md
       - 监控系统:
           - Prometheus: ./monitor/prometheus.md
           - Grafana: ./monitor/grafana.md
@@ -286,6 +287,8 @@ nav:
       - fluentbit:
           - 介绍: ./fluentbit/intro.md
           - 问题排查: ./fluentbit/problems.md
+  - 容器:
+      - kubernetes/sts_update.md
 
   - Linux:
       - linux/index.md

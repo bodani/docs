@@ -83,7 +83,7 @@ rs.addArb("arbiter-hostname:27017")
 
 加入集群后将自动复制源主机的数据及账户
 
-#### 删除成员
+### 删除成员
 
 ```
 rs.remove("mongod3.example.net")
@@ -215,3 +215,29 @@ db.adminCommand("replSetGetStatus")
 - 使用专用网络进行复制通信
 - 正确设置节点优先级以确保合适的节点成为 Primary
 - 定期测试故障转移过程
+
+### 重置集群
+
+当集群故障，主节点不可用。多数节点故障的时候。强制重置集群
+
+```
+// 1. 获取当前配置
+cfg = rs.conf()
+
+// 2. 修改配置，移除 node3（id:0）
+// 查看当前所有成员
+cfg.members
+
+// 3. 移除不可达节点
+cfg.members = [
+  {
+    _id: 1,
+    host: "node1:27017",
+    priority: 1,
+    votes: 1
+  }
+]
+
+// 4. 强制重配置
+rs.reconfig(cfg, {force: true})
+```

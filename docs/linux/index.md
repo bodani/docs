@@ -161,6 +161,12 @@
     <p>网络分析、协议分析和网络监控。</p>
     <a href="./tcpdump" class="btn">网络分析</a>
   </div>
+
+  <div class="card-item">
+    <h3>Linux 学习</h3>
+    <p>一个linux学习的网站</p>
+    <a href="https://www.tecmint.com/" class="btn">linux</a>
+  </div>
 </div>
 
 ---
