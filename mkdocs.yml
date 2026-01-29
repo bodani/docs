@@ -207,7 +207,7 @@ nav:
           - 连接认证: "./postgres/security/login_nopasswd.md"
           - SSL安全: "./postgres/security/ssl.md"
           - 备用服务: "./postgres/security/prepare.md"
-          - 只读实例: "./postgres/security/readonly.md"
+          - 只读: "./postgres/security/readonly.md"
 
       - 高级特性:
           - WAL操作详解: "./postgres/design/wal_lsn.md"
