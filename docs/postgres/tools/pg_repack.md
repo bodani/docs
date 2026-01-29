@@ -92,12 +92,16 @@ pg_repack -d database_name --tablespace=ts_name # 将重组后的表移动到指
 
 #### 在 主库、备库 1、备库 2 上分别执行：
 
+```
 sudo mkdir -p /data/pgdata/pg_tblspc/new_fast_ssd
+```
 
 #### 确保目录属主为运行 PostgreSQL 的用户（通常是 postgres）
 
+```
 sudo chown postgres:postgres /data/pgdata/pg_tblspc/new_fast_ssd
 sudo chmod 700 /data/pgdata/pg_tblspc/new_fast_ssd
+```
 
 ### 只保留部分数据
 
