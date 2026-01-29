@@ -1106,6 +1106,21 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://bodani.github.io/docs/postgres/maintenance/partition/</loc>
+         <lastmod>2026-01-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/postgres/maintenance/pg_pathman/</loc>
+         <lastmod>2026-01-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://bodani.github.io/docs/postgres/maintenance/pg_rewrite/</loc>
+         <lastmod>2026-01-29</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://bodani.github.io/docs/postgres/maintenance/thinking_in_db_fd/</loc>
          <lastmod>2026-01-29</lastmod>
          <changefreq>daily</changefreq>
@@ -1256,11 +1271,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://bodani.github.io/docs/postgres/tools/pg_pathman/</loc>
-         <lastmod>2026-01-29</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://bodani.github.io/docs/postgres/tools/pg_prewarm/</loc>
          <lastmod>2026-01-29</lastmod>
          <changefreq>daily</changefreq>
@@ -1272,11 +1282,6 @@
     </url>
     <url>
          <loc>https://bodani.github.io/docs/postgres/tools/pg_rewind/</loc>
-         <lastmod>2026-01-29</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
-         <loc>https://bodani.github.io/docs/postgres/tools/pg_rewrite/</loc>
          <lastmod>2026-01-29</lastmod>
          <changefreq>daily</changefreq>
     </url>
