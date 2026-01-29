@@ -162,6 +162,9 @@ nav:
           - BGWriter: "./postgres/install/bgwriter.md"
           - 表空间: "./postgres/install/tablespace.md"
           - 空间工具: "./postgres/install/pgstattuple.md"
+          - 表迁移: "./postgres/tools/pg_rewrite.md"
+          - pg_pathman: "./postgres/tools/pg_pathman.md"
+          - 分区表: "./postgres/maintenance/partition.md"
 
       - 监控分析:
           - 监控基础: "./postgres/tools/monitor.md"
@@ -226,15 +229,13 @@ nav:
       - 工具集:
           - pgbench压测: "./postgres/tools/pgbench.md"
           - 集群扩展: "./postgres/tools/pg_elk.md"
-          - pgpathman分片: "./postgres/tools/pg_pathman.md"
           - 预加载缓存: "./postgres/tools/pg_prewarm.md"
           - 统计预缓存: "./postgres/tools/pg_buffercache.md"
           - 模糊查询: "./postgres/tools/pgfincore.md"
           - 锁等待分析: "./postgres/tools/lock_wait.md"
           - 行数统计: "./postgres/tools/pgage.md"
           - 监控系统: "./postgres/tools/pgwatch2.md"
-          - 备份压缩: "./postgres/tools/pg_rewrite.md"
-          - 大页支持: "./postgres/tools/pg_prewarm.md"
+          - 数据预热: "./postgres/tools/pg_prewarm.md"
           - 读写分析: "./postgres/tools/pg_lock.md"
           - 表分析: "./postgres/install/pgstattuple.md"
           - CITUS扩展: "./postgres/tools/pg_citus.md"
