@@ -145,7 +145,7 @@ find /backup/mongodb -name "*" -type d -mtime +30 -exec rm -rf {} \;
 
 ### 备份到 S3 方案
 
-#### 方法3：直接流式备份到 S3（不落盘）
+#### 直接流式备份到 S3（不落盘）
 
 ```
 mongodump --host localhost:27017 \
@@ -154,12 +154,14 @@ mongodump --host localhost:27017 \
  aws s3 cp - s3://your-bucket-name/mongodb-backups/backup*$(date +%Y%m%d*%H%M%S).archive.gz
 ```
 
-#### 从 S3 恢复数据
+### 从 S3 恢复数据
 
-##### 方法2：直接流式恢复
+#### 直接流式恢复
 
+```
 aws s3 cp s3://your-bucket-name/mongodb-backups/backup_20240115.archive.gz - | \
  mongorestore --host localhost:27017 --archive --gzip
+```
 
 ## mongoexport 与 mongoimport
 

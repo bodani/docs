@@ -27,3 +27,8 @@ check:
 	fi
 .PHONY: run build clean install check
 
+push: 
+	git add .
+	git commit -m "Update documentation"
+	git push origin main
+
